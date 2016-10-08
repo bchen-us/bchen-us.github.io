@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Stephanie Santana_50217_assignsubmission_file_HW2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Stephanie Santana_50217_assignsubmission_file_HW2.cpp</CENTER></H3><HR>
+<PRE>
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+
+using namespace std;
+struct TokenFreq {
+    string token;
+    int freq;
+};
+
+/* function identifies all unique tokens in the string s, and its frequency
+ * after identification, the tokens are stored in a vector paired as (token, freq)*/
+
+vector&lt;TokenFreq&gt; getTokenFreq(string &amp;s) {
+<A NAME="0"></A>
+    int index = 0;
+    vector&lt;TokenFreq&gt; TokFreq; //vector that stores all the vector pairs (token, freq)
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match22-1.html#0',3,'match22-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    string word = &quot;&quot;;
+    TokFreq.push_back(TokenFreq());
+    int f = 0;
+    int indicate = 0;
+
+    // this for loop will check for the unique tokens and add to TokFreq in pairs (token, freq)
+    for (int j = 0; j &lt; s.length(); j++) {
+        if (s[j] == ' ' || s[j] == '.' || s[j] == ',' || s[j] == ';' || s[j] == '!' || s[j] == ':' || s[j] == '?') {
+            indicate = 0;
+            for (int i = 0; i &lt; TokFreq.size(); i++) {
+                if (TokFreq[i].token == word) {
+
+                    TokFreq[i].freq++;
+                    indicate = 1;
+                    word = &quot;&quot;;
+                }
+
+
+            }
+
+            if (indicate == 0) {
+                f++;
+                TokFreq[index].token = word;
+                TokFreq[index].freq = 1;
+                index++;
+                TokFreq.push_back(TokenFreq());
+
+                word = &quot;&quot;;
+            }
+
+        } else {
+            word = word + s[j];
+
+        }
+    }
+
+    indicate = 0;
+    for (int i = 0; i &lt; TokFreq.size(); i++) {
+        if (TokFreq[i].token == word) {
+            TokFreq[i].freq++;
+            indicate = 1;
+            word = &quot;&quot;;
+        }
+
+
+    }
+    if (indicate == 0) {
+        cout &lt;&lt; word;
+        TokFreq[index].token = word;
+        TokFreq[index].freq = 1;
+        index++;
+    }
+
+
+    cout
+            &lt;&lt; &quot;\nAfter having called the getTokenFreq() function, you should identify the following list of (token, freq) pairs and store them in a vector&quot;
+            &lt;&lt; endl;
+
+    for (int i = 0; i &lt; TokFreq.size() - 1; i++) {
+
+        cout &lt;&lt; TokFreq[i].token &lt;&lt; &quot;, &quot; &lt;&lt; TokFreq[i].freq &lt;&lt; endl;
+    }
+
+    return TokFreq;
+}
+
+//receives a vector of TokenFreq by reference, and applies to sort algorithm
+void selectionSort_v1(vector&lt;TokenFreq&gt; &amp;tokFreqVector) {
+    TokenFreq temp;
+    int minimum;
+
+    for (int i = 0; i &lt; tokFreqVector.size() - 2; i++) {
+        minimum = i;
+        for (int j = i + 1; j &lt; tokFreqVector.size() - 1; j++) {
+            if (tokFreqVector[j].freq &lt; tokFreqVector[minimum].freq)
+                minimum = j;
+        }
+        if (minimum != i) {
+            temp = tokFreqVector[i];
+            tokFreqVector[i] = tokFreqVector[minimum];
+            tokFreqVector[minimum] = temp;
+        }
+    }
+    cout &lt;&lt; &quot; \nAfter having called either selection sort v1, or v2, the sorted vector of token-freq pairs&quot;
+            &quot; will contain the following information: &quot; &lt;&lt; endl;
+    for (int i = 0; i &lt; tokFreqVector.size() - 1; i++) {
+
+        cout &lt;&lt; tokFreqVector[i].token &lt;&lt; &quot;, &quot; &lt;&lt; tokFreqVector[i].freq &lt;&lt; endl;
+    }
+}
+
+// receives a vector of TokenFreq by value and applies to sort algorithm
+vector&lt;TokenFreq&gt; &amp;selectionSort_v2(vector&lt;TokenFreq&gt; tokFreqVector) {</B></FONT>
+    TokenFreq temp;
+    int minimum;
+
+    for (int i = 0; i &lt; tokFreqVector.size() - 2; i++) {
+        minimum = i;
+        for (int j = i + 1; j &lt; tokFreqVector.size() - 1; j++) {
+            if (tokFreqVector[j].freq &lt; tokFreqVector[minimum].freq)
+                minimum = j;
+        }
+        if (minimum != i) {
+            temp = tokFreqVector[i];
+            tokFreqVector[i] = tokFreqVector[minimum];
+            tokFreqVector[minimum] = temp;
+        }
+    }
+    cout &lt;&lt; &quot; \nAfter having called either selection sort v1, or v2, the sorted vector of token-freq pairs&quot;
+            &quot; will contain the following information: &quot; &lt;&lt; endl;
+    for (int i = 0; i &lt; tokFreqVector.size() - 1; i++) {
+
+        cout &lt;&lt; tokFreqVector[i].token &lt;&lt; &quot;, &quot; &lt;&lt; tokFreqVector[i].freq &lt;&lt; endl;
+    }
+}
+
+int main() {
+    string s;
+    vector&lt;TokenFreq&gt; TokFreq1;
+    vector&lt;TokenFreq&gt; TokFreq2;
+    cout &lt;&lt; &quot;Please enter a paragraph:&quot; &lt;&lt; endl;
+    getline(cin, s);
+    cout &lt;&lt; &quot;The following was entered into the keyboard and inputed into string s: &quot; &lt;&lt; endl;
+    cout &lt;&lt; s &lt;&lt; endl;
+    TokFreq1 = getTokenFreq(s);
+    selectionSort_v1(TokFreq1);
+    selectionSort_v2(TokFreq2);
+    return 0;
+}
+
+</PRE>
+</BODY>
+</HTML>

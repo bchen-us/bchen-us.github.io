@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Saengduean Calderaz_50183_assignsubmission_file_project2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Saengduean Calderaz_50183_assignsubmission_file_project2.cpp</CENTER></H3><HR>
+<PRE>
+// project2.cpp : Defines the entry point for the console application.
+//
+
+#include &quot;stdafx.h&quot;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+struct TokenFreq {
+	string token;
+	int freq;
+
+};
+
+vector&lt;TokenFreq&gt; getTokenFreq(string&amp; s) {
+
+	std::vector&lt;TokenFreq&gt; myvector;
+	string str;
+
+
+	for (int i = 0; i &lt; s.length(); i++) {
+
+		if (s[i] != ' ') { // add the letter until get to the space
+			s.substr(i, 1);
+			str += s.substr(i, 1);
+		}
+
+		if (s[i] == ' ' || i == s.length() - 1) { // check for space and when get to the space will count for frequency 
+			// check if the vector is empty 
+			if (myvector.empty()) {
+
+				TokenFreq x;
+				x.freq = 1;
+				x.token = str;
+				myvector.push_back(x); // add tokenFreq to myvector
+				str = &quot;&quot;; //reset the string to empty string
+				continue;
+			}
+			/* if myvector is not empty then will check if the token is already in myvector or not.
+			If not will only count for frequency,
+			if not already in there will add that token to myvector then assign value 1 to its frequency
+			*/
+			if (!myvector.empty()) {
+				//loop over all elements in the vector, check if the token matches
+				for (int j = 0; j &lt; myvector.size(); j++) {
+
+					if (myvector[j].token == str) {
+						myvector[j].freq++;
+						break; 
+					}
+
+					if (j == myvector.size() - 1) { // check if at the end of the vector
+						if (myvector[j].token != str) { // check if the token is not already in the vector
+							TokenFreq y;
+							y.token = str;
+							y.freq = 1;
+							myvector.push_back(y);
+							break;
+						}
+					}
+<A NAME="0"></A>
+
+				}
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match39-1.html#0',3,'match39-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>				str = &quot;&quot;;// reset the string
+
+			}
+		}
+
+	}
+	return myvector;
+	
+    } 
+	
+void selectionSort_V1(vector&lt;TokenFreq&gt; &amp; tokenFreqVector) { // get the value of TokenFreq by reference 
+	
+	// loop through the entire vector for the minimum frequency
+	for (int i = 0; i &lt; tokenFreqVector.size() - 1; i++) {
+
+		int min = i; // assum the first index is the minimum frequency
+		for (int j = i + 1; j &lt; tokenFreqVector.size(); j++) {
+			if (tokenFreqVector[j].freq &lt; tokenFreqVector[min].freq) { // compare the element j to the minimum if the element smaller , it will be a new minumum value
+				min = j; 
+			}
+		}
+
+		if (min != i) { // exchnage the position if minimum value if not equal to index i
+			swap(tokenFreqVector[i], tokenFreqVector[min]);
+		}
+	}</B></FONT>
+		return;
+	}
+
+
+	vector&lt;TokenFreq&gt;&amp; selectionSort_V2(vector&lt;TokenFreq&gt; tokFreqVector) { // get the value of the tokenfreq by value and the code the pretty much the same with method V1 
+<A NAME="1"></A>		//create a new vector and copy tokFreqVector, then replace all the variable with the new one
+		static vector&lt;TokenFreq&gt; sortedvector(tokFreqVector.begin(), tokFreqVector.end());
+
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match39-1.html#1',3,'match39-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>		for (int i = 0; i &lt; sortedvector.size() - 1; i++) { 
+			
+			int min = i;
+			for (int j = i + 1; j &lt; sortedvector.size(); j++) {
+				if (sortedvector[j].freq &lt; sortedvector[min].freq) {
+					min = j;
+				}
+			}
+
+			if (min != i) {
+				swap(sortedvector[i], sortedvector[min]);
+			}
+		}
+
+
+		
+		return sortedvector;
+	}
+
+
+int main()
+{
+	string line;
+	cout &lt;&lt; &quot;Please enter your sentence: \n\n&quot;;// promt the user to entre the sentence
+	getline(cin, line);
+	vector&lt;TokenFreq&gt; myvector = getTokenFreq(line);</B></FONT>
+
+
+	cout &lt;&lt; &quot;\n\nPrint out the token and frequency\n&quot;;
+	cout &lt;&lt; &quot;{'&quot;;
+	for (int i = 0; i &lt; myvector.size(); i++) { 
+	
+		cout &lt;&lt; myvector[i].token &lt;&lt; &quot;': &quot;&lt;&lt; myvector[i].freq;
+		
+		if (i != myvector.size() - 1) {
+			cout &lt;&lt; &quot;,'&quot;;
+		}
+	}
+	cout &lt;&lt; &quot;}&quot;;
+	
+	
+	
+	
+	cout &lt;&lt; &quot;\n\nPrint out the token and frequency after pass by value\n&quot;;
+	vector&lt;TokenFreq&gt;&amp;  sortedvector = selectionSort_V2(myvector);
+	cout &lt;&lt; &quot;[&quot;;
+	for (int i = 0; i &lt; sortedvector.size(); i++) {
+	
+		cout  &lt;&lt; &quot;('&quot;&lt;&lt;sortedvector[i].token&lt;&lt;&quot;',&quot;;
+		cout &lt;&lt; sortedvector[i].freq &lt;&lt; &quot;)&quot;;
+		if (i != sortedvector.size() - 1) {
+			cout &lt;&lt; &quot;,&quot;;
+		}
+	}
+	
+	cout &lt;&lt; &quot;]&quot;;
+
+
+
+	cout &lt;&lt; &quot;\n\nPrint out the token and frequecy after pass by reference\n&quot;;
+	selectionSort_V1(myvector);
+	
+	
+	cout &lt;&lt; &quot;[&quot;;
+	for (int i = 0; i &lt; myvector.size(); i++) {
+
+		cout &lt;&lt; &quot;('&quot; &lt;&lt; myvector[i].token &lt;&lt; &quot;',&quot;;
+		cout &lt;&lt; myvector[i].freq &lt;&lt; &quot;)&quot;;
+		if (i != myvector.size() - 1) {
+			cout &lt;&lt; &quot;,&quot;;
+		}
+	}
+		
+	cout &lt;&lt; &quot;]&quot;&lt;&lt;endl;
+	
+    return 0;
+}
+
+</PRE>
+</BODY>
+</HTML>

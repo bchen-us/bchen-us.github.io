@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Parker Gray_50218_assignsubmission_file_csc340hw#2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Parker Gray_50218_assignsubmission_file_csc340hw#2.cpp</CENTER></H3><HR>
+<PRE>
+/*
+	CSC 340 Programming Methodology Section 01
+	Homework #1
+	Parker Gray
+*/
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+struct TokenFreq {
+	string token;
+	int freq;
+};
+
+vector&lt;TokenFreq&gt; getTokenFreq(string&amp; s) {
+
+	std::vector&lt;TokenFreq&gt; strTokenized;
+	string str; 
+
+
+	for (int i = 0; i &lt; s.length(); i++) {
+
+		if (s[i] != ' ') { //If current character does not equal space, 
+			s.substr(i, 1); //Crate a substring with position i and length of 1. 
+			str += s.substr(i, 1); //Continue moving through the substring until....
+		}
+
+		if (s[i] == ' ' || i == s.length() - 1) { //When we reach a space character (or if we reach the end of the string length), 
+			// we run a search to see if myvector does not contain any elements.
+			if (strTokenized.empty()) { //If myvector doesn't contain any tokens,
+
+				TokenFreq currToken; //we initialize a TokenFreq struct that contains the substring we created from string s.
+				currToken.freq = 1;
+				currToken.token = str;
+				strTokenized.push_back(currToken); //And we push it into myvector.
+				str = &quot;&quot;; // At the end, we set str back to an empty string as to not keep adding to the string indefinitely.
+				continue;
+			}
+
+			if (!strTokenized.empty()) { //If myvector isn't empty,
+				//We check all of myvector's elements to see if myvector contains the current substring.
+				for (int j = 0; j &lt; strTokenized.size(); j++) {
+
+					if (strTokenized[j].token == str) { //If the current substring is a match to a specific token in myvector,,
+						strTokenized[j].freq++; //Increase that token's frequency by 1.
+						break; 
+					}
+
+					if (j == strTokenized.size() - 1) { // If the above if statement reaches the end of myvector without finding an exact token match for the current str value....
+						if (strTokenized[j].token != str) { // We check again to see if the string created by s.substr is not already in myvector.
+							TokenFreq currTokenInner; 
+							currTokenInner.token = str;
+							currTokenInner.freq = 1;
+							strTokenized.push_back(currTokenInner); //If it's not, push it into it. 
+							break;
+<A NAME="0"></A>						} 
+					}
+				}
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match42-1.html#0',3,'match42-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>				str = &quot;&quot;; //After this for loop, we reset the string again to an empty string.
+			}
+		}
+	}
+	return strTokenized; 
+	
+} 
+	
+void selectionSort_V1(vector&lt;TokenFreq&gt; &amp; tokenFreqVector) { // TokenFreq sorter by reference
+	
+	for (int i = 0; i &lt; tokenFreqVector.size() - 1; i++) { // We start with a loop that navigates through tokenFreqVector and attempts to find the entry with the lowest frequency.
+
+		int min = i; // We start with this case, which states that whatever TokenFreq element we're on is going to have the lowest frequency.
+		for (int j = i + 1; j &lt; tokenFreqVector.size(); j++) { //Then we have another for loop, which checks all of the elements in tokenFreqVector to see....
+			if (tokenFreqVector[j].freq &lt; tokenFreqVector[min].freq) { //If any other element has a higher frequency than our assumed case.
+				min = j; //And if so, set that to min. 
+			}
+		}
+
+		if (min != i) { // At the end of the method, we have to double check if the minimum value is still equal to i.
+			swap(tokenFreqVector[i], tokenFreqVector[min]); //If it's not, swap the int min = i variable for the one found by the inner for loop.
+		}
+	}</B></FONT>
+		return;
+}
+
+
+	vector&lt;TokenFreq&gt;&amp; selectionSort_V2(vector&lt;TokenFreq&gt; tokFreqVector) { // TokenFreq sorter by value
+<A NAME="1"></A>		
+		static vector&lt;TokenFreq&gt; sortedValueVector(tokFreqVector.begin(), tokFreqVector.end()); //We create a new vector that takes all elements from tokFreqVector given to it in the argument.
+
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match42-1.html#1',3,'match42-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>		for (int i = 0; i &lt; sortedValueVector.size() - 1; i++) { //And then the code completes as it did in the first sort, creating a new vector with the same result as selectionSort_V1 rather than modifying the initial vector directly.
+			
+			int min = i;
+			for (int j = i + 1; j &lt; sortedValueVector.size(); j++) {
+				if (sortedValueVector[j].freq &lt; sortedValueVector[min].freq) {
+					min = j;
+				}
+			}
+
+			if (min != i) {
+				swap(sortedValueVector[i], sortedValueVector[min]);
+			}
+		}
+		return sortedValueVector;
+	}
+
+
+int main() //More or less self explanatory, in my opinion. If it's not, dock me and I'll include more next time.
+{
+	string s;
+	cout &lt;&lt; &quot;Enter your paragraph that contains spaces and characters only, please: \n&quot;;
+	getline(cin, s);
+	
+	vector&lt;TokenFreq&gt; strTokenized = getTokenFreq(s);</B></FONT>
+
+	cout &lt;&lt; &quot;\nThese are the tokens and their frequencies contained in your paragraph:\n&quot;;
+	cout &lt;&lt; &quot;{'&quot;;
+	for (int i = 0; i &lt; strTokenized.size(); i++) { 
+	
+		cout &lt;&lt; strTokenized[i].token &lt;&lt; &quot;': &quot;&lt;&lt; strTokenized[i].freq;
+		
+		if (i != strTokenized.size() - 1) {
+			cout &lt;&lt; &quot;,'&quot;;
+		}
+	}
+	cout &lt;&lt; &quot;}&quot;;
+	
+	
+	
+	
+	cout &lt;&lt; &quot;\n\nThese are the tokens and their frequencies contained in your paragraph after running the pass by value sorter:\n&quot;;
+	vector&lt;TokenFreq&gt;&amp;  sortedValueVector = selectionSort_V2(strTokenized);
+	
+	cout &lt;&lt; &quot;[&quot;;
+	for (int i = 0; i &lt; sortedValueVector.size(); i++) {
+	
+		cout  &lt;&lt; &quot;('&quot;&lt;&lt;sortedValueVector[i].token&lt;&lt;&quot;',&quot;;
+		cout &lt;&lt; sortedValueVector[i].freq &lt;&lt; &quot;)&quot;;
+		if (i != sortedValueVector.size() - 1) {
+			cout &lt;&lt; &quot;,&quot;;
+		}
+	}
+	cout &lt;&lt; &quot;]&quot;;
+
+
+
+	cout &lt;&lt; &quot;\n\nThese are the tokens and their frequencies contained in your paragraph after running the pass by reference sorter:\n&quot;;
+	selectionSort_V1(strTokenized);
+	
+	cout &lt;&lt; &quot;[&quot;;
+	for (int i = 0; i &lt; strTokenized.size(); i++) {
+
+		cout &lt;&lt; &quot;('&quot; &lt;&lt; strTokenized[i].token &lt;&lt; &quot;',&quot;;
+		cout &lt;&lt; strTokenized[i].freq &lt;&lt; &quot;)&quot;;
+		if (i != strTokenized.size() - 1) {
+			cout &lt;&lt; &quot;,&quot;;
+		}
+	}
+	cout &lt;&lt; &quot;]&quot;;
+	cout &lt;&lt; &quot;\n\nAll done!&quot; &lt;&lt;endl;
+	
+    return 0;
+}
+
+</PRE>
+</BODY>
+</HTML>

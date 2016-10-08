@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>David Lau_29246_assignsubmission_file_Homework #1.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>David Lau_29246_assignsubmission_file_Homework #1.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+
+using namespace std;
+
+/* run this program using the console pauser or add your own getch, system(&quot;pause&quot;) or input loop */
+
+char getMostFreqLetter(string s)
+{
+	int count = 0;
+<A NAME="0"></A>	int highestFreq = 0;
+	char mostFreqChar;
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match34-1.html#0',3,'match34-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    for(char c='A'; c&lt;='z'; c++)     
+    {
+        count = 0;
+        for(int i=0; i&lt;s.length(); i++)
+        {
+            if(tolower(s[i])==tolower(c))
+                count++;
+        }
+        
+        if(count&gt;highestFreq)
+        {
+            highestFreq = count;
+            mostFreqChar = tolower(c);
+        }
+    }
+    cout &lt;&lt; &quot;getMostFreqLetter output: Most common letter is '&quot; &lt;&lt; mostFreqChar &lt;&lt; &quot;' whose frequency is &quot; &lt;&lt; highestFreq &lt;&lt; &quot;.&quot; &lt;&lt; endl;
+    
+    return mostFreqChar;
+}
+
+void StrToTokens(string s)
+{</B></FONT>
+	string str = &quot;'&quot;;
+	for(int i=0; i&lt;s.length(); i++)
+        {
+            if(s[i]!=' ')
+            {
+            	str = str + s[i];
+			}
+			else
+			{ 
+				if(s[i]!=s[i+1])
+				{
+				str = str + &quot;'&quot; + &quot; &quot; + &quot;'&quot;;
+				}
+			} 
+        }
+    str = str + &quot;'&quot;;
+    cout &lt;&lt; &quot;StrToTokens output: &quot; &lt;&lt; str;
+}
+ 
+int main(int argc, char** argv) 
+{
+	string s = &quot;Always remember that you are unique.  Just like everyone else.&quot;;
+	getMostFreqLetter(s);
+	StrToTokens(s);
+	return 0;
+}
+
+</PRE>
+</BODY>
+</HTML>

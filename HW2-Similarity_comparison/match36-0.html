@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Shayan Mojtabavi_50186_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Shayan Mojtabavi_50186_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;sstream&gt;
+
+
+using namespace std;
+//struct TokenFreq with string token and int freq
+struct TokenFreq {
+    string token;
+    int freq;
+
+};
+
+//prototypes
+vector&lt;string&gt; getWords(string something);
+vector&lt;TokenFreq&gt; getTokenFreq( string sentence);
+int checkFreq(string word, vector&lt;TokenFreq&gt;* words);
+void printFreq(vector&lt;TokenFreq&gt; Freq);
+void selectionSort_v1(vector&lt;TokenFreq&gt; &amp;tokFreqVector);
+vector&lt;TokenFreq&gt;&amp; selectionSort_v2(vector&lt;TokenFreq&gt; tokFreqVector);
+
+
+
+int main(){
+<A NAME="0"></A>    string something =&quot;And no, I'm not a walking C++ dictionary. I do not keep every technical detail in my head at all times. If I did that, I would be a much poorer programmer. I do keep the main points straight in my head most of the time, and I do know where to find the details when I need them. by Bjarne Stroustrup&quot;;
+    vector&lt;TokenFreq&gt; TokeFreq;
+    vector&lt;TokenFreq&gt; Toke;
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match36-1.html#0',3,'match36-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    TokeFreq = getTokenFreq(something);
+
+
+    // sort what is in the vector
+    selectionSort_v1(TokeFreq);
+    //print after using the function
+    printFreq(TokeFreq);
+
+//    Toke = selectionSort_v2(TokeFreq);
+//    printFreq(Toke);
+    return 0;
+}
+
+//gets the words in the string and puts them in a vector
+vector&lt;string&gt; getWords(string sentence)
+{
+    vector&lt;string&gt; words;
+    string temp;
+    stringstream s (sentence);
+    while(s&gt;&gt;temp)
+        words.push_back(temp);
+    return words;
+};
+
+//checks if word is in vector, if it is true returns index(i) if not returns -1
+int checkFreq(string word, vector&lt;TokenFreq&gt; words)
+{
+    for(int i=0; i&lt;words.size(); i++)
+    {
+        if(word == words[i].token)
+        {
+            return i;
+        }
+    }
+    return -1;
+};
+
+
+vector&lt;TokenFreq&gt; getTokenFreq(string sentence)
+{   vector&lt;string&gt; words;
+    vector&lt;TokenFreq&gt; frequences;
+    int index;
+    TokenFreq tokenFeq;
+    words = getWords(sentence); //this creates the tokens in a vector
+
+    //this loops through the words in the token vector
+    for(int i=0; i&lt;words.size();i++)
+    {
+        index=checkFreq(words[i],frequences);//using checkFreq to check the tokens in the frequences vector
+
+        //if checkFreq returns -1, which means the word does not exist in the frequences vector which then it pushs the word
+        //in the frequences vector
+        if(index == -1)
+        {
+            tokenFeq.token = words[i];
+            tokenFeq.freq = 1;
+            frequences.push_back(tokenFeq);
+        }
+       //if word exists in frequences vector, increase the frequency
+        else
+        {
+            frequences[index].freq ++;
+        }
+    }
+    return frequences;
+};
+
+//prints whats in the vector
+void printFreq(vector&lt;TokenFreq&gt; freq)
+{
+    for(int i=0; i&lt;freq.size(); i++)
+    {
+        cout&lt;&lt;&quot; '&quot; &lt;&lt;freq[i].token &lt;&lt; &quot;': &quot; &lt;&lt;freq[i].freq&lt;&lt;&quot;,&quot;;
+    }
+}</B></FONT>
+
+//selection sort void function
+void selectionSort_v1(vector&lt;TokenFreq&gt; &amp;tokFreqVector)
+{
+    int index;
+    int smallestIndex;
+    int location;
+    int length = tokFreqVector.size();
+    TokenFreq temp;
+
+    for (index = 0; index &lt; length - 1; index++) {
+        // step a (find smallest element)
+        smallestIndex = index;
+        for (location = index + 1; location &lt; length; location++) {
+            if (tokFreqVector[location].freq &lt; tokFreqVector[smallestIndex].freq) {
+                smallestIndex = location;
+            }
+        }
+        // step b (swap elements)
+        temp = tokFreqVector[smallestIndex];
+        tokFreqVector[smallestIndex] = tokFreqVector[index];
+        tokFreqVector[index] = temp;
+    }
+}
+
+//selection sort vector function
+vector&lt;TokenFreq&gt;&amp; selectionSort_v2(vector&lt;TokenFreq&gt; tokFreqVector)
+{
+    vector&lt;TokenFreq&gt;sortedFreq;
+    int min = 0;
+    int index =0;
+
+    while(index != tokFreqVector.size()-1 * 2)
+    {
+        for(int i=0; i&lt;tokFreqVector.size(); i++)
+        {
+            if(tokFreqVector[i].freq &lt; tokFreqVector[min].freq )
+            {
+                min = i;
+            }
+        }
+        sortedFreq.push_back(tokFreqVector[min]); //push the min in vector
+        tokFreqVector.erase(tokFreqVector.begin() + index); //erase from old vector the value in min
+        index++;//increment the index by 1
+
+    }
+
+    return sortedFreq;
+
+}
+</PRE>
+</BODY>
+</HTML>

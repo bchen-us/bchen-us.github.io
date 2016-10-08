@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Matthew Ho_50214_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Matthew Ho_50214_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;sstream&gt;
+#include &quot;main.h&quot;
+
+using namespace std;
+
+struct TokenFreq 
+{
+	string token;
+	int freq;
+};
+// This fuction takes a vector and then sorts the frequencies using selection sort algorithm
+void selectionSort_v1(vector&lt;TokenFreq&gt;&amp; tokFreqVector) {
+	// declaration of the object TokenFreq that holds the smallest vector frequency for manipulation
+	TokenFreq hold;
+<A NAME="1"></A>	//The index holder for the smallest frequency.
+	int min = 0;
+	//This loop cyvles through the entire vector except it stops at the second to last variable in order to compare it to the last one.
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match41-0.html#1',2,'match41-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	for (int j = 0; j &lt; tokFreqVector.size() - 2; j++) 
+	{
+		// this sets min to 0 and then increments it as it loops
+		min = j;
+		//this loop goes through each element in the array and compares it to min.
+		for (int i = j + 1; i &lt; tokFreqVector.size()-1;i++) {
+			//This compares if the items at the index specified is smaller than the other index specified.
+			if (tokFreqVector[i].freq &lt; tokFreqVector[j].freq) {</B></FONT>
+<A NAME="2"></A>				// it then updates the index of the smaller item.
+				min = i;
+			}
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match41-0.html#2',2,'match41-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>		}
+		// this is where the function actually sorts through each item and puts it into ascending order.
+		if (min != j)
+		{
+			hold = tokFreqVector[j];
+			tokFreqVector[j] = tokFreqVector[min];
+			tokFreqVector[min] = hold;
+		}
+	}
+	cout &lt;&lt; &quot;Selection Sorting...&quot; &lt;&lt; endl;
+	for (int i = 0; i &lt; tokFreqVector.size() - 1; i++)
+	{
+		cout &lt;&lt; tokFreqVector[i].token &lt;&lt; &quot;: &quot; &lt;&lt; tokFreqVector[i].freq &lt;&lt; endl;
+	}
+}
+// same as the top except it returns a vector.
+vector&lt;TokenFreq&gt;&amp; selectionSort_v2(vector&lt;TokenFreq&gt; tokFreqVector)
+<A NAME="3"></A>{
+	TokenFreq hold;
+	int min = 0;</B></FONT>
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match41-0.html#3',2,'match41-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	for (int j = 0; j &lt; tokFreqVector.size() - 2; j++)
+	{
+		min = j;
+		for (int i = j + 1; i &lt; tokFreqVector.size() - 1; i++) {
+			if (tokFreqVector[i].freq &lt; tokFreqVector[j].freq) {</B></FONT>
+				min = i;
+			}
+		}
+		if (min != j)
+		{
+			hold = tokFreqVector[j];
+			tokFreqVector[j] = tokFreqVector[min];
+			tokFreqVector[min] = hold;
+		}
+	}
+	return tokFreqVector;
+}
+vector&lt;TokenFreq&gt; getTokenFreq(string&amp; s) {
+	vector&lt;TokenFreq&gt; Tokens;
+<A NAME="0"></A>	//Index for the vector of type TokenFreq tokens
+	int index = 0;
+	//variable holds characters that make up a word
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match41-0.html#0',2,'match41-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	string word = &quot;&quot;;
+	//Creates first indext to hold the first TokenFreq Object
+	Tokens.push_back(TokenFreq());
+	//Marker is to mark if a word already exists, so the loop won't create another vector index
+	int marker = 0;
+	//Cycles through each character in string s
+	for (int i = 0; i &lt; s.size(); i++)
+	{
+		//this statement is the delimiter. If the for loop above encounters a space, it creates a token
+		if (s[i] == ' ')
+		{
+			marker = 0;
+			//Checks if the token already exists and then increments the frequency
+			for (int k = 0; k &lt; Tokens.size(); k++)
+			{
+				//Checks if the token equals the current word variable.
+				if (Tokens[k].token == word) 
+				{
+					// Increments the frequency value.
+					Tokens[k].freq++;
+					marker = 1;
+					word = &quot;&quot;;
+				}
+			}
+			//When a word is not marked, it doesnt exist so this if statement inserts the word variable into tokens
+			if (marker == 0) 
+			{
+				Tokens[index].token = word;
+				//Token frequency is set at 1
+				Tokens[index].freq = 1;
+				//index variable is incremented
+				index++;
+				//a new TokenFreq vector is created for the next word.
+				Tokens.push_back(TokenFreq());
+				//word is reset back to nothing so the program can obtain another word.
+				word = &quot;&quot;;</B></FONT>
+
+			}
+		}
+		//If there is no delimiter, then the letters are added to the word variable and is stored.
+		else
+		{
+			word = word + s[i];
+		}
+	}
+	//This action prints out each token and it's frequency.
+	cout &lt;&lt; &quot;Vectors with frequency-------------------&quot; &lt;&lt; endl;
+	//For loop traverses through the token vector.
+	for (int j = 0; j &lt; Tokens.size()-1; j++)
+	{
+		cout &lt;&lt; Tokens[j].token &lt;&lt; &quot;:&quot; &lt;&lt; Tokens[j].freq &lt;&lt; endl;
+	}
+	return Tokens;
+}
+
+int main()
+{
+	// instantiation of necessary objects
+	string s;
+	vector&lt;TokenFreq&gt; v1;
+	vector&lt;TokenFreq&gt; v2;
+	cout &lt;&lt; &quot;Enter Paragraph under 100 tokens&quot; &lt;&lt; endl;
+	// Get user input for string s;
+	getline(cin, s);
+	// Method calls
+	v1 = getTokenFreq(s);
+	selectionSort_v1(v1);
+	v2 = getTokenFreq(s);
+	selectionSort_v2(v2);
+	cout &lt;&lt; &quot;Selection Sort 2...&quot; &lt;&lt; endl;
+	// Prints out final selection sort
+	for (int i = 0; i &lt; v2.size() - 1; i++)
+	{
+		cout &lt;&lt; v2[i].token &lt;&lt; &quot;:&quot; &lt;&lt; v2[i].freq &lt;&lt; endl;
+	}
+	cin.get();
+
+	return 0;
+}
+</PRE>
+</BODY>
+</HTML>

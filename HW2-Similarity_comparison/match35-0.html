@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Zhiyang Cheng_29302_assignsubmission_file_1stHWAssignment.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Zhiyang Cheng_29302_assignsubmission_file_1stHWAssignment.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  1stHWAssignment.cpp
+//  PM340-1stAssignment
+//
+//  Created by ZhiYang Cheng on 9/3/16.
+//  Copyright © 2016 ZhiYang Cheng. All rights reserved.
+//
+
+/**
+ Problem description:  Given a string variable string s; , initialize s such that it contains a paragraph in English text. Furthermore, this paragraph consists of no more than 100 tokens. Tokens are sequences of contiguous characters separated by any of the specified delimiters (e.g., white spaces). Please implement a C++ program to perform the following two tasks on s:
+ 
+ Implement the function char getMostFreqLetter(string s); to identify the most frequent letter ('a'-'z', case insensitive) in s. and return this letter.  If there is a tie among multiple letters, returns the first.
+ 
+ Implement the function  void StrToTokens(string s); to identify and print all the tokens contained in s on the standard output (i.e., cout). For simplicity, only white spaces will be considered as delimiters. For instance, the string &quot;what's that thing?&quot; contains three tokens: &quot;what's&quot;, &quot;that&quot; and &quot;thing?&quot;. You are not allowed to call existing functions such as strtok() for this task.  You need to write your own codes to separate the input string to different tokens.
+ 
+ Implement the main() function that  (1) declares and initializes the string s, and (2) calls the above two functions.
+ 
+ Example input and output:
+ Suppose s=&quot;Always remember that you are unique.  Just like everyone else.&quot;
+ 
+ The return value of getMostFreqLetter(s)  will be letter 'e', whose frequency is 11.
+ 
+ The output of  StrToTokens(s);  will be 'Always', 'remember', 'that', 'you', 'are', 'unique.', 'Just', 'like', 'everyone', 'else.' ﻿
+ 
+ Grading:  This homework will be graded for a total of 60 points, 20 points per function.
+ */
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+char getMostFreqLetter(string text);
+void StrToTokens(string str, char ch);
+void StrToTokensTwo(string str, char ch);
+
+int main(int argc, const char * argv[]) {
+    
+    //string str = &quot;AAA bb cccc dd&quot;;
+    string str = &quot;Always remember that you are unique.  Just like everyone else.&quot;;
+    cout &lt;&lt; getMostFreqLetter(str) &lt;&lt; endl;
+
+    StrToTokens(str, ' ');
+    
+    return 0;
+}
+
+//to identify the most frequent letter
+char getMostFreqLetter(string str)
+{
+    int max=0;
+    int count=0;
+    char maxFreCharcter = ' ';
+    
+    // Convert all letters into lowercase
+    for (int i=0; str[i]; i++){
+        str[i] = tolower(str[i]);
+<A NAME="0"></A>    }
+    
+    // letter between 'a' to 'z'
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match35-1.html#0',3,'match35-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    for(char letter='a'; letter&lt;='z'; letter++)
+    {
+        count = 0;
+        for(int i=0; i&lt;str.length();i++)
+        {
+            if(str[i] == letter)
+                count++;
+        }
+        
+        if(count&gt;max)
+        {
+            max=count;
+            maxFreCharcter=letter;
+        }
+    }
+    
+    return maxFreCharcter;
+}
+
+//To identify and print all the tokens contained in s on the standard output
+void StrToTokens(string str, char ch)</B></FONT>
+{
+    vector&lt;string&gt; res;
+    
+    str += ch;
+    // Start point
+    int startPoint = 0;
+    // End point of delimiter
+    int lastPoint = str.find(ch);
+    
+    while (lastPoint &lt; str.size())
+    {
+        if (startPoint != lastPoint)
+            res.push_back(str.substr(startPoint, lastPoint - startPoint));
+        // Update start point
+        startPoint = lastPoint + 1;
+        // Move to next
+        lastPoint = str.find(ch, startPoint);
+    }
+    
+    // Output the result
+    for(int i=0; i&lt;res.size(); i++)
+        cout&lt;&lt; res[i] &lt;&lt; endl;
+}
+</PRE>
+</BODY>
+</HTML>

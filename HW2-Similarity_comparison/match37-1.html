@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Artsem Holdvekht_50224_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Artsem Holdvekht_50224_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+/**
+ * Artsem Holdvekht
+ * CSC 340
+ * Assignment 2
+ * 19 September 2016
+ */
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+/**
+ * struct for token freq with String token and int freq
+ */
+struct TokenFreq
+{
+    string token;
+    int freq;
+};
+
+vector&lt;TokenFreq&gt; getTokenFreq( string&amp; s);
+
+void selectionSort_v1( vector&lt;TokenFreq&gt; &amp; tokFreqVector );
+
+const vector&lt;TokenFreq&gt;&amp; selectionSort_v2(  vector&lt;TokenFreq&gt;  tokFreqVector );
+
+/**
+ * receives vector of Tokenfreq type by value and sorts it in increasing order based on freqs of tokens
+ * @param tokFreqVector  vector type of TokenFreq
+<A NAME="2"></A> * @return sorted vector type of TokenFreq
+ */
+const vector&lt;TokenFreq&gt;&amp; selectionSort_v2(  vector&lt;TokenFreq&gt;  tokFreqVector )
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match37-0.html#2',2,'match37-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>{
+    //assign the temporary lowest freq index
+    for(int i = 0; i &lt; (tokFreqVector.size() - 1); i++)
+    {
+        int lowestFreq = i;
+
+        //compare the lowestFreq with the next elements to determine the lowest Freq element
+        for(int j = i+1; j &lt; tokFreqVector.size(); j++)
+        {
+            if(tokFreqVector[j].freq &lt; tokFreqVector[lowestFreq].freq)
+            {
+                lowestFreq = j; //final lowest element
+            }</B></FONT>
+
+            //swap two elements if the lowestFreq is bigger than ith element
+            if(lowestFreq &gt; i)
+            {
+                TokenFreq tmp = tokFreqVector[i];
+                tokFreqVector[i] = tokFreqVector[lowestFreq];
+<A NAME="1"></A>                tokFreqVector[lowestFreq] = tmp;
+            }
+
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match37-0.html#1',2,'match37-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>        }
+    }
+
+    //return sorted vector
+    return tokFreqVector;
+}//end selectionSort_v2
+
+/**
+ * receives vector of Tokenfreq type by reference and sorts it in increasing order based on freqs of tokens
+ * @param tokFreqVector vector type of TokenFreq
+ */
+void selectionSort_v1( vector&lt;TokenFreq&gt; &amp; tokFreqVector )
+{
+    //assign the temporary lowest freq index
+    for(int i = 0; i &lt; (tokFreqVector.size() - 1); i++)
+    {
+        int lowestFreq = i;
+
+        //compare the lowestFreq with the next elements to determine the lowest Freq element
+        for(int j = i+1; j &lt; tokFreqVector.size(); j++)
+        {
+            if(tokFreqVector[j].freq &lt; tokFreqVector[lowestFreq].freq)
+            {
+                lowestFreq = j; //final lowest element
+            }</B></FONT>
+
+            //swap two elements if the lowestFreq is bigger than ith element
+            if(lowestFreq &gt; i)
+            {
+                TokenFreq tmp = tokFreqVector[i];
+                tokFreqVector[i] = tokFreqVector[lowestFreq];
+                tokFreqVector[lowestFreq] = tmp;
+            }
+
+        }
+    }
+    //out put the results of sorted array
+    for(int k = 0; k &lt; tokFreqVector.size(); k++)
+    {
+        cout&lt;&lt;&quot;('&quot;&lt;&lt;tokFreqVector[k].token&lt;&lt;&quot;', &quot;&lt;&lt;tokFreqVector[k].freq&lt;&lt;&quot;), &quot;;
+    }
+}//end selectionSort_v1
+
+/**
+ * Converts string into c_str(), uses strtok to tokenize it and store into vector. Copy the contont of the string vector
+ * into TokenFreq vector with the freq of tokens.
+ * @param s string to be tokenized
+ * @return vecotr type of TokenFreq
+ */
+vector&lt;TokenFreq&gt; getTokenFreq(string&amp; s)
+{
+
+    vector&lt;TokenFreq&gt; tokens;       //vector to store TokenFreq objects
+    vector &lt;string&gt; tokensKeepr;    //vector to store the string tokens
+    int counter = 0;                //counter
+
+    char *str = new char[s.size()+1]; //init new char array of size of the input string
+    strcpy(str, s.c_str());           // copy the string into c_str
+
+    char *token = strtok(str, &quot; &quot;);   //strtok and delimiter &quot; &quot; (space)
+
+    //add all the tokens to the vector to store string tokens
+    while (token != NULL)
+    {
+        tokensKeepr.push_back(token);
+        token = strtok (NULL, &quot; &quot;);
+
+    }
+
+    //if vector tokens is empty add first element from the string tokens
+    // and remove the first element, to prevent it from being counted twice
+    if(tokens.empty())
+    {
+        TokenFreq firstElem = {tokensKeepr[0], 1};
+        tokens.push_back(firstElem);
+        tokensKeepr.erase(tokensKeepr.begin());
+
+    }
+<A NAME="0"></A>
+    //if not vector is not empty walk through it and count the freq or add new element if it is missing
+    if(!tokens.empty()) {
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match37-0.html#0',2,'match37-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>        for (int i = 0; i &lt; tokensKeepr.size(); i++) {
+            counter = 0;
+
+            for (int j = 0; j &lt; tokens.size(); j++) {
+
+                if (tokensKeepr[i] == tokens[j].token)
+                {
+                    tokens[j].freq++;
+                    counter++;
+                }
+            }
+
+            if (counter == 0) {
+                TokenFreq nextElement = {tokensKeepr[i], 1};</B></FONT>
+<A NAME="3"></A>                tokens.push_back(nextElement);
+            }
+        }
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match37-0.html#3',2,'match37-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    }
+    //return vector of tokens and frerqs
+    return tokens;
+
+}//end getTokenFreq
+
+int main()
+{
+
+    //string input = &quot;And no, I'm not a walking C++ dictionary. I do not keep every technical detail in my head at all&quot;
+    //               &quot; times. If I did that, I would be a much poorer programmer. I do keep the main points straight in my&quot;
+    //               &quot; head most of the time, and I do know where to find the details when I need them. by Bjarne Stroustrup&quot;;
+
+    string input;
+    cout &lt;&lt; &quot;Please enter your text:&quot; &lt;&lt;endl;
+    getline(cin, input);
+
+    //Tokenize the string
+    vector&lt;TokenFreq&gt; sample = getTokenFreq(input);
+    cout&lt;&lt;&quot;The content of the input string with freq before any sorting:&quot;&lt;&lt;endl;
+
+    for(int i = 0; i &lt; sample.size(); i++)
+    {
+        cout&lt;&lt;&quot;('&quot;&lt;&lt;sample[i].token&lt;&lt;&quot;', &quot;&lt;&lt;sample[i].freq&lt;&lt;&quot;), &quot;;
+    }
+
+    cout&lt;&lt;&quot;\n----------------------------------------------&quot;&lt;&lt;endl;
+
+    cout&lt;&lt;&quot;The input string result after selectionSort_v1: &quot; &lt;&lt;endl;
+    //call selectionSort_v1 on the input string
+    selectionSort_v1(sample);
+
+    cout&lt;&lt;&quot;\n-------------------------------------&quot;&lt;&lt; endl;
+
+    //selectionSort_v2
+    vector &lt;TokenFreq&gt; sort2 = selectionSort_v2(sample);
+    cout&lt;&lt;&quot;The input string result after selectionSort_v2: &quot; &lt;&lt;endl;
+
+    for(int i = 0; i &lt; sort2.size(); i++)
+    {
+        cout&lt;&lt;&quot;('&quot;&lt;&lt;sort2[i].token&lt;&lt;&quot;', &quot;&lt;&lt;sort2[i].freq&lt;&lt;&quot;), &quot;;
+    }
+
+    cout&lt;&lt;&quot;\n-----------------------------------&quot;&lt;&lt;endl;
+
+    return 0;
+}</B></FONT>
+</PRE>
+</BODY>
+</HTML>

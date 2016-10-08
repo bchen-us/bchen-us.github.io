@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Andrew Streckfus_50209_assignsubmission_file_CSC340HW2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Andrew Streckfus_50209_assignsubmission_file_CSC340HW2.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string.h&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+
+<A NAME="0"></A>/*
+this is the struct used to store the token and the frequency of said token
+*/
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match29-0.html#0',2,'match29-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>struct TokenFreq
+{
+	string token;
+	int freq;
+};
+/*
+this is the function used to take a string and output a vector of scructs
+*/
+vector&lt;TokenFreq&gt; getTokenFreq(string&amp; s)
+{
+	vector&lt;TokenFreq&gt; tokenVector; //initializes the vector of struts
+	TokenFreq tokenFreq = {&quot;&quot;,0}; // initializes the data members of the vector
+	int sizeVector = 0; //checks how many unique entries are in the vector, therefore can know how many times to check for duplicates
+	bool notFound = true; //checks if a duplicate is found
+	
+	for(int spotInString = 0; spotInString&lt;s.length();spotInString++)  //iniital for loop going through each character in the string
+	{
+		if(s[spotInString]== ' ') //if a space is found, detects a new word
+		{
+			notFound = true;
+			for(int tokenFreqScanner = 0; tokenFreqScanner &lt; sizeVector;tokenFreqScanner++) //scans the vector to find out if there are duplicates
+			{
+				if(tokenFreq.token==tokenVector[tokenFreqScanner].token) 
+				{
+					tokenVector[tokenFreqScanner].freq++;
+					notFound = false;
+					tokenFreq.token = &quot;&quot;;
+				}
+					
+			}
+			if(notFound == true) //creates new entry if no duplicate was found
+			{
+					tokenFreq.freq=1;			
+					tokenVector.push_back(tokenFreq);
+					tokenFreq.token = &quot;&quot;;
+					sizeVector++;	//incresases how many unique entries in the vector			
+			}
+				
+		}
+		else
+		{
+		tokenFreq.token.push_back(s[spotInString]); //adds character by character until a space is found
+		}
+	}
+	//at the end of the string, will run the loop for the vector for the last word.
+	notFound = true;
+			for(int tokenFreqScanner = 0; tokenFreqScanner &lt; sizeVector;tokenFreqScanner++) //scans the vector to find out if there are duplicates
+			{
+				if(tokenFreq.token==tokenVector[tokenFreqScanner].token) 
+				{
+					tokenVector[tokenFreqScanner].freq++;
+					notFound = false;
+					tokenFreq.token = &quot;&quot;;
+				}
+					
+			}
+			if(notFound == true) //creates new entry if no duplicate was found
+			{
+					tokenFreq.freq=1;			
+					tokenVector.push_back(tokenFreq);
+					tokenFreq.token = &quot;&quot;;
+<A NAME="1"></A>					sizeVector++;				
+			}</B></FONT>
+	
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match29-0.html#1',2,'match29-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	return tokenVector; // returns the vector of struts
+}
+/* This will pass the vector as an argument, and sort that array */
+void selectionSort_v1(vector&lt;TokenFreq&gt; &amp; tokFreqVector)
+{
+	TokenFreq temp;
+	for(int i = 0;i&lt;tokFreqVector.size()-1;i++)
+	{
+		for(int j = i+1; j &lt; tokFreqVector.size();j++)
+		{
+			if(tokFreqVector[i].freq &gt; tokFreqVector[j].freq)
+			{</B></FONT>
+				temp=tokFreqVector[i];
+				tokFreqVector[i]=tokFreqVector[j];
+				tokFreqVector[j]=temp;
+			}
+			
+		}
+	}
+		
+}
+/* This will sort the array and return a new array */
+vector&lt;TokenFreq&gt; selectionSort_v2(vector&lt;TokenFreq&gt; tokFreqVector)
+{
+	vector&lt;TokenFreq&gt; newVector;
+<A NAME="2"></A>	TokenFreq temp;
+	for(int copy = 0; copy&lt;tokFreqVector.size();copy++) //makes a copy of the array
+		newVector.push_back(tokFreqVector[copy]);
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match29-0.html#2',2,'match29-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	for(int i = 0;i&lt;newVector.size()-1;i++)
+	{
+		for(int j = i+1; j &lt; newVector.size();j++)
+		{
+			if(newVector[i].freq &gt; newVector[j].freq)
+			{</B></FONT>
+				temp=newVector[i];
+				newVector[i]=newVector[j];
+				newVector[j]=temp;
+			}
+			
+		}
+	}
+	return newVector;
+	
+	
+}
+int main()
+{
+	string s;
+	cout &lt;&lt; &quot;Please type a paragraph\n&quot;;
+	getline(cin,s);
+	vector&lt;TokenFreq&gt; s1 = getTokenFreq(s);
+	cout &lt;&lt; &quot;Get token freq results: \n&quot;;
+	for(int print = 0; print&lt;s1.size(); print++)
+		cout &lt;&lt; &quot;'&quot; &lt;&lt; s1[print].token &lt;&lt; &quot;': &quot; &lt;&lt; s1[print].freq &lt;&lt; &quot; &quot;;
+	cout &lt;&lt;&quot; \n&quot;;
+	vector&lt;TokenFreq&gt; s2 = selectionSort_v2(s1);
+	cout &lt;&lt;&quot;Selection sort v_2 results: \n&quot;;
+	 for(int print = 0; print&lt;s2.size(); print++)
+		cout &lt;&lt; &quot;'&quot; &lt;&lt; s2[print].token &lt;&lt; &quot;': &quot; &lt;&lt; s2[print].freq &lt;&lt; &quot; &quot;;
+	cout &lt;&lt;&quot; \n&quot;;
+	selectionSort_v1(s1);
+	cout &lt;&lt; &quot;Selection sort v_1 results: \n&quot;;
+	for(int print = 0; print&lt;s1.size(); print++)
+		cout &lt;&lt; &quot;'&quot; &lt;&lt; s1[print].token &lt;&lt; &quot;': &quot; &lt;&lt; s1[print].freq &lt;&lt; &quot; &quot;;
+	
+	return 0;
+}
+</PRE>
+</BODY>
+</HTML>

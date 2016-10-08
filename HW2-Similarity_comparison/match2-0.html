@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Obinnaya Ihenacho_50236_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Obinnaya Ihenacho_50236_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  main.cpp
+//  String Input, Struct, Vectors, and Parameter Passing
+//
+//  Created by Obinnaya Ihenacho on 9/19/16.
+//  Copyright © 2016 Obinnaya Ihenacho. All rights reserved.
+//
+
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+#include &lt;sstream&gt;
+using namespace std;
+struct TokenFreq
+{
+<A NAME="0"></A>    string token;
+    int freq;
+};
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match2-1.html#0',3,'match2-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>void selectionSort_v1(vector&lt;TokenFreq&gt; &amp; tokFreqVector)
+{
+    TokenFreq temp;
+    int min;
+    
+    for(int i = 0; i &lt; tokFreqVector.size()-2; i++){
+        min = i;
+        for (int j = i+1; j &lt;tokFreqVector.size()-1; j++){
+            if (tokFreqVector[j].freq &lt; tokFreqVector[min].freq)
+                min = j;
+        }
+        if(min != i)
+        {
+            temp = tokFreqVector[i];
+            tokFreqVector[i] = tokFreqVector[min];
+            tokFreqVector[min] = temp;
+        }
+    }
+    cout&lt;&lt;&quot;-------Selection Sort-------&quot;&lt;&lt;endl;
+    for(int i = 0; i&lt;tokFreqVector.size()-1; i++)
+    {
+        cout&lt;&lt;tokFreqVector[i].token&lt;&lt;&quot;: &quot;&lt;&lt;tokFreqVector[i].freq&lt;&lt;endl;
+    }
+}
+
+vector&lt;TokenFreq&gt; getTokenFreq(string &amp; s)
+<A NAME="1"></A>{</B></FONT>
+    int ind = 0;
+    vector&lt;TokenFreq&gt; tokFreq;
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match2-1.html#1',3,'match2-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    string term = &quot;&quot;;
+    tokFreq.push_back(TokenFreq());
+    int cnt = 0;
+    int marker = 0;
+    for(int k = 0; k &lt; s.length(); k++)
+    {
+        if(s[k] ==' ' || s[k] ==',' || s[k] =='.' ||s[k] ==';' || s[k] ==':')
+        {
+            marker = 0;
+            for(int i = 0; i &lt; tokFreq.size(); i++)
+            {
+                if(tokFreq[i].token == term)
+                {
+                    
+                    tokFreq[i].freq++;
+                    marker = 1;
+                    term = &quot;&quot;;
+                }
+            }
+            if(marker == 0)
+            {
+                cnt++;
+                tokFreq[ind].token = term;
+                tokFreq[ind].freq = 1;
+                ind++;
+                tokFreq.push_back(TokenFreq());
+                term = &quot;&quot;;
+            }
+        }
+        else
+        {
+            term=term+s[k];
+        }
+    }
+    marker = 0;
+    for(int i = 0; i&lt;tokFreq.size(); i++)
+    {
+        if(tokFreq[i].token == term)
+        {
+            tokFreq[i].freq++;
+            marker = 1;
+            term = &quot;&quot;;
+        }
+    }
+    if(marker == 0)
+    {
+        cout&lt;&lt;term;
+        tokFreq[ind].token =term;
+        tokFreq[ind].freq = 1;
+        ind++;
+    }
+    cout&lt;&lt;&quot;-------Token frequency-------&quot;&lt;&lt;endl;
+    
+    for(int i = 0; i&lt;tokFreq.size()-1; i++)
+    {
+        cout&lt;&lt;tokFreq[i].token&lt;&lt;&quot;, &quot;&lt;&lt;tokFreq[i].freq&lt;&lt;endl;
+    }
+    return tokFreq;
+}</B></FONT>
+
+int main()
+{
+    string s;
+    vector&lt;TokenFreq&gt; tokFreq1;
+    vector&lt;TokenFreq&gt; tokFreq2;
+    cout&lt;&lt;&quot;Enter the input string&quot;&lt;&lt;endl;
+    getline(cin,s);
+    tokFreq1 = getTokenFreq(s);
+    selectionSort_v1(tokFreq1);
+    system(&quot;pause&quot;);
+    return 0;
+}
+</PRE>
+</BODY>
+</HTML>

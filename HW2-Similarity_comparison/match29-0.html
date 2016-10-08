@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Gerren Penaloza_50250_assignsubmission_file_Homework2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Gerren Penaloza_50250_assignsubmission_file_Homework2.cpp</CENTER></H3><HR>
+<PRE>
+/*
+Name: Gerren Penaloza
+	Author: Gerren Penaloza
+	Date: 9/17/16 2:44
+	Description: Homework 2 The user will type in a sentence that the program takes in and stores. The program then calls the getTokenFreq method
+	which will then take the string, tokenize it, and store each unique work in a vector &lt;TokenFreq&gt;. The values in each part of the vector have a token
+	and a string value. The program then calls two different selection sort methods to sort the vector by frequency in increasing order. The first calls by reference,
+	The second calls by value
+*/
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string.h&gt;
+<A NAME="0"></A>#include &lt;vector&gt;
+using namespace std;
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match29-1.html#0',3,'match29-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>struct TokenFreq {
+	string token;
+	int freq;
+
+};
+
+vector&lt;TokenFreq&gt; getTokenFreq(string&amp; s) {
+	vector &lt;TokenFreq&gt; structVector; //This is the vector that I will be returning. It stores Struct objects in it
+	TokenFreq structObject= {&quot;&quot;,0}; //This is used to initialize structObjects that I will be pushing into the vector
+	int structVectorSize=0; //This is the size of the vector, it will increase each time I push something into it
+	bool uniqueToken=true; //This is the boolean reads true if the token is not currently in the in the vector
+	//this outer loop will loop through the entire string
+	for(int a=0; a&lt;s.length(); a++) {
+		//when the program finds a space in the string it will see if the current token matches any tokens already in the structVector
+		if(s[a]==' ') {
+			uniqueToken=true;
+			for(int b= 0; b&lt;structVectorSize; b++) {
+				//if the program finds a repeated token it only increases the frequency at that specific element in the structVector
+				//it then sets the token to &quot;&quot; so that it can write a new token into it
+				if(structObject.token==structVector[b].token) {
+					structVector[b].freq++;
+					uniqueToken=false;
+					structObject.token=&quot;&quot;;
+				}//end if
+			}//end for b
+			//if it does find a token that is not in the vector, it will make its frequency 1 and push the entire structObject into the vector
+			//the token is then reset to &quot;&quot; and the size of the Vector increases
+			if(uniqueToken==true) {
+				structObject.freq=1;
+				structVector.push_back(structObject);
+				structObject.token=&quot;&quot;;
+				structVectorSize++;
+			}//end if
+
+		}//end if s[a]==' '
+		else {
+			//This is pushing each character in the string into a StructObject.token
+			structObject.token.push_back(s[a]);
+		}
+	}//end for a
+	//since there is no space after the last word in the string, this finds the last word and does the same process as above
+	uniqueToken=true;
+	for(int b=0; b&lt;structVectorSize; b++) {
+		if(structObject.token==structVector[b].token) {
+			structVector[b].freq++;
+			uniqueToken=false;
+			structObject.token=&quot;&quot;;
+		}//end if
+	}//end for b
+	if(uniqueToken==true) {
+		structObject.freq=1;
+		structVector.push_back(structObject);
+		structObject.token=&quot;&quot;;
+		structVectorSize++;
+	}//end if</B></FONT>
+	cout&lt;&lt;endl;
+	cout&lt;&lt; &quot;The contents of struct vector are: &quot;&lt;&lt; endl;
+	for(int x=0; x&lt;structVector.size(); x++) {
+		cout&lt;&lt; &quot;{&quot; &lt;&lt; structVector[x].token &lt;&lt; &quot; &quot; &lt;&lt; structVector[x].freq &lt;&lt; &quot;},&quot; &lt;&lt; &quot; &quot;;
+<A NAME="1"></A>	}
+	cout&lt;&lt;endl;
+
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match29-1.html#1',3,'match29-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	return structVector;
+}
+
+void selectionSort_v1(vector&lt;TokenFreq&gt; &amp; tokFreqVector) {
+	//The essential idea behind this is that when we pass in a vector&lt;TokenFreq&gt;
+	//this will just take the first element in tokFreqVector, compare it to the one next to it, and if it is smaller it swaps them
+	for(int x=0; x&lt;tokFreqVector.size(); x++) {
+		for(int y=0; y&lt;tokFreqVector.size(); y++) {
+			if(tokFreqVector[x].freq&gt;=1) {</B></FONT>
+				if(tokFreqVector[x].freq&lt;tokFreqVector[y].freq) {
+					swap(tokFreqVector[y].token, tokFreqVector[x].token);
+					swap(tokFreqVector[y].freq, tokFreqVector[x].freq);
+				}//end if
+			}//end if
+		}//end for y
+	}//end for x
+	cout&lt;&lt;endl;
+	cout&lt;&lt; &quot;The sorted tokFreqVector is: &quot; &lt;&lt; endl;
+	for(int a=0; a&lt;tokFreqVector.size(); a++) {
+		cout &lt;&lt; tokFreqVector[a].token &lt;&lt; &quot; &quot; &lt;&lt; tokFreqVector[a].freq &lt;&lt;endl;
+	}
+
+<A NAME="2"></A>}//end void selectionSort_v1
+
+vector&lt;TokenFreq&gt;&amp; selectionSort_v2(vector&lt;TokenFreq&gt; tokFreqVector ) {
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match29-1.html#2',3,'match29-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	for(int x=0; x&lt;tokFreqVector.size(); x++) {
+		for(int y=0; y&lt;tokFreqVector.size(); y++) {
+			if(tokFreqVector[x].freq&gt;=1) {</B></FONT>
+				if(tokFreqVector[x].freq&lt;tokFreqVector[y].freq) {
+					swap(tokFreqVector[y].token, tokFreqVector[x].token);
+					swap(tokFreqVector[y].freq, tokFreqVector[x].freq);
+				}//end if
+			}//end if
+		}//end for y
+	}//end for x
+	cout&lt;&lt;endl;
+	cout&lt;&lt; &quot;The sorted tokFreqVector_V2 is: &quot; &lt;&lt; endl;
+	for(int a=0; a&lt;tokFreqVector.size(); a++) {
+		cout &lt;&lt; tokFreqVector[a].token &lt;&lt; &quot; &quot; &lt;&lt; tokFreqVector[a].freq &lt;&lt; endl;
+	}
+	return tokFreqVector;
+}//end vector&lt;TokenFreq&gt;&amp; selectionSort_v2
+
+
+
+int main() {
+	string userString;
+	cout &lt;&lt; &quot;Please type out a sentence, when you are finished press enter: &quot;&lt;&lt; endl;
+	getline(cin, userString);
+	cout&lt;&lt;endl;
+	cout &lt;&lt; &quot;The string you entered is &quot; &lt;&lt; userString &lt;&lt; endl;
+	cout&lt;&lt;endl;
+	vector&lt;TokenFreq&gt; tokenFreqVector = getTokenFreq(userString);
+	selectionSort_v1(tokenFreqVector);
+	selectionSort_v2(tokenFreqVector);
+
+	return 0;
+}//end main
+
+</PRE>
+</BODY>
+</HTML>

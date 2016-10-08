@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Prateek Gupta_50215_assignsubmission_file_Prateek_Gupta_Homework2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Prateek Gupta_50215_assignsubmission_file_Prateek_Gupta_Homework2.cpp</CENTER></H3><HR>
+<PRE>
+/*
+Second homework for class CSC 340
+@Author: Prateek Gupta
+SFSU ID: 916601249
+*/
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+struct TokenFreq{
+	string token;
+	int freq;
+};
+
+/*
+Function to find unique tokens along with their frequencies in a given string
+@param string
+@return vector&lt;TokenFreq&gt;
+*/
+vector&lt;TokenFreq&gt; getTokenFreq( string&amp; s){
+	
+	vector&lt;TokenFreq&gt; tokenFreq;
+	
+	//return if string is empty
+	if(s.empty()){
+		return tokenFreq;	
+	}	
+	
+	// appending a white space helps to conveniently add the last element in the vector.
+	s.append(&quot; &quot;);
+	int pos_first_char = 0;
+	
+	//Loop to tokenize the string 's' and fill the vector with those tokens 
+	for(int idx=1; idx &lt; s.length(); idx++){
+		
+		if(s[idx] == ' '){
+		
+			string _token = s.substr(pos_first_char, idx - pos_first_char);
+			
+			if(tokenFreq.size() == 0){
+				
+				TokenFreq tf;
+				tf.freq = 1;
+<A NAME="0"></A>				tf.token = _token;
+				tokenFreq.push_back(tf);
+			
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match37-1.html#0',3,'match37-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>			}else{
+			
+				bool found = false;
+			
+				// Loop to find if the token already exists in the vector.
+				for(int j=0; j &lt; tokenFreq.size(); j++){
+					if(tokenFreq[j].token == _token){
+						found = true;
+						tokenFreq[j].freq += 1;
+					}
+				}
+				if(found == false){
+					TokenFreq tf;
+					tf.freq = 1;</B></FONT>
+					tf.token = _token;
+					tokenFreq.push_back(tf);
+				}
+				
+<A NAME="1"></A>			}
+			
+			pos_first_char = idx+1;
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match37-1.html#1',3,'match37-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>		}
+	}
+	return tokenFreq;
+}
+
+/*
+Function to sort the given vector of TokenFreq using Selection Sort. Here parameter is passed as reference.
+@param vector&lt;TokenFreq&gt;
+@return void
+*/
+void selectionSort_v1(vector&lt;TokenFreq&gt; &amp;tokFreqVector ){
+	
+	for(int j=0; j &lt; tokFreqVector.size(); j++){
+		
+		int minEleIdx = j;
+		
+		for(int i = j+1; i &lt; tokFreqVector .size(); i++){
+			
+			if(tokFreqVector[minEleIdx].freq &gt; tokFreqVector[i].freq){
+						
+				minEleIdx = i;
+			}</B></FONT>
+		}
+		
+		if( j != minEleIdx){
+			TokenFreq temp = tokFreqVector [j];
+			tokFreqVector[j] = tokFreqVector[minEleIdx];
+			tokFreqVector[minEleIdx] = temp;
+		}
+	}
+	
+
+	for(int i=0; i&lt;tokFreqVector.size(); i++){
+		cout&lt;&lt;&quot;(&quot;&lt;&lt;tokFreqVector[i].token&lt;&lt;&quot;,&quot;&lt;&lt;tokFreqVector[i].freq&lt;&lt;&quot;) &quot;;
+	}
+	cout&lt;&lt;&quot;\nSort by passing reference is complete.&quot;&lt;&lt;endl;
+	cout&lt;&lt;&quot;Address of vector which was passed as reference: &quot;&lt;&lt;&amp;tokFreqVector&lt;&lt;endl;
+}
+
+/*
+Function to sort the given vector of TokenFreq using Selection Sort. Here parameter is passed as value.
+<A NAME="2"></A>@param vector&lt;TokenFreq&gt;
+@return vector&lt;TokenFreq&gt;
+*/
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match37-1.html#2',3,'match37-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>vector&lt;TokenFreq&gt; &amp;selectionSort_v2(vector&lt;TokenFreq&gt; tokFreqVector){
+	
+	for(int j=0; j &lt; tokFreqVector.size(); j++){
+		
+		int minEleIdx = j;
+		
+		for(int i = j+1; i &lt; tokFreqVector.size(); i++){
+			
+			if(tokFreqVector[minEleIdx].freq &gt; tokFreqVector[i].freq){
+						
+				minEleIdx = i;
+			}</B></FONT>
+		}
+		
+		TokenFreq temp = tokFreqVector[j];
+<A NAME="3"></A>		tokFreqVector[j] = tokFreqVector[minEleIdx];
+		tokFreqVector[minEleIdx] = temp;
+		
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match37-1.html#3',3,'match37-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	}
+	return tokFreqVector;
+}
+
+int main(){
+	
+	string s;
+	
+	cout&lt;&lt;&quot;Enter a text (not more than 100 words):&quot;&lt;&lt;endl;
+	getline(cin,s);
+	
+	cout&lt;&lt;&quot;Tokenizing the text...&quot;&lt;&lt;endl;
+	vector&lt;TokenFreq&gt; vec = getTokenFreq(s);
+	cout&lt;&lt;&quot;Tokenization complete. Vector size: &quot;&lt;&lt;vec.size()&lt;&lt;endl;
+	cout&lt;&lt;&quot;Vector: &quot;;
+	for(int i=0; i&lt;vec.size(); i++){
+		cout&lt;&lt;&quot;(&quot;&lt;&lt;vec[i].token&lt;&lt;&quot;,&quot;&lt;&lt;vec[i].freq&lt;&lt;&quot;) &quot;;
+	}
+	cout&lt;&lt;&quot;Original Vector address: &quot;&lt;&lt;&amp;vec&lt;&lt;endl;
+	
+	
+	cout&lt;&lt;&quot;\n\nSorting by passing parameter as value...&quot;&lt;&lt;endl;
+	vector&lt;TokenFreq&gt; sortByValueVector = selectionSort_v2(vec);
+	for(int i=0; i&lt;sortByValueVector.size(); i++){
+		cout&lt;&lt;&quot;(&quot;&lt;&lt;sortByValueVector[i].token&lt;&lt;&quot;,&quot;&lt;&lt;sortByValueVector[i].freq&lt;&lt;&quot;) &quot;;
+	}
+	cout&lt;&lt;&quot;\nSort by passing parameter as value is complete.&quot;&lt;&lt;endl;
+	cout&lt;&lt;&quot;New vector address: &quot;&lt;&lt;&amp;sortByValueVector;
+	
+	cout&lt;&lt;&quot;\n\nSorting by passing reference as parameter...&quot;&lt;&lt;endl;
+	selectionSort_v1(vec);
+	
+	return 0;
+	
+}</B></FONT>
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Bimal Shrestha_50205_assignsubmission_file_homework2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Bimal Shrestha_50205_assignsubmission_file_homework2.cpp</CENTER></H3><HR>
+<PRE>
+/*
+Name: Bimal K. Shrestha
+Date: 09/19/2016
+Howmework# 2 CSC 340
+*/
+
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+<A NAME="0"></A>#include&lt;vector&gt;
+#include &lt;sstream&gt;
+using namespace std;
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match1-0.html#0',2,'match1-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>struct TokenFreq
+{
+	// to store specific token and frequency
+	string token;
+	int freq;
+};
+//vector of TokenFreq objects by refrence and applies the selection
+//sort to sort the vector in increasing order of token frequences
+void selectionSort_v1(vector&lt;TokenFreq&gt; &amp; tokFreqVector)
+{
+	TokenFreq tmp;
+	int min;
+
+	for (int i = 0; i &lt; tokFreqVector.size() - 2; i++) {
+		min = i;
+		for (int j = i + 1; j &lt;tokFreqVector.size() - 1; j++) {
+			if (tokFreqVector[j].freq &lt; tokFreqVector[min].freq)
+				min = j;
+		}
+		if (min != i)
+		{
+			tmp = tokFreqVector[i];
+			tokFreqVector[i] = tokFreqVector[min];
+			tokFreqVector[min] = tmp;
+		}
+	}
+	cout &lt;&lt; &quot;Tokens and its Frequency in Increasing Order&quot; &quot;.\n&quot;;
+	cout &lt;&lt; &quot;......................&quot; &quot;.\n&quot; &lt;&lt; endl;
+	for (int i = 0; i&lt;tokFreqVector.size() - 1; i++)
+	{
+
+		cout &lt;&lt; tokFreqVector[i].token &lt;&lt; &quot;: &quot; &lt;&lt; tokFreqVector[i].freq &lt;&lt; endl;
+	}
+}
+//function to identify all the unique tokens in s and the frequency of each token
+vector&lt;TokenFreq&gt; getTokenFreq(string&amp; s)
+{
+
+	int index = 0;
+	vector&lt;TokenFreq&gt; tfreq;
+	string text = &quot; &quot;;
+
+	tfreq.push_back(TokenFreq()); // adds new element to the vector
+	int f = 0;
+	int flag = 0;
+	for (int k = 0; k&lt;s.length(); k++)
+	{
+		if (s[k] == ' ' || s[k] == ',' || s[k] == '.' || s[k] == ';' || s[k] == ':')
+		{
+			flag = 0;
+			for (int i = 0; i&lt;tfreq.size(); i++)
+			{
+				if (tfreq[i].token == text)
+				{
+
+					tfreq[i].freq++;
+					flag = 1;
+					text = &quot; &quot;;
+				}
+
+
+			}
+			if (flag == 0)
+			{
+				f++;
+				tfreq[index].token = text;
+				tfreq[index].freq = 1;
+				index++;
+				tfreq.push_back(TokenFreq());
+
+				text = &quot; &quot;;
+			}
+		}
+		else
+		{
+			text = text + s[k];
+
+		}
+	}
+
+	flag = 0;
+	for (int i = 0; i&lt;tfreq.size(); i++)
+	{
+		if (tfreq[i].token == text)
+		{
+			tfreq[i].freq++;
+			flag = 1;
+			text = &quot; &quot;;
+		}
+
+
+	}
+	if (flag == 0)
+	{
+		cout &lt;&lt; text;
+		tfreq[index].token = text;
+		tfreq[index].freq = 1;
+		index++;
+	}
+	cout &lt;&lt; &quot;Tokens and its Frequency&quot;  &quot;.\n&quot;;
+	cout &lt;&lt; &quot;......................&quot; &quot;.\n&quot; &lt;&lt; endl;
+
+	for (int i = 0; i&lt;tfreq.size() - 1; i++)
+	{
+
+		cout &lt;&lt; tfreq[i].token &lt;&lt; &quot;: &quot; &lt;&lt; tfreq[i].freq &lt;&lt; endl;
+	}
+
+	return tfreq;
+}
+//Intializes s by reading input pragraph
+//call getTokenFreq to identify token and frequency
+//call seleciton sort algoriths to sort the vector of Tokenfreq from getTokenFreq
+int main()
+{
+	string s;
+	vector&lt;TokenFreq&gt; tfreq1;
+	vector&lt;TokenFreq&gt; tfreq2;
+	cout &lt;&lt; &quot;Please input the Text&quot; &lt;&lt; endl;
+
+	getline(cin, s);
+	tfreq1 = getTokenFreq(s);
+	selectionSort_v1(tfreq1);
+	system(&quot;pause&quot;);
+	return 0;
+}</B></FONT>
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Parker Gray_29322_assignsubmission_file_csc340hw#1.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Parker Gray_29322_assignsubmission_file_csc340hw#1.cpp</CENTER></H3><HR>
+<PRE>
+/*
+	CSC 340 Programming Methodology Section 01
+	Homework #1
+	Parker Gray
+*/
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string.h&gt;
+<A NAME="0"></A>#include &lt;vector&gt;
+using namespace std;
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match31-1.html#0',3,'match31-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>char getMostFreqLetter(string s){
+	
+	int frequencyOfMostFrequentCharacter = 0; //frequencyofMostFrequentChar is going to hold the current highest value. 
+	int frequencyOfCharacter = 0; //frequencyOfChar is going to hold the frequency of the character that the below loops are currently on.
+	char mostFreqCharacter = 'a'; //Stores the character whose value aligns to frequencyofMostFrequentChar.
+	
+	for(char q = 'a'; q &lt;= 'z'; q++){ //This loop starts at the letter a and goes down to z, while the following loop counts the frequency of the character this loop is currently on.
+	
+		frequencyOfCharacter = 0; //Setting the frequency to zero after each loop is important to prevent the loop from counting the frequency of the previous character.
+		
+		for(int i = 0; i &lt; s.length(); i++){ //This nested loop seeks to verify if the current character being viewed in string s is the same as char q in the previous loop, and perform actions if it is.
+			
+			if(s[i] == q) 
+			frequencyOfCharacter++; //If a match with the current character is found, we reaise the frequency of character for that specific character.
+			
+		}
+		
+		if(frequencyOfCharacter = frequencyOfMostFrequentCharacter){</B></FONT>
+			
+		}
+		
+		if(frequencyOfCharacter &gt; frequencyOfMostFrequentCharacter){ //Verifies if the number of times char q occurs is higher than the previously recorded highest amount. If it is, change variables accordingly.
+				mostFreqCharacter = q;
+				frequencyOfMostFrequentCharacter = frequencyOfCharacter;
+			}
+			
+		if(frequencyOfCharacter = frequencyOfMostFrequentCharacter){
+			if((int)mostFreqCharacter &lt; (int) q){ //Cast the characters as ints, where a = 97 and z = 122. Whichever comes first in the alphabet is what's returned.
+				return mostFreqCharacter;
+			}
+		}
+	}
+	return mostFreqCharacter;
+}
+
+void strToToken(string s, char delim, vector&lt;string&gt; v){ //I need to have the delim and string vector in the inputs for the method here because it is the most intuitive way in my mind to complete the problem here.
+
+	int i = 0;  //Int i will be holding the position of our currently viewed character in the string.
+    int pos = s.find(delim); //Use the string.find command to find the delimiter of our string. String.find creates substrings of elements that it finds, so it will be useful for creating tokens individually.
+    
+	while (pos != string::npos) { //We push back all elements of the string that are NOT located at delimiter locations.
+      v.push_back(s.substr(i, pos-i)); //Create a substring of all the characters found that are not the delimiter character. (i, pos-i) makes sure we can record every character.
+      i = ++pos; 
+      pos = s.find(delim, pos); 
+
+      if (pos == string::npos) //If we end up encountering a white space, we push back the substring found by s.find thus far. 
+         v.push_back(s.substr(i, s.length()));
+    }
+		
+		for( int i = 0; i &lt; v.size(); i++){ //We print out all of the elements found using the above while loop using this for loop.
+    		cout &lt;&lt; &quot;Found the following tokens: &quot; &lt;&lt; v[i] &lt;&lt; endl;
+	}
+}
+main(int n){
+	string s = &quot;this is a test paragraph&quot;;
+	cout &lt;&lt; &quot;Most frequent character is: &quot; &lt;&lt; getMostFreqLetter(s) &lt;&lt; endl;
+	vector&lt;string&gt; tokens; //This is the vector which we store the tokens found for strToToken.
+	strToToken(s, ' ', tokens);
+}
+</PRE>
+</BODY>
+</HTML>

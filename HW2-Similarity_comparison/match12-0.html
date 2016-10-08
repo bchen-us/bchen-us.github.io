@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Sandra Chapman_50241_assignsubmission_file_CSC340_Homework_2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Sandra Chapman_50241_assignsubmission_file_CSC340_Homework_2.cpp</CENTER></H3><HR>
+<PRE>
+/*Sandra Chapman
+CSC 340-01
+TuTh 11:00am-12:15pm
+Fall 2016
+Professor Hui Yang
+
+Homework 2: string input, struct, vectors, and parameter passing
+The main goal of this homework is to solve the token counting problem by applying the following 
+knowledge points: receiving a string from a streaming device (i.e., cin), creating a new data 
+structure using the struct mechanism, managing a vector of objects, and passing a vector into 
+and out from a function by value and by reference. 
+
+Problem description:
+Given a string variable string s;  initialize the value of s  by receiving a paragraph in English 
+text from the standard inputcin. You could assume that this paragraph consists of no more than 100 
+tokens. Again, tokens are sequences of contiguous characters separated by any of the user-specified 
+delimiters (e.g., white spaces). Please implement a C++ program to recognize each unique token in s 
+and its frequency (i.e., the number of times this token appears in s); furthermore, order these tokens 
+in increasing order according to their frequencies. Specifically, you are required to include the 
+following elements in your program: 
+
+1.	  Declare a struct TokenFreq that consists of two data members: (1) string token;  and (2) int freq;  
+Obviously, an object of this struct will be used to store a specific token and its frequency.  
+Remember to declare this struct at the beginning of your program and outside any function. A good place 
+would be right after the &quot;using namespace std;&quot; line. This way, your functions will be able to use this 
+struct to declare variables.  (10 points)
+
+
+2.	Implement the function vector&lt;TokenFreq&gt; getTokenFreq( string&amp; s); Given the input string s, this function 
+identifies all the unique tokens in s and the frequency of each token. It stores all the identified (token, freq) 
+pairs in a vector and returns this vector to the calling function.  In this homework, these tokens are case sensitive. 
+For example, &quot;Hello&quot; and &quot;hello&quot; are considered to be two different tokens.  (20 points)
+
+
+3.	Implement the selection sort algorithm to sort a vector&lt;TokenFreq&gt; in increasing order of token frequency. The 
+pseudo code of the selection algorithm can be found at https://en.wikipedia.org/wiki/Selection_sort   You can also 
+watch an animation of the sorting process at http://visualgo.net/sorting --&gt;under &quot;select&quot;.  You will implement the 
+selection sort in two C++ functions:
+               -   void selectionSort_v1( vector&lt;TokenFreq&gt; &amp; tokFreqVector ); This function receives a vector of 
+			   TokenFreq objects by reference and applies the selections sort algorithm to sort this vector in increasing 
+			   order of token frequencies. (20 points)
+
+               -  vector&lt;TokenFreq&gt;&amp; selectionSort_v2(  vector&lt;TokenFreq&gt;  tokFreqVector );  This function receives a 
+			   vector of TokenFreq objects by value, applies the selections sort algorithm to sort this vector in increasing 
+			   order of token frequencies, and returns the sorted vector of TokenFreq by reference to the caller.    (20 points)
+
+
+ 4.  Implement the int main() function to contain the following features: (1) declare the input string s, (2) initializes 
+ s by reading a paragraph of English text from the keyboard,  (3) call getTokenFreq() to identify each unique token and its 
+ frequency, (4) call the two versions of the selection sort algorithms to sort the vector of TokenFreq objects obtained in (3).  
+ Please include user friendly prompts and outputs to demonstrate the correctness of all your functions.      (10 points)  
+*/
+/********************************************************************************************************/
+
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+#include &lt;sstream&gt;
+
+/********************************************************************************************************/
+using namespace std;
+
+//an object of this struct will be used to store a specifc token and its frequency
+struct TokenFreq{
+   string token;
+   int freq;
+};
+
+//Given the input string s, this function identifies all the unique tokens in s and the 
+//frequency of each token. It stores all the identified (token, freq) pairs in a vector and 
+<A NAME="0"></A>//returns this vector to the calling function.  In this homework, these tokens are case sensitive. 
+//For example, &quot;Hello&quot; and &quot;hello&quot; are considered to be two different tokens.
+vector&lt;TokenFreq&gt; getTokenFreq( string&amp; s){
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match12-1.html#0',3,'match12-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	int index=0;
+   	vector&lt;TokenFreq&gt;vec; 
+   	string word;
+   	vec.push_back(TokenFreq());//putting contents of TokenFreq into the vector vec.
+   	int f=0;
+   	int count=0;
+   	for(int i=0;i&lt;s.length();i++){ //traversing through s 
+    	if(s[i]==' '){//spaces are left out
+           count=0;
+           for(int i = 0; i&lt;vec.size(); i++){
+               if(vec[i].token==word){
+                   vec[i].freq++;
+                   count=1;
+                   word=&quot;&quot;;
+                }
+            }
+			  if(count==0){//insert tokens independent of one another and apply a frequency
+                	f++;
+                    vec[index].token=word;
+                    vec[index].freq=1;
+                    index++;
+                    vec.push_back(TokenFreq());
+                	word=&quot;&quot;;//without this you get one large block of text
+            }
+       }
+       else{
+           word=word+s[i];   
+       }
+   }
+  
+   count=0;
+  for(int i = 0; i&lt;vec.size(); i++){
+        if(vec[i].token==word){
+            vec[i].freq++;
+            count=1;
+            word=&quot;&quot;;
+        }
+	}
+	
+   if(count==0){
+   		vec[index].token=word;
+   		vec[index].freq=1;
+   		index++;
+   }
+   cout&lt;&lt; endl &lt;&lt; &quot;Token and frequency:&quot;&lt;&lt;endl;
+  
+   for(int i = 0; i&lt;vec.size(); i++){ //formatting output as 'Token, Frequency'</B></FONT>
+   		if(i&lt;vec.size()-1)
+    		cout&lt;&lt;&quot;'&quot;&lt;&lt;vec[i].token&lt;&lt;&quot;: &quot;&lt;&lt;vec[i].freq&lt;&lt;&quot;', &quot;;
+    	else
+    		cout&lt;&lt;&quot;'&quot;&lt;&lt;vec[i].token&lt;&lt;&quot;: &quot;&lt;&lt;vec[i].freq&lt;&lt;&quot;'&quot;&lt;&lt;endl;
+   }
+    
+<A NAME="1"></A>	cout &lt;&lt; endl;
+	
+   return vec; //non-void fxn needs to return type vector
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match12-1.html#1',3,'match12-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+//This function receives a vector of TokenFreq objects by reference and applies the selections 
+//sort algorithm to sort this vector in increasing order of token frequencies. 
+void selectionSort_v1( vector&lt;TokenFreq&gt; &amp; tokFreqVector ){
+    TokenFreq a; 
+    int min;
+
+	for( int i=0; i&lt;tokFreqVector.size()-1; i++){
+		min = i;
+		for (int j = i+1; j &lt;tokFreqVector.size(); j++){
+			if (tokFreqVector[j].freq &lt; tokFreqVector[min].freq)
+				min = j;
+		}
+        if(min!=i){
+			a = tokFreqVector[i];
+			tokFreqVector[i] = tokFreqVector[min];
+			tokFreqVector[min] = a;
+        }
+	}
+    cout&lt;&lt;endl&lt;&lt;&quot;Token and frequency in incresing order using selectionSort_v1:&quot;&lt;&lt;endl;
+    
+    
+	for(int i = 0; i&lt;tokFreqVector.size(); i++){</B></FONT>
+		if(i&lt;tokFreqVector.size()-1)
+			cout&lt;&lt; &quot;'&quot;&lt;&lt;tokFreqVector[i].token&lt;&lt;&quot;: &quot;&lt;&lt;tokFreqVector[i].freq &lt;&lt;&quot;',&quot;;
+		else 
+			cout &lt;&lt; &quot;'&quot;&lt;&lt;tokFreqVector[i].token&lt;&lt;&quot;: &quot;&lt;&lt;tokFreqVector[i].freq &lt;&lt;&quot;'&quot;&lt;&lt;endl;
+   }
+//void-type fxn has no return
+}
+
+
+//This function receives a vector of TokenFreq objects by value, applies the selections sort 
+//algorithm to sort this vector in increasing order of token frequencies, 
+//and returns the sorted vector of TokenFreq by reference to the caller.
+ vector&lt;TokenFreq&gt; &amp;selectionSort_v2( vector&lt;TokenFreq&gt;tokFreqVector ){
+	vector&lt;TokenFreq&gt;b;
+	b=tokFreqVector;
+	TokenFreq c;
+    int min;
+
+	for( int i=0; i&lt;tokFreqVector.size()-1; i++){
+		min = i;
+		for (int j = i+1; j &lt;tokFreqVector.size(); j++){
+			if (tokFreqVector[j].freq &lt; tokFreqVector[min].freq)
+				min = j;				
+		}
+        if(min!=i){
+			c = tokFreqVector[i];
+			tokFreqVector[i] = tokFreqVector[min];
+			tokFreqVector[min] = c;
+        }
+	}
+    cout&lt;&lt;endl&lt;&lt;&quot;Token and frequency in incresing order using selectionSort_v2:&quot;&lt;&lt;endl;
+    
+    
+	for(int i = 0; i&lt;tokFreqVector.size(); i++){//format for output
+		if(i&lt;tokFreqVector.size()-1)
+			cout&lt;&lt; &quot;'&quot;&lt;&lt;tokFreqVector[i].token&lt;&lt;&quot;: &quot;&lt;&lt;tokFreqVector[i].freq &lt;&lt;&quot;',&quot;;
+		else 
+			cout &lt;&lt; &quot;'&quot;&lt;&lt;tokFreqVector[i].token&lt;&lt;&quot;: &quot;&lt;&lt;tokFreqVector[i].freq &lt;&lt;&quot;'&quot;&lt;&lt;endl;
+   }
+return b;
+}
+
+
+int main(){
+   string s;
+   vector&lt;TokenFreq&gt; tokFreq; //tokFreq is a member of struct TokenFreq
+   
+     
+   cout&lt;&lt;&quot;Enter in text up to 100 words&quot;&lt;&lt;endl;//input string from user
+   getline(cin,s);
+   cout &lt;&lt; endl;
+   
+   tokFreq=getTokenFreq(s);//initializing tokFreqVector to become output of getTokenFreq
+   
+   cout &lt;&lt; endl;
+   selectionSort_v1(tokFreq);
+   cout &lt;&lt; endl;
+      
+   selectionSort_v2(tokFreq);
+   cout &lt;&lt; endl;
+  
+   return 0;
+}
+</PRE>
+</BODY>
+</HTML>

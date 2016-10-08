@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Milan Thapaliya_50237_assignsubmission_file_Project2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Milan Thapaliya_50237_assignsubmission_file_Project2.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  Created by MILAN THAPALIYA on 9/19/16.
+//  Homework 2
+//
+/*
+ This program solve the token counting problem by receiving a string from a 
+ streaming device, create a struct function and manage vector of objects, pass 
+ a vector into and out from a fuction by value and by reference.
+ */
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+<A NAME="0"></A>#include &lt;sstream&gt;
+using namespace std;
+//declaring the struct TokenFreq with string and frequency
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match8-1.html#0',3,'match8-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>struct TokenFreq
+{
+    string token;
+    int freq;
+};
+/*
+ This function recieves a vector of TokenFreq objects by refrence and value,
+ then sort in increasing order of the token frequency
+ */
+void selectionSort_v1(vector&lt;TokenFreq&gt; &amp; tokFreqVector )
+{
+    TokenFreq temp;
+    int minim;
+    
+    for(int i = 0; i &lt;tokFreqVector.size()-1; i++){
+        minim = i;
+        for (int j = i+1; j &lt;tokFreqVector.size()-1; j++){
+            if (tokFreqVector[j].freq &lt; tokFreqVector[minim].freq)
+                minim = j;
+        }
+        if(minim!=i)
+        {
+            temp = tokFreqVector[i];
+            tokFreqVector[i] = tokFreqVector[minim];
+            tokFreqVector[minim] = temp;
+        }
+    }
+    cout&lt;&lt;&quot;\nTokens and Frequency with increasing order:&quot;&lt;&lt;endl;
+    for(int i = 0; i&lt;tokFreqVector.size()-1; i++)
+    {
+        
+        cout&lt;&lt;tokFreqVector[i].token&lt;&lt;&quot;: &quot;&lt;&lt;tokFreqVector[i].freq&lt;&lt;endl;
+    }
+}
+/* this function identifies all the unique tokens in s and the frequency of each token.
+ stores all the identified pairs in a vector and returns this vector to the calling function.
+ */
+vector&lt;TokenFreq&gt; getTokenFreq(string&amp; s)
+{
+    
+    int index=0;
+    vector&lt;TokenFreq&gt; TF;
+    string word=&quot;&quot;;
+    TF.push_back(TokenFreq());
+    int f=0;
+    int flag=0;
+    for(int k=0;k&lt;s.length();k++)
+    {
+        if(s[k]==' ' || s[k]==',' || s[k]=='.' ||s[k]==';' || s[k]==':')
+        {
+            flag=0;
+            for(int i = 0; i&lt;TF.size(); i++)
+            {
+                if(TF[i].token==word)
+                {
+                    TF[i].freq++;
+                    flag=1;
+                    word=&quot;&quot;;
+                }
+            }
+            if(flag==0)
+            {
+                f++;
+                TF[index].token=word;
+                TF[index].freq=1;
+                index++;
+                TF.push_back(TokenFreq());
+                word=&quot;&quot;;
+            }
+        }
+        else
+        {
+            word=word+s[k];
+            
+        }
+    }
+    flag=0;
+    for(int i = 0; i&lt;TF.size(); i++)
+    {
+        if(TF[i].token==word)
+        {
+            TF[i].freq++;
+            flag=1;
+            word=&quot;&quot;;
+        }
+        
+        
+    }
+    if(flag==0)
+    {
+        cout&lt;&lt;word;
+        TF[index].token=word;
+        TF[index].freq=1;
+        index++;
+    }
+    cout&lt;&lt;&quot;\nTokens with frequency:&quot; &lt;&lt;endl;
+    
+    for(int i = 0; i&lt;TF.size()-1; i++)
+    {
+        
+        cout&lt;&lt;TF[i].token&lt;&lt;&quot;: &quot;&lt;&lt;TF[i].freq&lt;&lt;endl;
+    }
+    
+    return TF;
+}
+/* Declare the input string s, initialize the value of s by using the input function cin.
+ also assume that the paragraph consists of no more than 100 tokens, call getTokenG+Freq(s)
+ to identify each unique token and its frequency. and use selectionSort function to sort the
+ TokenFreq object.
+ */
+int main()
+{
+    string s;
+    vector&lt;TokenFreq&gt; TF1;
+    vector&lt;TokenFreq&gt; TF2;
+    cout&lt;&lt;&quot;Enter the paragraph:&quot; &lt;&lt;endl;// Prompt to enter the paragraph
+    getline(cin,s);
+    TF1=getTokenFreq(s);
+    selectionSort_v1(TF1);
+    system(&quot;pause&quot;);
+    return 0;
+}</B></FONT>
+</PRE>
+</BODY>
+</HTML>

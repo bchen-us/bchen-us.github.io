@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Gary Huang_50240_assignsubmission_file_HW2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Gary Huang_50240_assignsubmission_file_HW2.cpp</CENTER></H3><HR>
+<PRE>
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+using namespace std;
+
+struct TokenFreq
+{
+	string token; 
+	int freq;
+};
+
+
+
+ vector&lt;TokenFreq&gt; getTokenFreq(string&amp; s)
+ {
+<A NAME="0"></A>	int index =0;
+  	vector&lt;TokenFreq&gt; r;
+	r.push_back(TokenFreq());
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match26-0.html#0',2,'match26-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>   	string words=&quot;&quot;;
+   	int f=0;
+   	int flag=0;
+   
+   for(int k=0;k&lt;s.length();k++)
+   {
+       if(s[k]==' ' || s[k]==',' || s[k]=='.' ||s[k]==';' || s[k]==':' || s[k]=='?' || s[k] =='!')
+       {
+           flag=0;
+           for(int i = 0; i&lt;r.size(); i++)
+           {
+               if(r[i].token==words)
+               {
+                	r[i].freq++;
+                   flag=1;
+                   words=&quot;&quot;;
+               }
+            }
+           if(flag==0)
+            {
+                f++;
+                r[index].token=words;
+                r[index].freq=1;
+                index++;
+                r.push_back(TokenFreq());     
+                words=&quot;&quot;;
+            }
+       }
+       else
+       {
+           words=words+s[k];
+       }
+   }
+  
+   flag=0;
+   for(int i = 0; i&lt;r.size(); i++)
+    {
+        if(r[i].token==words)
+        {
+            r[i].freq++;
+            flag=1;
+            words=&quot;&quot;;
+        }   
+    }
+   	if(flag==0)
+	{
+    	cout&lt;&lt;words;
+   		r[index].token=words;
+   		r[index].freq=1;</B></FONT>
+   		index++;
+   }
+   string t = &quot;\n-------------------------------------------------------------------------------\n&quot;;
+   string bSort = &quot;Before Sort (Format {Vectors : Frequency},) &quot;;
+   cout &lt;&lt; t  &lt;&lt;  bSort &lt;&lt; t &lt;&lt; endl &lt;&lt; &quot;{&quot; ;
+
+   for(int i = 0; i&lt;r.size()-1; i++)
+   {    	
+       cout&lt;&lt;r[i].token&lt;&lt;&quot;: &quot;&lt;&lt;r[i].freq&lt;&lt;&quot;, &quot;;
+   }
+  	cout &lt;&lt;&quot;}&quot; &lt;&lt; endl;
+  	
+   	return r;
+}
+
+
+
+vector&lt;TokenFreq&gt;&amp; selectionSort_v1( vector&lt;TokenFreq&gt; tokFreqVector )
+{
+	TokenFreq temp;
+    int min;
+    string sorted = &quot;Sorted Array (Format {Vectors : Frequency},)&quot;;
+<A NAME="1"></A>    string t = &quot;\n-------------------------------------------------------------------------------\n&quot;;
+    
+
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match26-0.html#1',2,'match26-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	for( int i = 0; i &lt; tokFreqVector.size()-2; i++){
+		min = i;
+		for (int j = i+1; j &lt;tokFreqVector.size()-1; j++){
+			if (tokFreqVector[j].freq &lt; tokFreqVector[min].freq)
+				min = j;
+		}
+    	if(min!=i)
+    	{
+			temp = tokFreqVector[i];
+			tokFreqVector[i] = tokFreqVector[min];
+			tokFreqVector[min] = temp;
+    	}
+	}
+    cout &lt;&lt; t &lt;&lt; sorted &lt;&lt; t  &lt;&lt;endl &lt;&lt; &quot;{&quot;;
+    for(int i = 0; i&lt;tokFreqVector.size()-1; i++)
+   {
+       cout&lt;&lt;tokFreqVector[i].token&lt;&lt;&quot;: &quot;&lt;&lt;tokFreqVector[i].freq&lt;&lt; &quot;, &quot;;
+   }
+   cout &lt;&lt;&quot;}&quot; &lt;&lt; endl;
+}
+
+
+
+int main()
+{
+	string s;
+	vector&lt;TokenFreq&gt; T1;
+	
+	cout &lt;&lt; &quot;Please Enter Your Text: &quot;;
+    getline(cin,s);
+    T1 = getTokenFreq(s);</B></FONT>
+    selectionSort_v1(T1);
+  	
+  	return 0;
+  	
+		
+}
+</PRE>
+</BODY>
+</HTML>

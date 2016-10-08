@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Kristin Perez_50181_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Kristin Perez_50181_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  main.cpp
+//  Hw #2
+//
+//  Created by Kristin June Perez on 9/15/16.
+//  912352056
+// compiled on xcode
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+struct TokenFreq
+{
+public:
+    string token;
+    int freq;
+};
+
+vector&lt;TokenFreq&gt; getTokenFreq(string&amp; s);
+void selectionSort1(vector&lt;TokenFreq&gt;&amp; tokenFreqVector);
+vector &lt;TokenFreq&gt;&amp; selectionSort2(vector&lt;TokenFreq&gt; tokenFreqVector);
+<A NAME="1"></A>void swap (int x, int y, vector&lt;TokenFreq&gt;&amp; tokFreqVector); // swap switches x and y
+
+vector&lt;TokenFreq&gt; getTokenFreq(string&amp; s) // creating a vector of token frequencies
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match23-0.html#1',2,'match23-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>{
+    vector&lt;TokenFreq&gt; one; //
+    int left =0;
+    int right=0;
+    bool notConfirmed;
+    for( int i=0; i&lt; s.length(); i++)
+    {
+        if(s[i] ==32)
+            
+        {
+            right=i;
+            TokenFreq current ={ s.substr(left, right-left), 1}; // creating a substring to read the size.makes the size into a token then puts it into the variable
+            for(int i=0; i&lt; one.size(); i++)
+            {
+                if ( current.token == one[i].token)
+                {
+                    one[i].freq +=1;
+                    notConfirmed =false;
+                }
+            }
+            if (notConfirmed)
+            {
+                one.push_back(current);
+            }
+            left =right +1;
+            
+        }
+        notConfirmed = true;
+    }
+    TokenFreq current ={s.substr(left, s.length()-right-1), 1};
+    for (int i=0; i&lt;one.size(); i++)
+    {
+        if(current.token ==one[i].token)
+        {
+            one[i].freq +=1;
+            notConfirmed= false;
+        }
+    }
+    if(notConfirmed)
+    {
+        one.push_back(current);
+    }
+    return one;
+    
+}
+void swap (int x, int y, vector&lt;TokenFreq&gt;&amp; tokFreqVector){ //manually put a temporary variable where x goes into temporary y goes into x then x moves to y
+    TokenFreq Temporary =tokFreqVector [x];
+    tokFreqVector[x] = tokFreqVector[y];
+    tokFreqVector[y] = Temporary;
+    
+}
+void selectionSort1(vector&lt;TokenFreq&gt;&amp; tokFreqVector) // takes first element in the vector compares to the second and if its less it swaps and if its more it keeps checking
+{
+    for(int i=0; i&lt; tokFreqVector.size()-1; i++)
+    {
+        int less =i;
+        for(int j = i+1; j&lt; tokFreqVector.size(); j++)
+        {
+            if(tokFreqVector[less].freq &gt; tokFreqVector[j].freq)
+            {
+                less = j;
+            }
+        }
+        swap(less, i, tokFreqVector);
+        
+        
+    }
+}
+vector&lt;TokenFreq&gt;&amp; selectionSort2(vector&lt;TokenFreq&gt; tokFreqVector) // this function returns a sorted vector
+{
+    for(int i=0; i&lt; tokFreqVector.size()-1; i++)
+    {
+        int less =i;
+        for(int j=i +1; j&lt;tokFreqVector.size(); j++)
+        {
+            if(tokFreqVector[less].freq &gt; tokFreqVector[j].freq)
+            {
+                less =j;
+            }
+        }
+        swap(less, i, tokFreqVector);
+    }
+    return tokFreqVector;
+}</B></FONT>
+int main() {//implementing int main and declaring and initalizing string s
+    string one = &quot;&quot;;
+    cout &lt;&lt; &quot;please enter a string of words-&quot;;
+    getline(cin, one); // takes the users input
+    vector &lt;TokenFreq&gt; k= getTokenFreq(one);
+<A NAME="0"></A>    
+    
+    cout &lt;&lt; &quot;\n Unsorted word Frequency&quot;;
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match23-0.html#0',2,'match23-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    for(int i=0; i&lt; k.size();i++)
+    {
+        cout &lt;&lt; &quot;('&quot;+k[i].token +&quot;':&quot; &lt;&lt; k[i].freq &lt;&lt;&quot;)&quot;;
+        
+    }
+    selectionSort1(k); // runs the selection sort program given the string is an argument
+    cout &lt;&lt; &quot;\n Sorted word frequency&quot;;
+    for(int i=0; i&lt; k.size();i++)
+    {
+        cout&lt;&lt; &quot;('&quot;+k[i].token +&quot;':&quot; &lt;&lt; k[i].freq &lt;&lt;&quot;)&quot;; // prints out the words along with frequency
+        
+    }
+    return 0;
+    
+    
+}</B></FONT>
+</PRE>
+</BODY>
+</HTML>
