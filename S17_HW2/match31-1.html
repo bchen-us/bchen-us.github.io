@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Jesse Fernando_386751_assignsubmission_file_CSC340_HW2rd_JJF.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Jesse Fernando_386751_assignsubmission_file_CSC340_HW2rd_JJF.cpp</CENTER></H3><HR>
+<PRE>
+
+/*
+Author: Jesse J. Fernando
+Class: CSC 340 Spring
+Project: HW 2
+Purpose of this program is to count and sort all unique tokens in a file by
+using the following techniques:
+      1. Reading &amp; writing a text file
+      2. Creating and using a struct
+      3. Managing a vector of struct objects
+      4. Passing a vector into and out of a function
+      5. Understanding and implementing the insertion sort
+         &amp; selection sort algorithms
+ */
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;fstream&gt;
+#include &lt;sstream&gt;
+
+<A NAME="0"></A>using namespace std;
+
+// used to store specific token value and its frequency.
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match31-0.html#0',2,'match31-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>struct TokenFreq {
+    string value;
+    int freq;
+};
+/* This function reads the specified input file line by line, identifies all the
+ unique tokens in the file and the frequency of each token. It stores all the
+  identified (token, freq) pairs in a vector and returns this vector to the
+  calling function. */
+vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name);
+
+/* This function receives a vector of TokenFreq objects by reference and applies
+ the selections sort algorithm to sort this vector in increasing order of token
+ frequencies.  */
+void selectionSort(vector&lt;TokenFreq&gt; &amp;tokFreqVector);
+
+/* This function receives a vector of TokenFreq objects by reference and applies
+ the insertion sort algorithm to sort this vector in decreasing order of token
+ frequencies.  */
+void insertionSort(vector&lt;TokenFreq&gt; &amp;tokFreqVector);
+
+/* This function receives a vector of TokenFreq objects and writes each token
+ and its frequency on a separate line in the specified output file. */
+void writeToFile(vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName);
+
+int main() {
+    /* Instructions:
+        (1) Ask the user of the program to specify the name of the input file
+        (2) Call the getTokenFreq() to identify each unique token and its frequency
+        (3) Call sorting functions to sort the vector of TokenFreq objects assembled
+          in step 2.
+        (4) Call the writeToFile() function to print out the sorted vectors in 2
+            separate files, one in ascending order and the other descending.*/
+    string s;
+    cout &lt;&lt; &quot;Enter the name of the input file:\n&quot;;
+    cin &gt;&gt; s;
+    vector&lt;TokenFreq&gt; tf = getTokenFreq(s);
+    /* writeToFile(tf,&quot;tok&amp;freq.txt&quot;);
+     selectionSort(tf);
+     writeToFile(tf,&quot;increasing_order.txt&quot;);
+     insertionSort(tf);
+     writeToFile(tf,&quot;decreasing_order.txt&quot;);
+     */
+    return 0;
+}
+
+vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name) {
+    vector&lt;string&gt; lines;
+    vector&lt;TokenFreq&gt; word;
+    ifstream inStream;
+    inStream.open(inFile_name);
+
+    if (inStream.fail()) {
+        cout &lt;&lt; &quot;Failed to open the file: &quot; &lt;&lt; inFile_name &lt;&lt; endl;
+        exit(-1);
+    }
+    string line;
+    while (!inStream.eof()) {
+        getline(inStream, line, ' ');
+        stringstream ss(line);
+        lines.push_back(line);
+    }
+    for (int i = 0; i &lt; lines.size(); i++) {</B></FONT>
+
+    }
+
+    inStream.close();
+    return word;
+}
+
+void writeToFile(vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName) {
+    ofstream outStream;
+    outStream.open(outFileName);
+    for (int i = 0; i &lt; tokFreqV.size(); i++) {
+        outStream &lt;&lt; tokFreqV[i].value &lt;&lt; endl &lt;&lt; tokFreqV[i].freq &lt;&lt; endl;
+    }
+    outStream.close();
+}
+</PRE>
+</BODY>
+</HTML>

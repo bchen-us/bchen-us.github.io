@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Riza Shrestha_386695_assignsubmission_file_speech.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Riza Shrestha_386695_assignsubmission_file_speech.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+<A NAME="0"></A>
+struct TokenFreq {
+    string value;
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match2-1.html#0',3,'match2-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    int freq;
+    bool operator == (const string &amp;target) const {
+        return target == value;
+    }
+    bool operator &gt; (const TokenFreq &amp;target) const {
+        return freq &gt; target.freq;
+    }
+    bool operator &lt; (const TokenFreq &amp;target) const {
+        return freq &lt; target.freq;
+    }
+    string to_string () const {
+        return &quot;(\&quot;&quot; + value + &quot;\&quot; =&gt; &quot; + ::to_string(freq) + &quot;)&quot;;
+    }
+};
+
+
+// Prototypes
+// ==========
+vector&lt;TokenFreq&gt; getTokenFrequency(string fileName);
+vector&lt;string&gt; getTokens(string&amp; inputString, string delimiters = &quot; &quot;);
+void selectionSort(vector&lt;TokenFreq&gt;&amp; tokenFreqs);
+void insertionSort(vector&lt;TokenFreq&gt;&amp; tokenFreqs);
+void printFrequencies(vector&lt;TokenFreq&gt;&amp; tokenFreqs, string title);
+void writeToFile(vector&lt;TokenFreq&gt;&amp; tokenFreqs, string fileName);</B></FONT>
+
+const string path =&quot;/Users/rizashrestha/Documents/frequentnum/wordspeech/Speech.txt&quot;;
+// Main
+// ====
+int main(int arc, char* argv[]) 
+{
+   const string defaultFileName(&quot;Speech.txt&quot;);
+
+
+    // Optional debug mode for printing.
+    bool debug(false);
+
+    // File names.
+    string fileName(&quot;&quot;);
+    string tokensFileName(&quot;tokens.txt&quot;);
+    string selectSortFileName(&quot;selection_sort.txt&quot;);
+    string insertSortFileName(&quot;insertion_sort.txt&quot;);
+
+    // Prompt user for filename.
+
+         cout&lt;&lt; &quot;====================&quot; &lt;&lt; endl;
+          cout&lt;&lt; &quot;Please enter the filename you wish to use (or type exit to quit):&quot; &lt;&lt; endl;
+
+    // Trap user until the filename or &quot;exit&quot; are typed.
+    do {
+        cin &gt;&gt; fileName;
+<A NAME="1"></A>    } while (fileName.empty() &amp;&amp; fileName != &quot;exit&quot;);
+
+    // Safely exit if prompted.
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match2-1.html#1',3,'match2-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    if (fileName == &quot;exit&quot;) {
+        cout &lt;&lt; &quot;exiting program...&quot; &lt;&lt; endl;
+        return 0;
+    }
+
+
+    // Tokenize the input file.
+    cout &lt;&lt; endl &lt;&lt; &quot;Attempting to open file and create tokens &quot;;
+    vector&lt;TokenFreq&gt; tokenFreqs = getTokenFrequency(fileName);
+    cout &lt;&lt; &quot;...Success!&quot; &lt;&lt; endl;
+    writeToFile(tokenFreqs, tokensFileName);
+    cout &lt;&lt; &quot;Tokens recorded to: &quot; &lt;&lt; tokensFileName &lt;&lt; endl &lt;&lt; endl;
+    // Optional print functionality for development.
+    if (debug) { printFrequencies(tokenFreqs, &quot;Tokenized (unsorted)&quot;); }
+
+    // Apply selection sort and record.
+    cout &lt;&lt; &quot;Applying selection sort (ascending order) &quot;;
+    selectionSort(tokenFreqs);
+    cout &lt;&lt; &quot;...Success!&quot; &lt;&lt; endl;
+    writeToFile(tokenFreqs, selectSortFileName);
+    cout &lt;&lt; &quot;Tokens sorted and recorded to: &quot;&lt;&lt; selectSortFileName &lt;&lt; endl &lt;&lt; endl;
+    // Optional print functionality for development.
+    if (debug) { printFrequencies(tokenFreqs, &quot;Selection sort (ascending)&quot;); }
+
+    // Apply insertion sort and record.
+    cout &lt;&lt; &quot;Applying insertion sort (descending order) &quot;;
+    insertionSort(tokenFreqs);
+    cout &lt;&lt; &quot;...Success!&quot; &lt;&lt; endl;
+    writeToFile(tokenFreqs, insertSortFileName);
+    cout &lt;&lt; &quot;Tokens sorted and recorded to: &quot; &lt;&lt; insertSortFileName &lt;&lt; endl &lt;&lt; endl;
+    // Optional print functionality for development.
+    if (debug) { printFrequencies(tokenFreqs, &quot;Insertion sort (descending)&quot;); }
+
+    // Exiting
+    cout &lt;&lt; &quot;Operation complete, exiting program...&quot; &lt;&lt; endl &lt;&lt; endl;
+    return 0;
+}
+
+
+// Functions
+// =========
+vector&lt;TokenFreq&gt; getTokenFrequency(string fileName) {
+    vector&lt;TokenFreq&gt; tokenFreqs;
+    vector&lt;string&gt; lineTokens;
+    fstream inputFile;
+    string currentLine;
+    inputFile.open(fileName.c_str());
+
+    if (inputFile.fail()) {
+        cout &lt;&lt; &quot;Failed to open file: &quot; &lt;&lt; fileName &lt;&lt; &quot;.\n&quot;;
+        exit(-1);
+    }
+
+    while (!inputFile.eof()) {
+        getline(inputFile, currentLine);
+        lineTokens = getTokens(currentLine);
+
+        for (const auto &amp;token : lineTokens) {
+            // Use the structs' predicate equality operator as a means to locate the target struct.
+            vector&lt;TokenFreq&gt;::iterator target = find(
+                tokenFreqs.begin(),
+                tokenFreqs.end(),
+                token
+            );
+
+            // If the target was found, increment its counter.
+            // If not, simply create a new struct and store.
+            if (target != tokenFreqs.end()) {
+                target-&gt;freq++;
+            } else {
+                TokenFreq newToken;
+                newToken.value = token;
+                newToken.freq = 1;
+                tokenFreqs.push_back(newToken);
+            }
+        }
+    }</B></FONT>
+<A NAME="2"></A>
+    inputFile.close();
+
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match2-1.html#2',3,'match2-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    return tokenFreqs;
+}
+
+vector&lt;string&gt; getTokens(string&amp; inputString, string delimiters) {
+    vector&lt;string&gt; tokens;
+
+    // Check for an empty string and return the empty set if found.
+    if (inputString.empty()) {
+        return tokens;
+    };
+
+    // Position the initial start and end markers.
+    size_t start = inputString.find_first_not_of(delimiters);
+    size_t end = inputString.find_first_of(delimiters, start);
+
+    // Check for a string of all delimiters, or a string of no delimiters.
+    if (start == string::npos || end == string::npos) {
+        // If there's bad input, simply push the string to the vector and return.
+        tokens.push_back(inputString);
+        return tokens;
+    }
+
+    while (start != string::npos || end != string::npos) {
+        // Parse token from string.
+        size_t wordLength = end - start;
+        string rawToken = inputString.substr(start, wordLength);
+        string santiziedToken;
+
+        // Transform to lower case.
+        transform(
+            rawToken.begin(),
+            rawToken.end(),
+            rawToken.begin(),
+            ::tolower</B></FONT>
+        );
+
+      /*  // Remove punctuation from string.
+        remove_copy_if(
+            rawToken.begin(),
+            rawToken.end(),
+            back_inserter(santiziedToken),
+            [] (char ch)
+            {
+                return ispunct(ch) &amp;&amp; ch != '\'';
+            }
+<A NAME="3"></A>        );*/
+
+        // If the sanitize step has not wiped the token, store it.
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match2-1.html#3',3,'match2-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>        if (!santiziedToken.empty()) {
+            tokens.push_back(santiziedToken);
+        }
+
+        // Reposition start and end markers for next token.
+        start = inputString.find_first_not_of(delimiters, end);
+        end = inputString.find_first_of(delimiters, start);
+    }
+
+    return tokens;
+}
+
+void selectionSort(vector&lt;TokenFreq&gt;&amp; tokenFreqs) {
+    unsigned int i, j, minimum;
+    size_t size = tokenFreqs.size();
+
+    for (i = 0; i &lt; size; ++i) {
+        minimum = i;
+        for (j = i + 1; j &lt; size; ++j) {
+            if (tokenFreqs[j] &lt; tokenFreqs[minimum]) {
+                minimum = j;
+<A NAME="4"></A>            }
+        }</B></FONT>
+        swap(tokenFreqs.at(i), tokenFreqs.at(minimum));
+<FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match2-1.html#4',3,'match2-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    }
+}
+
+void insertionSort(vector&lt;TokenFreq&gt;&amp; tokenFreqs) {
+    unsigned int i, j;
+    size_t size = tokenFreqs.size();
+
+    for (i = 1; i &lt; size; i++) {
+        j = i;
+        while (j &gt; 0 &amp;&amp; tokenFreqs[j - 1] &lt; tokenFreqs[j]) {
+            swap(tokenFreqs.at(j), tokenFreqs.at(j - 1));
+            j--;
+        }
+    }
+}
+
+void printFrequencies(vector&lt;TokenFreq&gt;&amp; tokenFreqs, string title) {
+    unsigned int i = 0;</B></FONT>
+<A NAME="5"></A>
+    cout &lt;&lt; title &lt;&lt; &quot; section&quot; &lt;&lt; endl &lt;&lt; endl;
+
+<FONT color="#c8c2a7"><A HREF="javascript:ZweiFrames('match2-1.html#5',3,'match2-top.html#5',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    for (const auto&amp; tokenFreq : tokenFreqs) {
+        cout &lt;&lt; tokenFreq.to_string();
+
+        // Spacing.
+        if (&amp;tokenFreq != &amp;tokenFreqs.back()) cout &lt;&lt; &quot;, &quot;;
+        if (++i % 10 == 0) cout &lt;&lt; endl;
+    }
+
+    cout &lt;&lt; endl &lt;&lt; endl;
+}
+
+void writeToFile(vector&lt;TokenFreq&gt;&amp; tokenFreqs, string fileName) {
+    ofstream outputFile;
+    outputFile.open(fileName);
+
+    if (outputFile.fail()) {
+        cout &lt;&lt; &quot;Failed to write to the file: &quot; &lt;&lt; fileName &lt;&lt; endl;
+        exit(-1);
+    }
+
+    for (const auto&amp; tokenFreq : tokenFreqs) {
+        outputFile &lt;&lt; tokenFreq.to_string() &lt;&lt; endl;
+    }
+
+    outputFile.close();
+}</B></FONT>
+</PRE>
+</BODY>
+</HTML>

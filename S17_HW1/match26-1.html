@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Udara Gunawardena_350373_assignsubmission_file_Homework1.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Udara Gunawardena_350373_assignsubmission_file_Homework1.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  main.cpp
+//  Homework1
+//  IDE: Xcode 8.2.1
+//  Created by Udara Gunawardena on 1/26/17.
+//  Session: 2PM
+//  Copyright © 2017 Udara Gunawardena. All rights reserved.
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+// Function for finding out the frequency of letters that show up in given sting
+void getLetterFreq(string s){
+   // Initalize char array that lists letters to look for, a-z
+   char alphabet[] = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+
+<A NAME="0"></A>   // For loop that checks for each letter and stores results in an array
+   for(int i = 0; i &lt; 26; i++){
+      char letter = alphabet[i];
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match26-0.html#0',2,'match26-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>      int counter = 0;
+      for(int j = 0; j &lt; s.length(); j++){
+         if(s[j] == letter){
+            counter++;
+<A NAME="1"></A>         }
+      }</B></FONT>
+      // If loop that prints only if the letter shows up at least once
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match26-0.html#1',2,'match26-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>      if(counter != 0){
+         cout&lt;&lt;letter&lt;&lt;&quot;: &quot;&lt;&lt; counter &lt;&lt; endl;
+      }
+   }
+}
+
+// Takes string s and splits words into tokens then stored in a vector
+void StrToTokens(string s){
+   // Initialize vector thats gonna store tokens called list
+   vector&lt;string&gt; list;
+   string word = &quot;&quot;;
+   s = s + &quot; &quot;;
+
+   // For loop that parses through string and pushes &quot;word&quot; when it passes
+   // a whitespace
+   for(int i = 0; i &lt; s.length(); i++){
+      if(s[i] == ' '){
+         // Makes sure that &quot;word&quot; being pushed through isn't whitespace
+         if(word != &quot;&quot;){</B></FONT>
+            list.push_back(word);
+         }
+         word = &quot;&quot;;
+      }
+      else{
+         word = word + s[i];
+      }
+   }
+
+   // For loop that prints out each element in vector list
+   for(int i = 0; i &lt; list.size(); i++){
+      if(i == (list.size()-1)){
+         cout&lt;&lt; list[i] &lt;&lt; endl;
+      }
+      else
+         cout &lt;&lt; list[i] &lt;&lt; &quot;,&quot;;
+   }
+
+}
+
+// Main function that initalizes s by prompting user for input from console
+// Then passes it through functions created
+int main()
+{
+   string s;
+   cout &lt;&lt; &quot;Enter your paragraph:&quot; &lt;&lt; endl;
+   getline(cin,s);
+   cout &lt;&lt; endl &lt;&lt; endl;
+   cout &lt;&lt; &quot;Letter Count: &quot; &lt;&lt; endl;
+   getLetterFreq(s);
+   cout &lt;&lt; endl &lt;&lt; endl;
+   cout &lt;&lt; &quot;Tokens: &quot;;
+   StrToTokens(s);
+   cout &lt;&lt; endl &lt;&lt; endl;
+}
+
+</PRE>
+</BODY>
+</HTML>

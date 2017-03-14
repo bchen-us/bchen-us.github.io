@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Raul Serrano Hernandez_386754_assignsubmission_file_serranoRaul.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Raul Serrano Hernandez_386754_assignsubmission_file_serranoRaul.cpp</CENTER></H3><HR>
+<PRE>
+/*
+ * File: strinCounter.cpp
+ * Author: Raul serrano
+ * compiler: NetBeans
+ * Created on February 13, 2017, 1:10 PM
+ */
+
+
+//libraries
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;sstream&gt;
+#include &lt;algorithm&gt; //for transform
+using namespace std;
+
+//struct functions
+struct TokenFreq
+{
+  string value;
+  int frequency;
+  
+};
+
+//function call
+vector&lt;TokenFreq&gt; getTokenFreq( string  file_Name);
+void selectionSort( vector&lt;TokenFreq&gt; &amp; tokFreqVector );
+void insertionSort( vector&lt;TokenFreq&gt; &amp; tokFreqVector );
+void writeToFile( vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName);
+
+//main program
+int main()
+{
+   string file_name;  
+   cout&lt;&lt; &quot;enter the name of the file&quot;&lt;&lt;endl;
+   getline(cin, file_name);
+   string selecFile = &quot;selOutFile.txt&quot;;
+   string inserFile = &quot;inserOutFile.txt&quot;;
+   vector&lt;TokenFreq&gt; freque = getTokenFreq(file_name);
+   selectionSort( freque );
+    writeToFile( freque, selecFile);
+    insertionSort(freque );
+    writeToFile( freque, inserFile);
+    
+   
+      
+}
+
+vector&lt;TokenFreq&gt; getTokenFreq(string file_name )
+{
+    fstream fin;
+    string word;
+	string token;
+    vector&lt;TokenFreq&gt; freq;
+    fin.open(file_name.c_str());
+    if (!fin.good()){
+      cout&lt;&lt; &quot;Fail to open the file &quot;&lt;&lt;file_name&lt;&lt;endl;
+      exit(-1);
+    }
+    while(fin.good())
+    {  
+      getline(fin, word);
+      istringstream ss(word);
+      while(getline(ss, token, ' ')){
+          transform(token.begin(), token.end(), token.begin(), ::tolower);
+             TokenFreq temp;            
+         for(int i = 0; i &lt; freq.size(); )
+          {
+            if(token == freq[i].value)
+            {
+               freq[i].frequency++;
+                             
+            }   
+            else if(token != freq[i].value)  
+            {
+              
+               temp.value = token;
+<A NAME="0"></A>               temp.frequency=1;
+                    
+            }
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match23-0.html#0',2,'match23-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>           i++;
+          }
+         freq.push_back(temp);
+       }
+      freq.erase(freq.begin());
+      
+    }
+     
+     fin.close();
+            
+    return freq;
+
+
+}
+
+
+
+
+void selectionSort( vector&lt;TokenFreq&gt; &amp;tokFreqVector ){
+      
+      int i, j, minIndex;
+      TokenFreq tmp;    
+      for (i = 0; i &lt; tokFreqVector.size() - 1; i++) {
+            minIndex = i;
+           for (j = i + 1; j &lt; tokFreqVector.size(); j++)
+                 if (tokFreqVector[j].frequency &lt; tokFreqVector[minIndex].frequency)
+                        minIndex = j;
+            if (minIndex != i) {
+                  tmp = tokFreqVector[i];
+                  tokFreqVector[i] = tokFreqVector[minIndex];
+                  tokFreqVector[minIndex] = tmp;
+            }
+      }
+    
+    
+    
+    
+}
+
+
+void insertionSort( vector&lt;TokenFreq&gt; &amp; tokFreqVector ) {
+      int i, j; 
+      TokenFreq tmp;
+      for (i = 1; i &lt; tokFreqVector.size(); i++) {
+            j = i;
+            while (j &gt; 0 &amp;&amp; tokFreqVector[j].frequency &gt; tokFreqVector[j-1].frequency) {
+                  tmp = tokFreqVector[j];
+                  tokFreqVector[j] = tokFreqVector[j - 1];
+                  tokFreqVector[j - 1] = tmp;
+                  j--;
+            }
+      }
+}
+
+void writeToFile( vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName){</B></FONT>
+     fstream fout;
+     fout.open(outFileName, ios::out);
+     for(int i=0; i&lt; tokFreqV.size(); i++){
+         fout &lt;&lt;&quot;( &quot; &lt;&lt;tokFreqV[i].value &lt;&lt; &quot;, &quot;&lt;&lt;tokFreqV[i].frequency &lt;&lt; &quot; )&quot;&lt;&lt;endl;
+         
+     }
+    
+   fout.close(); 
+    
+}
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Peter Malolepszy_386720_assignsubmission_file_csc340 hw2 PMalolep.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Peter Malolepszy_386720_assignsubmission_file_csc340 hw2 PMalolep.cpp</CENTER></H3><HR>
+<PRE>
+/*
+	File: csc340 hw2.cpp
+	Copyright: 
+	Author: Peter Malolepszy
+	Class: CSC 340
+	IDE: Dev C++ 5.11
+	Date: 2/27/2017
+	Description: This program takes in a text file and sorts the words in order of frequency of use within the file
+*/
+
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;cstring&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+struct TokenFreq{	// 
+	string value; 	// word
+	int freq;		// frequency of word
+};
+
+/**** function declarations ****/
+vector&lt;string&gt; StrToTokens (string s); 							// tokenizes a string returning a vector array of strings containing individual words
+vector&lt;TokenFreq&gt; getTokenFreq( string  inFile_name);			// takes a file and seperates the words and counts how often they appear
+void selectionSort( vector&lt;TokenFreq&gt; &amp; tokFreqVector );		// sorts the master list of words and their frequencies using selection sort method
+void insertionSort( vector&lt;TokenFreq&gt; &amp; tokFreqVector );		// sorts the master list of words and their frequencies using insertion sort method
+void writeToFile( vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName); // writes the master list to a specified file, formatted for easier reading
+
+int main(int argc, char** argv) {
+	
+	string in_file = &quot;SteveJobsSpeech2005.txt&quot;; 			// input file location
+	string selection_file = &quot;SelectionSorted.txt&quot;;			// output file location for selection sort
+	string insertion_file = &quot;InsertionSorted.txt&quot;;			// output file location for insertion sort
+	char input;												// Y/N check for user
+	
+	/* check with user about default file name */
+	cout&lt;&lt;&quot;This program will process SteveJobsSpeech2005.txt by default\nWould you like to enter your own file name? Y/N: &quot;;
+	cin.get(input);
+	if(input=='y'||input=='Y'){
+		cout&lt;&lt;&quot;Please enter your file name: &quot;;
+		cin.ignore(); // ignores return carrage
+		getline(cin,in_file);
+	}
+	
+	vector&lt;TokenFreq&gt; theList = getTokenFreq(in_file); // tokenize file into TokenFreq array
+	
+	selectionSort(theList); // sort by selection
+	writeToFile(theList,selection_file); // output sorted list to file
+	
+	insertionSort(theList); // sort(again) by insertion
+	writeToFile(theList,insertion_file); // output to file
+	
+	system(&quot;PAUSE&quot;); // prevent early close
+	return 0; // end
+}// end main function
+
+/**** takes a file and seperates the words and counts how often they appear ****/
+vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name){
+	
+	/*** initialize function variables ***/
+	ifstream inFile;
+	inFile.open(inFile_name.c_str()); //argument filename is opened
+	
+	vector&lt;string&gt; tokenHold;		// temp storage of words to sort into master list
+	vector&lt;TokenFreq&gt; theList;		// master list of words and frequency of the words
+	string strtemp;					// temp storage of input string
+	TokenFreq tftemp;
+	
+	bool matchFound=false;			// used to determine if another entry into master list is needed
+	
+	if(inFile.fail()){ 	// error catch, closes program if it fails to open the file
+		cout&lt;&lt;&quot;Failed to open file at path: &quot;&lt;&lt;inFile_name&lt;&lt;endl;
+		system(&quot;pause&quot;);
+		exit(-1);
+	}
+	// else cout&lt;&lt;&quot;Opened file ok\n&quot;;
+	
+	theList.push_back({&quot;START&quot;,0}); // adds base entry, of 0 frequency, to be deleted later. This prevents loop problems later
+	
+	while(!inFile.eof()){ // run this loop untill you reach the end of the file
+		matchFound=false; //defaulted to no match found
+		inFile&gt;&gt;strtemp; // intake word
+				
+		for(int i=0;i&lt;theList.size();i++){ // for each token in the token holder...
+			if(theList[i].value==strtemp){
+				theList[i].freq++;
+				matchFound=true;
+				break;
+<A NAME="0"></A>			}// end if statment
+		}//end of for loop
+		if(matchFound==false){
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#0',2,'match25-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>			theList.push_back({strtemp,1});
+		}
+	}// end of &quot;while(!eof...&quot;
+	
+	inFile.close(); // always close the door behind you
+	theList.erase(theList.begin()); // gets rid of the START element at the front of the list
+	
+	return theList; // THE LIST IS COMPLETE, SEND IT OUT
+} // end fuction get token frequency
+
+/**** sorts master list using selection sort ****/
+void selectionSort( vector&lt;TokenFreq&gt; &amp; tokFreqVector ){
+	int i,j,min_index;
+	TokenFreq tmp;
+	
+	for(i=0;i&lt;tokFreqVector.size()-1;i++){
+		min_index=i;
+		for(j=i+1;j&lt;tokFreqVector.size();j++){</B></FONT>
+			if(tokFreqVector[j].freq&lt;tokFreqVector[min_index].freq){
+				min_index=j;
+<A NAME="1"></A>			} // end if
+		}//end for loop
+		
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#1',2,'match25-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>		if(min_index!=i){
+			tmp 						= tokFreqVector[i];
+			tokFreqVector[i] 			= tokFreqVector[min_index];
+			tokFreqVector[min_index] 	= tmp;
+		} // end if
+	}//end for loop
+}//end function selectionSort
+
+
+void insertionSort( vector&lt;TokenFreq&gt; &amp; tokFreqVector ){
+	int i,j;
+	TokenFreq tmp;
+	
+	for(i=0;i&lt;tokFreqVector.size();i++){
+		j=i;
+		while(j&gt;0 &amp;&amp; tokFreqVector[j-1].freq &lt; tokFreqVector[j].freq){
+			tmp 				= tokFreqVector[j];
+			tokFreqVector[j] 	= tokFreqVector[j-1];
+			tokFreqVector[j-1] 	= tmp;
+			j--;
+		}// end while loop
+	}//end for loop
+}// end function insertionSort
+
+
+/**** writes formatted master list to given file ****/
+void writeToFile( vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName){</B></FONT>
+	
+	// open the file 
+	ofstream outFile;
+	outFile.open(outFileName);
+	string outWord;
+	int outFreq;
+	
+	if(outFile.fail()){//in case it cant open...
+		cout&lt;&lt;&quot;Somehow the output file failed to open at location: &quot;&lt;&lt;outFileName&lt;&lt;endl;
+		system(&quot;PAUSE&quot;);
+		exit(-1);
+	}// end if statment
+	
+	//outputs each token with frequency to the file
+	for(int i=0;i&lt;tokFreqV.size();i++){
+		outWord=tokFreqV[i].value;
+		outFreq=tokFreqV[i].freq;
+		
+		outFile	&lt;&lt;&quot;(\'&quot;&lt;&lt;outWord&lt;&lt;&quot;\', &quot;&lt;&lt;outFreq&lt;&lt;&quot;),  &quot;;
+	}// end for loop
+	
+	outFile.close();// alway close the file at the end
+	cout&lt;&lt;&quot;Output to file: &quot;&lt;&lt;outFileName&lt;&lt;endl; // quick statement to prevent losing the file
+}// end fuction write to file
+</PRE>
+</BODY>
+</HTML>

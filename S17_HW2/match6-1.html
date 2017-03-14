@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Jordan Cruz-Goodwin_386733_assignsubmission_file_Hw2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Jordan Cruz-Goodwin_386733_assignsubmission_file_Hw2.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  main.cpp
+//  Hw2
+//
+//  Created by Jordan Cruz on 2/23/17.
+//  Copyright © 2017 Jordan CruzJordan Cruz-Goodwin. All rights reserved.
+//
+
+
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;sstream&gt;
+#include &lt;vector&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+using namespace std;
+
+struct TokenFreq {
+    string value;
+    int frequency;
+};
+
+vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name);
+bool xequals(const string&amp; a, const string&amp; b);
+void selectionSort(vector&lt;TokenFreq&gt; &amp; freqVectorToken);
+void insertionSort(vector&lt;TokenFreq&gt; &amp; freqVectorToken);
+void writeToFile(vector&lt;TokenFreq&gt; &amp; freqVectorToken);
+
+
+int main(){
+    //Declare string that will be assinged to input file
+    string inputfile;
+    inputfile = &quot;SteveJobsSpeech2005.txt&quot;;
+    
+    //Create the vector to hold text
+    vector&lt;TokenFreq&gt; tokens;
+    
+    //Call function that will read each token
+    tokens = getTokenFreq(inputfile);
+    selectionSort(tokens);
+    insertionSort(tokens);
+    writeToFile(tokens);
+}
+
+vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name){
+        ifstream fileIn;
+        vector&lt;TokenFreq&gt; similar;
+        TokenFreq nextWord;
+<A NAME="0"></A>        fileIn.open (inFile_name);
+        string word, sentence;
+        
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match6-0.html#0',2,'match6-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>        if (fileIn.is_open()) {
+            while (getline(fileIn, sentence)) {
+                //Place the string &quot;sentence&quot; into the stream &quot;line&quot;
+                istringstream line(sentence);
+                while (line &gt;&gt; word) {
+                    int flag = 0;
+                    for (int y = 0; y &lt; similar.size(); y++) {
+                        if (xequals(similar[y].value, word)) {
+                            similar[y].frequency++;
+                            flag = 1;
+                        }
+                    }
+                    if (flag == 0) {
+                        nextWord.value = word;
+                        nextWord.frequency = 1;
+                        similar.push_back(nextWord);
+                    }
+                }
+            }
+        }
+<A NAME="2"></A>        fileIn.close();
+        return similar;
+        }</B></FONT>
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match6-0.html#2',2,'match6-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>bool xequals(const string&amp; a, const string&amp; b)
+{
+    unsigned int mag = a.size();
+    
+    if (b.size() != mag)
+        return false;
+    for (unsigned int x = 0; x &lt; mag; ++x)
+        if (tolower(a[x]) != tolower(b[x]))
+            return false;
+        return true;
+<A NAME="1"></A>
+}</B></FONT>
+
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match6-0.html#1',2,'match6-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>void selectionSort(vector&lt;TokenFreq&gt; &amp; freqVectorToken)
+{
+    int i, j, first;
+    TokenFreq temp;
+    int vecLength = freqVectorToken.size();
+    for (i = vecLength - 1; i &gt; 0; i--)
+    {   // initialize to subscript of first element
+        first = 0;
+        // locate smallest between positions 1 and i.
+        for (j=1; j&lt;=i; j++)
+        {
+            if (freqVectorToken[j].frequency &lt; freqVectorToken[first].frequency)
+                first = j;
+        }
+        // Swap smallest found with element in position i.
+        temp = freqVectorToken[first];
+        freqVectorToken[first] = freqVectorToken[i];
+        freqVectorToken[i] = temp;
+    }
+    
+}</B></FONT>
+
+void insertionSort(vector&lt;TokenFreq&gt; &amp; freqVectorToken){
+    int x, y, temp;
+    int vecLength = freqVectorToken.size();
+    
+    for (x = 1; x &lt; vecLength; x++) {
+        y = x;
+        while (y &gt; 0 &amp;&amp; (vecLength - 1) &gt; freqVectorToken[y].frequency) {
+            temp = freqVectorToken[y];
+            freqVectorToken[y] = freqVectorToken[y - 1];
+            freqVectorToken[y - 1] = temp;
+            y--;
+        }
+    }
+}
+void writeToFile(vector&lt;TokenFreq&gt; &amp; freqVectorToken, string outFileName){
+    ofstream outFile(outFileName.c_str());
+    for (int x = 0; x &lt; freqVectorToken.size(); x++) {
+        outFile &lt;&lt; freqVectorToken[x].value &lt;&lt; &quot; - &quot; &lt;&lt; freqVectorToken[x].frequency &lt;&lt; &quot;\n&quot;;
+    }
+    outFile.close();
+}
+
+</PRE>
+</BODY>
+</HTML>

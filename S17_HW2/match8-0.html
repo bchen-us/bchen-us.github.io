@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Vanita Rani_386721_assignsubmission_file_CSC022817.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Vanita Rani_386721_assignsubmission_file_CSC022817.cpp</CENTER></H3><HR>
+<PRE>
+/*
+Name: 		Vanita Rani
+Course: 	CSC340-02
+Date: 		February 28, 2017
+IDE: 		Dev-C++ 5.11
+Objective: 	to count and sort all unique tokens in a file 
+*/
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;fstream&gt;
+#include &lt;vector&gt;
+#include &lt;cstdlib&gt;
+<A NAME="0"></A>using namespace std;
+
+//creating data structure for value and freq
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match8-1.html#0',3,'match8-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>struct TokenFreq {
+	string value;
+	int freq;
+};
+
+//read and store tokens from input file
+vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name){
+vector&lt;TokenFreq&gt; output;
+ifstream inFile(inFile_name.c_str());
+string temp;
+	while(inFile &gt;&gt; temp){
+		int index = -1;
+		for(int i = 0; i &lt; output.size(); i++){
+			if(output[i].value.compare(temp) == 0){
+				index = i;
+			break;
+			}
+		}
+		if(index == -1){
+			TokenFreq t = {temp, 1};
+			output.push_back(t);
+		}
+		else{
+			output[index].freq++;
+		}
+	}
+	return output;
+}
+
+//use selectionSort to arrange vector in ascending elements
+void selectionSort( vector&lt;TokenFreq&gt; &amp; tokFreqVector ) {
+    int minimum;
+    int location;
+<A NAME="1"></A>    int length = tokFreqVector.size();
+    TokenFreq temp;
+    
+    for (int i = 0; i &lt; length - 1; i++) {</B></FONT><FONT color="#f63526"><A HREF="javascript:ZweiFrames('match8-1.html#1',3,'match8-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+        minimum = i;
+        for (location = i + 1; location &lt; length; location++) {
+            if (tokFreqVector[location].freq &lt; tokFreqVector[minimum].freq) {
+                minimum = location;
+            }
+        }</B></FONT>
+        temp = tokFreqVector[minimum];
+        tokFreqVector[minimum] = tokFreqVector[i];
+        tokFreqVector[i] = temp;
+        
+    }
+}
+
+//use insertionSort to arrange vector in descending elements
+void insertionSort( vector&lt;TokenFreq&gt; &amp; tokFreqVector ) {
+	/*	int i, j, tmp;
+      for (i = 1; i &lt; tokFreqVector.size(); i++) {
+            j = i;
+            while (j &gt; 0 &amp;&amp; TokenFreq[j - 1] &gt; TokenFreq[j]) {
+                  tmp = TokenFreq[j];
+                  TokenFreq[j] = TokenFreq[j - 1];
+                  TokenFreq[j - 1] = tmp;
+<A NAME="2"></A>                  j--;
+            }
+     }*/ 
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match8-1.html#2',3,'match8-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    }
+
+
+//write to file with the sorted vectors 
+void writeToFile( vector&lt;TokenFreq&gt; &amp; tokFreqV, string outFileName) {
+	ofstream outFile(outFileName.c_str());
+	for(int i = 0; i &lt; tokFreqV.size(); i++){
+		outFile &lt;&lt; tokFreqV[i].value &lt;&lt; &quot; - &quot; &lt;&lt; tokFreqV[i].freq &lt;&lt; &quot;\n&quot;;
+	}
+	outFile.close();
+}
+
+int main() {</B></FONT>
+	ifstream inputFile;
+    string fileName;
+	cout &lt;&lt; &quot;Enter the file name (add '.txt'): &quot;;
+	getline (cin, fileName);
+	inputFile.open(fileName.c_str());
+	//check to see if file exists 
+	//file does not exist
+	if (inputFile.fail()) {
+    	cout &lt;&lt; &quot;Error Opening File. Please try again.&quot; &lt;&lt; endl;
+       	exit(1);
+	}
+	//file exists
+	while (!inputFile.eof()) {
+		//call getTokenFreq and print output
+    	getTokenFreq(fileName);
+    	vector&lt;TokenFreq&gt; input = getTokenFreq(fileName);
+    	cout &lt;&lt; &quot;After having called the getTokenFreq() function, the list of (token, freq) pairs are: &quot; &lt;&lt; endl;
+		for(int i = 0; i &lt; input.size(); i++){
+			cout &lt;&lt; input[i].value &lt;&lt; &quot; : &quot; &lt;&lt; input[i].freq &lt;&lt; &quot;, &quot;;
+		}
+		//call selection sort 
+		cout &lt;&lt; &quot;\n\nAfter having called the selectionSort() function, the sorted vector of token-freq pairs will contain the following information: &quot; &lt;&lt; endl;
+		selectionSort(input);
+		for(int i = 0; i &lt; input.size(); i++){
+			cout &lt;&lt; input[i].value &lt;&lt; &quot; : &quot; &lt;&lt; input[i].freq &lt;&lt; &quot;, &quot;;
+		}
+		//File 1 ascending
+		writeToFile(input, &quot;Selection_sort.txt&quot;);
+		//call insertion sort
+		insertionSort(input);
+		//File 2 decending
+		writeToFile(input, &quot;Insertion_sort.txt&quot;);
+		exit(1);
+	}
+
+	inputFile.close();
+    
+}
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Udara Gunawardena_386688_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Udara Gunawardena_386688_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  main.cpp
+//  Homework2
+//
+//  Created by Udara Gunawardena on 2/23/17.
+//  Copyright © 2017 Udara Gunawardena. All rights reserved.
+//
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;fstream&gt;
+
+<A NAME="0"></A>using namespace std;
+
+//Struct setup for TokenFreq
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match26-1.html#0',3,'match26-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>struct TokenFreq{
+   string value;
+   int freq;
+};
+
+//Prototypes
+vector&lt;TokenFreq&gt;getTokenFreq(string inFile_name);
+void selectionSort(vector&lt;TokenFreq&gt; &amp;tokFreqVector);
+void insertionSort(vector&lt;TokenFreq&gt; &amp;tokFreqVector);
+void writeToFile(vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName);
+
+
+int main(){
+   //Requests user for name of file
+   string filename;
+   cout &lt;&lt; &quot;What is the name of the file you want to use?: &quot; &lt;&lt; endl;
+   getline(cin,filename);
+   //Calls initial function to create a vector list of TokenFreq based on file
+   vector&lt;TokenFreq&gt; list = getTokenFreq(filename);
+   vector&lt;TokenFreq&gt; unsorted = list;
+   //Runs a selection sort on vector list
+   selectionSort(list);
+   vector&lt;TokenFreq&gt; selectionSorted = list;</B></FONT>
+   writeToFile(selectionSorted, &quot;selectionSortedList.txt&quot;);
+   //Runs a insertionSort on vector list
+   insertionSort(list);
+   vector&lt;TokenFreq&gt; insertionSorted = list;
+   writeToFile(insertionSorted, &quot;insertionSortedList.txt&quot;);
+
+};
+
+vector&lt;TokenFreq&gt;getTokenFreq(string inFile_name){
+   int index = 0;
+   TokenFreq word;
+   //Initializes vector of strings to store words
+   vector&lt;string&gt; list;
+   //Initializes vector of TokenFreqs to store words and associated frequnecy
+   vector&lt;TokenFreq&gt; countedlist;
+   ifstream inFile;
+   string linestr;
+   //Opens requested file
+   inFile.open(inFile_name);
+
+   //Returns error if file isnt present in its directory
+   if (inFile.fail()){
+      cout &lt;&lt; &quot;Fail to open specified file \n&quot;;
+      exit(-1);
+   }
+
+   //Reads in file line by line
+   while (!inFile.eof()){
+      getline(inFile, linestr);
+      string word = &quot;&quot;;
+      // For loop that parses through string and pushes &quot;word&quot; when it passes
+      // a whitespace or non alpha characters
+      for(int i = 0; i &lt; linestr.length(); i++){
+         if(word == &quot;&quot;){
+            if(isalpha(linestr[i]) == true){
+               char temp = tolower(linestr[i]);
+               word = word + temp;
+            }
+         }
+         else if(linestr[i] != ' ' and linestr[i] != '?' and linestr[i] != '!'
+                 and linestr[i] != '.' and linestr[i] != ':'
+                 and linestr[i] != ',' and linestr[i] != ';'){
+            char temp = tolower(linestr[i]);
+            word = word + temp;
+         }
+         else{
+            if(word != &quot;&quot;){
+            list.push_back(word);
+            word = &quot;&quot;;
+            }
+         }
+      }
+   }
+   //Stores counted structs in an unordered vector
+   for(int i = 0; i &lt; list.size(); i++){
+      index = -1;
+      for(int j = 0; j &lt; countedlist.size(); j++){
+         if(list [i] == countedlist[j].value){
+            index = j;
+         }
+      }
+      if(index == -1){
+         word.value = list[i];
+         word.freq = 1;
+         countedlist.push_back(word);
+<A NAME="1"></A>      }
+      else{
+         countedlist[index].freq ++;
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match26-1.html#1',3,'match26-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>      }
+   }
+
+   return countedlist;
+};
+
+//Selection sort that takes in a reference vector of type TokenFreq and orders
+//it in decending order of token frequency
+void selectionSort(vector&lt;TokenFreq&gt; &amp;tokFreqVector){
+   TokenFreq word;
+   int i, j, minIndex;
+   for(i = 0; i &lt; tokFreqVector.size() - 1; i++){
+      minIndex = i;
+      for(j = i + 1; j &lt; tokFreqVector.size(); j++){</B></FONT>
+         if(tokFreqVector[j].freq &lt; tokFreqVector[minIndex].freq)
+            minIndex = j;
+         if(minIndex != i){
+         word = tokFreqVector[i];
+<A NAME="2"></A>         tokFreqVector[i] = tokFreqVector[minIndex];
+         tokFreqVector[minIndex] = word;
+         }
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match26-1.html#2',3,'match26-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>      }
+   }
+};
+
+//Insertion sort that takes in a reference vector of type TokenFreq and orders
+//it in increasing order of token frequency
+void insertionSort(vector&lt;TokenFreq&gt; &amp;tokFreqVector){
+   TokenFreq word;
+   int i, j;
+   for (i = 1; i &lt; tokFreqVector.size(); i++){
+      j = i;
+      while (j &gt; 0 &amp;&amp; tokFreqVector[j - 1].freq &lt; tokFreqVector[j].freq) {
+         word = tokFreqVector[j];
+         tokFreqVector[j] = tokFreqVector[j - 1];
+         tokFreqVector[j - 1] = word;
+         j--;
+      }
+   }
+};
+
+//Function that takes in a refrence to a vector of type TokenFreq, and a string
+//for which it names output file to which it outputs initial vector
+void writeToFile(vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName){</B></FONT>
+   ofstream write(outFileName);
+   for(int i = 0; i &lt; tokFreqV.size(); i++){
+      if(i == (tokFreqV.size()-1)){
+         write &lt;&lt; &quot;[&quot; &lt;&lt; tokFreqV[i].value &lt;&lt; &quot;,&quot; &lt;&lt; tokFreqV[i].freq &lt;&lt; &quot;]&quot; &lt;&lt; endl;
+      }
+      else{
+         write &lt;&lt; &quot;[&quot; &lt;&lt; tokFreqV[i].value &lt;&lt; &quot;,&quot; &lt;&lt; tokFreqV[i].freq &lt;&lt; &quot;],&quot; &lt;&lt; endl;
+      }
+   }
+};
+
+
+</PRE>
+</BODY>
+</HTML>

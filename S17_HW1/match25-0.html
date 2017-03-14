@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Gabriel Equitz_350318_assignsubmission_file_homework1.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Gabriel Equitz_350318_assignsubmission_file_homework1.cpp</CENTER></H3><HR>
+<PRE>
+/*
+ Gabriel Equitz - student id:  915254839 
+ * Homework 1 - CSC 340  
+ * computer code that finds the frequency of characters in a sentence and the 
+ * tokens (words) of a sentence.
+ * 02/11/2017
+ */
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+
+
+using namespace std;
+
+//function declarations
+void getLetterFreq(string aString);
+void StrToTokens(string aString);
+
+
+int main(int argc, char** argv) {
+ // local variable declaration
+  string s ;
+
+  //ask the user to type a sentence.
+  cout &lt;&lt; &quot;Type a sentence and press the key Enter or just press the key Enter to use the default sentence.&quot; &lt;&lt; endl;
+
+  getline(cin,s);
+
+  //if no sentence is entered use default sentence.
+  if (s.length() == 0) {
+    s = &quot;Always remember that you are unique. Just like everyone else.&quot;;
+    cout &lt;&lt; s &lt;&lt; endl;
+  }
+
+  cout &lt;&lt; endl;
+
+
+
+  // calling function to get the letter frequency
+   getLetterFreq(s);
+   
+  // calling the function to display the tokens
+    cout &lt;&lt; endl;
+    cout &lt;&lt; &quot;The tokens are : &quot; &lt;&lt; endl;
+    StrToTokens(s);
+
+<A NAME="0"></A>    return 0;
+}
+//function that returns letter frequency
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match25-1.html#0',3,'match25-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>void getLetterFreq(string aString)
+{
+  
+  int countN  ;
+  
+  //loop through all the letters of the alphabet
+  for (char c = 'a'; c &lt;= 'z'; c++){
+
+    countN = 0;
+    // loop through all the characters of aString
+    for (int i = 0; i &lt; aString.length(); i++){
+
+       if (aString[i] == c || aString[i] == toupper(c))
+          countN = countN + 1;</B></FONT>
+
+    } //close i for
+
+    if (countN &gt; 0) {
+      cout &lt;&lt; &quot;The frequency of &quot; &lt;&lt; c &lt;&lt; &quot; is: &quot; &lt;&lt; countN &lt;&lt; endl;
+
+    } //close if
+
+  } //close c for 
+
+
+
+}
+//function that splits a string into tokens
+void StrToTokens(string aString) {
+
+<A NAME="1"></A>   int iBeg = 0;
+   int iEnd;
+   char aDelimiter = ' ';
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match25-1.html#1',3,'match25-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>   int nWord = 0; 
+   string aWord[100];
+    // loop through all the characters of aString
+    for (int i = 0; i &lt;= aString.length(); i++){
+
+      if  (aString[i] == aDelimiter) {
+         iEnd = i;
+         //substring(start index, span)
+         aWord[nWord] = aString.substr(iBeg,iEnd-iBeg);
+         nWord = nWord + 1;</B></FONT>
+         
+         iBeg = i+1;
+
+      } // close if
+
+    } // close for
+   
+   //stores the last token
+   aWord[nWord] = aString.substr(iBeg,aString.length()-iBeg);
+           
+   //displays the tokens        
+   for (int i = 0; i &lt;= nWord; i++){
+       cout &lt;&lt; aWord[i] &lt;&lt; endl;
+   } // close for
+    
+}
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

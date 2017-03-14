@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Albert Du_386725_assignsubmission_file_Homework 2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Albert Du_386725_assignsubmission_file_Homework 2.cpp</CENTER></H3><HR>
+<PRE>
+/**
+	CSC 340 Homework 2
+	Homework2.cpp
+	
+	Purpose: To count and sort all unique word tokens
+	and their frequencies from an input text file. Afterwards, store the tokens 
+	by ascending and descending frequencies in two separate text files. 
+	
+	IDE: Dev C++
+	
+	@author Albert Du
+	@date February 28, 2017
+*/
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;fstream&gt;
+#include &lt;sstream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+struct TokenFreq
+{
+	std::string value;	// String token
+	int freq;			// Frequency of the word.
+};
+
+/**
+	Reads the input file line by line, identifies all unique word tokens
+	(case insensitive) in the file and the frequency of each token. 
+	Tokens and their frequencies are stored in a vector which is returned.
+	
+	@param inFile_name File being read.
+	@return A vector containing word tokens and their frequencies.
+*/
+vector&lt;TokenFreq&gt;getTokenFreq(string inFile_name);
+
+/**
+	Sorts a vector of token frequencies in ascending order using selection sort.
+	
+	@param &amp;tokFreqVector A vector containing tokens and their frequencies.
+*/
+void selectionSort(vector&lt;TokenFreq&gt; &amp;tokFreqVector);
+
+/**
+	Sorts a vector of token frequencies in descending order using insertion sort. 
+	
+	@param &amp;tokFreqVector A vector containing tokens and their frequencies.
+*/
+void insertionSort(vector&lt;TokenFreq&gt; &amp;tokFreqVector);
+
+/**
+	Receives a Vector of TokenFreq objects and writes each
+	token and its frequency on a separate line in the specified file.
+	
+	@param &amp;tokFreqV A vector of tokens and their frequencies.
+	@param outFileName Name of the output file
+*/
+void writeToFile(vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName);
+
+int main()
+{
+	std::string filename;	
+	
+	cout &lt;&lt; &quot;Enter the name of the input file: &quot;;
+	std::getline(cin, filename);
+	cout &lt;&lt; &quot;\nReading &quot; &lt;&lt; filename &lt;&lt; endl;
+	
+	// Stores frequency of all words from the input file. 
+	vector&lt;TokenFreq&gt; wordFreq = getTokenFreq(filename);
+	
+	if(!wordFreq.empty())
+	{
+		std::string ascendingFile;
+		std::string descendingFile;
+		
+		// Sort frequencies in ascending order and write to a file.
+		selectionSort(wordFreq);
+		cout &lt;&lt; &quot;Enter name of file to write word tokens in ascending order: &quot;;
+		std::getline(cin, ascendingFile);	
+		writeToFile(wordFreq, ascendingFile);
+		
+		// Sort frequencies in descending order and write to a file.
+		insertionSort(wordFreq);	
+		cout &lt;&lt; &quot;Enter name of file to write word tokens in descending order: &quot;;
+		std::getline(cin, descendingFile);
+		writeToFile(wordFreq, descendingFile);
+	}
+	
+	return 0;
+}
+
+//  Reads the input file line by line, identifies all unique word tokens
+//	(case insensitive) in the file and the frequency of each token. 
+//	Tokens and their frequencies are stored in a vector which is returned.
+vector&lt;TokenFreq&gt;getTokenFreq(string inFile_Name)
+{
+	vector&lt;TokenFreq&gt; tokens;
+	
+	// Word token to be stored.
+	TokenFreq word;
+	bool wordFound = 0;
+	
+	// Line to be read.
+	std::string s;
+	
+	ifstream file;	
+	file.open(inFile_Name.c_str());
+	
+	if(file.fail())
+	{
+		cout &lt;&lt; &quot;Error: failed to open &quot; &lt;&lt; inFile_Name.c_str() &lt;&lt; endl;
+		exit(1);
+	}
+	
+	// Read file line by line, separating words by white space.
+	while(!file.eof())
+	{
+		std::getline(file, s, ' ');	
+		
+		// Convert word to lowercase for case insensitive comparison.	
+		std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+		
+		word.value = s;
+		wordFound = 0;
+		
+		// Automatically store the first word in the token vector.
+		if(tokens.empty() &amp;&amp; !word.value.empty())
+		{
+			word.freq = 1;
+			tokens.push_back(word);
+		}
+		
+		// If the vector isn't empty, sequentially search the vector for the word.
+		else
+		{
+			int i = 0;
+			
+			while(wordFound == 0 &amp;&amp; i &lt; tokens.size())
+			{
+				if(word.value == tokens[i].value)
+				{
+					tokens[i].freq++;	// Increase frequency.
+					wordFound = 1;		// Stop searching once the word is found.
+				}
+								
+				// If the word isn't found, store it in the vector. 
+				else if(i == tokens.size() - 1 &amp;&amp; word.value != tokens[i].value)
+				{
+					word.freq = 1;
+					tokens.push_back(word);
+					wordFound = 1;		// Stop searching.
+				}
+				
+				i++;
+			}
+		}
+	}
+	
+	// Display if the file has no words.
+<A NAME="0"></A>	if(tokens.empty())
+	{		
+		cout &lt;&lt; &quot;Error: there are no words in this file.&quot; &lt;&lt; endl;
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match24-0.html#0',2,'match24-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	}
+	
+	file.close();
+	return tokens;
+}
+
+//	Sorts a vector of token frequencies in ascending order using selection sort.	
+void selectionSort(vector&lt;TokenFreq&gt; &amp;tokFreqVector)
+{
+	int i, j, minIndex;
+	TokenFreq temp;
+	
+	for(i = 0; i &lt; tokFreqVector.size(); i++)
+	{
+		// Position of first unsorted word.   
+		minIndex = i;
+		
+		// Search through unsorted portion of the word vector for the word with smallest frequency.
+		for(j = i + 1; j &lt; tokFreqVector.size(); j++)</B></FONT>
+		{
+			// If found, update index to index of that word.
+			if(tokFreqVector[j].freq &lt; tokFreqVector[minIndex].freq)
+			{		
+				minIndex = j;	
+			}
+<A NAME="1"></A>		}
+		
+		// Don't sort if first unsorted word already has smallest frequency.
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match24-0.html#1',2,'match24-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>		if(minIndex != i)
+		{
+			temp = tokFreqVector[i];
+			
+			// First unsorted word and unsorted word with smallest frequency switch positions.
+			tokFreqVector[i] = tokFreqVector[minIndex];		// Becomes part of sorted portion. 
+			tokFreqVector[minIndex] = temp;	
+		}		
+	}
+}
+
+//	Sorts a vector of word token frequencies in descending order using insertion sort. 
+void insertionSort(vector&lt;TokenFreq&gt; &amp;tokFreqVector)
+{
+	int i, j;
+	TokenFreq temp;
+		
+	// Sort in descending order.
+	for(i = 1; i &lt; tokFreqVector.size(); i++)
+	{
+		// First unsorted word.
+		temp = tokFreqVector[i];</B></FONT>
+		
+		j = i-1;
+		
+<A NAME="2"></A>		// Move unsorted word ahead of any sorted words with lower frequency.
+		while(j &gt;= 0 &amp;&amp; temp.freq &gt; tokFreqVector[j].freq)
+		{
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match24-0.html#2',2,'match24-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>			tokFreqVector[j+1] = tokFreqVector[j];
+			tokFreqVector[j] = temp;
+			j--;
+		}	
+	}		
+}
+
+//	Receives a Vector of TokenFreq objects and writes each
+//	token and its frequency on a separate line in the specified file.
+void writeToFile(vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName)
+{
+	ofstream outfile;
+	outfile.open(outFileName.c_str(), ios::app);
+	
+	for(int i = 0; i &lt; tokFreqV.size(); i++)
+	{
+		outfile &lt;&lt; tokFreqV[i].value &lt;&lt; &quot;: &quot; &lt;&lt; tokFreqV[i].freq &lt;&lt; endl;
+	}	
+	
+	outfile.close();	
+}</B></FONT>
+
+</PRE>
+</BODY>
+</HTML>

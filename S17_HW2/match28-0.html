@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Steve Rentschler_386694_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Steve Rentschler_386694_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+struct TokenFreq{ // creates a struct for TokenFreq with a string value and int freq
+
+string value;
+int freq;
+
+};
+
+vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name) { // reads the file and puts tokens into a vector
+
+    vector&lt;TokenFreq&gt; returnVector;
+
+    int flag = 0;
+
+    returnVector.push_back(TokenFreq()); // puts each word into the vector
+
+    for (int i = 0; i &lt; inFile_name.length(); i++) {
+
+        if (inFile_name[i] == ' ') {
+            flag = 0;
+
+
+            return returnVector;
+        }
+    }
+}
+
+
+<A NAME="0"></A>
+
+void selectionSort(vector&lt;TokenFreq&gt; &amp; tokFreqVector) //sorts tokens in increasing order
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match28-1.html#0',3,'match28-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>        {
+    int i, j, minIndex;
+    TokenFreq tmp;
+
+    for (i = 0; i &lt; tokFreqVector.size() - 1; i++) { // loop for finding frequency of tokens
+        minIndex = i;
+
+        for (j = i + 1; j &lt;tokFreqVector.size() ; j++)
+
+            if (tokFreqVector[j].freq &lt; tokFreqVector[minIndex])
+                minIndex = j;
+
+        if (minIndex != i) { // sorts through tokens
+
+            tmp = tokFreqVector[i];
+            tokFreqVector[i] = tokFreqVector[minIndex];
+            tokFreqVector[minIndex] = tmp;
+        }
+    }
+<A NAME="1"></A>}
+
+
+void insertionSort(vector&lt;TokenFreq&gt; &amp; tokFreqVector) { // sorts tokens in decending order</B></FONT><FONT color="#f63526"><A HREF="javascript:ZweiFrames('match28-1.html#1',3,'match28-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+
+    int i, j;
+    TokenFreq tmp;
+
+    for (i = 1; i &lt; tokFreqVector.size(); i++) { // loops through the vector of tokens
+        j = i;
+
+        while (j != i) { // sorts through tokens
+
+            tmp = tokFreqVector[j];
+            tokFreqVector[j] = tokFreqVector[j - 1];
+            tokFreqVector[j - 1] = tmp;
+            j--;
+        }
+    }
+}
+
+void writeToFile(vector&lt;TokenFreq&gt; &amp; tokFreqVector){ // writes the tokens to the file</B></FONT>
+
+
+
+
+
+}
+
+int main() {
+
+    fstream file;
+    string inFile_name=&quot;SteveJobsSpeech2005.txt&quot;;
+    vector &lt;string&gt; strg;
+    string Num;
+
+    file.open(inFile_name.c_str(), ios::in|ios::out); //opens the file
+
+
+    if (file.fail()){ //checks to see if file is open
+        cerr &lt;&lt; &quot;Failed to open the file: &quot;&lt;&lt;inFile_name &lt;&lt;endl;
+        return(-1);
+    }
+    else{
+        file.open(inFile_name.c_str(), ios::in|ios::out); //opens the file
+    }
+
+    file.clear();
+
+
+    vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name); // calls getTokenFreq
+
+    vector&lt;TokenFreq&gt; selection; // calls the selection sort function
+    selection = getTokenFreq(inFile_name);
+    selectionSort(selection);
+
+    vector&lt;TokenFreq&gt; insertion; // calls the insertion sort function
+    insertion = getTokenFreq(inFile_name);
+    insertionSort(insertion);
+
+    writeToFile(int); // calls the writeTo File function
+
+    return 0;
+}
+</PRE>
+</BODY>
+</HTML>

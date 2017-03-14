@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Phuong Tran_350328_assignsubmission_file_HW1.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Phuong Tran_350328_assignsubmission_file_HW1.cpp</CENTER></H3><HR>
+<PRE>
+
+//
+//  main.cpp
+//  Homework 1
+//
+//  Created by Mimi Tran on 2/11/17.
+//  Copyright © 2017 Phuong Tran. All rights reserved.
+//
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+
+using namespace std;
+
+
+<A NAME="0"></A>void getLetterFreq(string s){
+    
+    //initialize an array to store the frequency of each letter in the alphabet
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match24-1.html#0',3,'match24-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    int freq[26];
+    
+    //initialize a character array of size 26 letters in the alphabet
+    char letters[26] = { 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+    
+    //Loop i: loop thru and count the number of frequency of the 26 letters
+    for(int i = 0 ; i &lt; 26 ; i++){
+        
+        //Loop j: loop thru the 26 letters
+        int count = 0;
+        for(int j = 0 ; j &lt; 26; j++){
+            
+            //set the condition that the j's for-loop only loop until it reaches z (letter[25]) or else count will terminate
+            if(s[j] == letters[i]){
+                count++;
+            } // end if
+        } //end j's for-loop
+        
+        freq[i] = count;
+    } //end i's for-loop
+    
+    //Loop k: loop thru and display both the 26 letter and their frequencies onto the show screen
+    for(int k = 0 ; k &lt; 26 ; k++ ){
+        cout &lt;&lt; letters[k] &lt;&lt; &quot; has frequency of : &quot; &lt;&lt; freq[k] &lt;&lt; endl ;
+    } // end k's loop
+} //end getLetterFreq()
+
+
+void StrToTokens(string s){</B></FONT>
+    
+    cout &lt;&lt; &quot;The Tokens are: &quot; &lt;&lt; &quot;\t&quot; &lt;&lt; endl;
+    
+    //Initialize a vector to store the string of input word into the vector @var array
+    vector&lt;string&gt; array;
+    
+    //Initialize an empty string of @var str
+    string str = &quot; &quot;;
+    
+    //Loop to check for any white space found in the input string
+    for(int i=0; i&lt;s.size(); i++){
+        
+        //Set condition using isspace to check for white space
+        //If there is NO white space, then the first token is added to the vector
+        if (!isspace(s[i])){
+            str += s[i];
+        } //end if
+        //If there is a white space between two tokens, then use push_back() to add new token at the end of the vector
+        if (isspace(s[i])){
+        
+            if(str!= &quot;&quot;){
+                array.push_back(str);
+            } //end if
+            
+        str = &quot;&quot;;
+        } //end if
+    } // end for-loop
+    
+    
+    //Make a for-loop to display all the tokens in the vector
+    array.push_back(str);
+    for(int i=0; i&lt;array.size(); i++){
+        cout &lt;&lt; array[i] + &quot;,  &quot;;
+    } //end for-loop
+    cout &lt;&lt; endl;
+    
+    
+}
+
+
+
+int main(){
+
+    string s;
+    cout &lt;&lt; &quot;Type in your text here:  \n&quot;;
+    getline(cin,s);
+    
+    //Set the condition that paragraph consists no more than 100 tokens
+    if(s.length() &gt; 100){
+        cout &lt;&lt; &quot;Your text contains more than 100 tokens. Invalid input!&quot; &lt;&lt; endl;
+    }else{
+        cout &lt;&lt; s &lt;&lt;  &quot;\n&quot;;
+    }//end if-else
+
+    //Call the above 2 functions
+    getLetterFreq(s);
+    StrToTokens(s);
+    
+    return 0;
+    
+    }
+
+</PRE>
+</BODY>
+</HTML>

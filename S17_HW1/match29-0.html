@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Michael Phan_364450_assignsubmission_file_HW1.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Michael Phan_364450_assignsubmission_file_HW1.cpp</CENTER></H3><HR>
+<PRE>
+// Name: HW 1
+// Copyright: Michael Phan
+// Author: Michael Phan
+// Session: 2PM
+// IDE: Xcode
+// Student ID: 20154803
+
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+void getLetterFreq(string input);
+void StrToTokens(string input);
+
+int main()
+{
+    string userInput;
+    
+    cout &lt;&lt; &quot;Enter a message: &quot; &lt;&lt; endl;
+    getline(cin, userInput);
+    
+    getLetterFreq(userInput);
+<A NAME="0"></A>    StrToTokens(userInput);
+    
+    return 0;
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match29-1.html#0',3,'match29-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+void getLetterFreq(string input)
+{
+    vector&lt;char&gt; charsInString; // creating a vector to hold the characters that are in the string
+    for (int i = 0; i &lt; input.size(); i++)
+    {
+        if (charsInString.empty() &amp;&amp; input[i] != ' ') // if the vector is empty, insert the first charater from the string in to the vector
+        {
+            charsInString.push_back(tolower(input[i]));
+        }</B></FONT>
+        
+        else if (find(charsInString.begin(), charsInString.end(), tolower(input[i])) == charsInString.end() &amp;&amp; input[i] != ' ') // checking if the next character from the string is in the vector
+        {
+            charsInString.push_back(tolower(input[i]));
+<A NAME="1"></A>        }
+    }
+    
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match29-1.html#1',3,'match29-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    int charCount = 0; // creating a counter to count the occurence of the letters
+    
+    cout &lt;&lt; &quot;Frequency of the letters&quot; &lt;&lt; endl;
+    for (int j = 0; j &lt; charsInString.size(); j++)
+    {
+        for (int l = 0; l &lt; input.size(); l++)
+        {
+            if (charsInString[j] == tolower(input[l]))
+            {
+                charCount++;
+            }
+        }</B></FONT>
+        cout &lt;&lt; charsInString.at(j) &lt;&lt; &quot;: &quot; &lt;&lt; charCount &lt;&lt; endl;
+        charCount = 0;
+    }
+}
+
+void StrToTokens(string input)
+{
+    string userToken;
+    vector&lt;string&gt; separatedTokens;
+
+    for (int i = 0; i &lt; input.size(); i++)
+    {
+        if(input[i] != ' ' &amp;&amp; input[i] != '\t') // iterating through each char of the string and checking if its a space or \t
+        {
+            userToken += input[i]; // if its not a space or \t, then the char is added to a string
+        }
+        else
+        {
+            separatedTokens.push_back(userToken); // if it hits a space or \t, it adds the string in to the vector
+            userToken = &quot;&quot;; // clears the string to be resued
+        }
+    }
+    
+    if (userToken.length() &gt; 0) // this is here because the message may not end with a delimiter
+    {
+        separatedTokens.push_back(userToken);
+    }
+    
+    if (separatedTokens.size() &gt; 100)
+    {
+        cout &lt;&lt; &quot;Sorry, there are greater than 100 tokens inputted.&quot; &lt;&lt; endl;
+        return;
+    }
+    
+    vector&lt;string&gt;::iterator i;
+    cout &lt;&lt; &quot;The tokens of the string are: &quot; &lt;&lt; endl;
+    for (int j = 0; j &lt; separatedTokens.size(); j++)
+    {
+        cout &lt;&lt; &quot;'&quot; &lt;&lt; separatedTokens.at(j) &lt;&lt; &quot;'&quot; &lt;&lt; &quot;, &quot;;
+    }
+    cout &lt;&lt; endl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

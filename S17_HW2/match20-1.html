@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Chandra Pradyumna Adusumilli_386763_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Chandra Pradyumna Adusumilli_386763_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/* 
+ * File:   main.cpp
+ * Author: Pradyumna
+ *
+ * Created on February 21, 2017, 11:50 AM
+ */
+#include &lt;string.h&gt;
+#include &lt;sstream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;vector&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+struct tokenFreq { string word; int frequency; };
+<A NAME="0"></A>
+void addTokens(string token,vector&lt;tokenFreq&gt;&amp; tokenList){
+    bool flag = false;
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match20-0.html#0',2,'match20-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    for(tokenFreq &amp;it : tokenList){
+        if(it.word==token){
+            it.frequency++;
+            flag=true;
+            break;
+        }
+    }
+    if(!flag){
+        tokenFreq temp;
+        temp.frequency=1;
+        temp.word=token;
+        tokenList.push_back(temp);
+    }</B></FONT>
+}
+
+void tokenizeLine(string line,vector&lt;tokenFreq&gt;&amp; tokenList){
+    string temp=&quot;&quot;;
+    for(int i=0;i&lt;line.length();i++){
+        if(line[i]==' ' || line[i]=='?' || line[i]==',' || line[i]=='.' || line[i]=='&quot;'){
+            if(temp.length()&gt;0){
+                addTokens(temp,tokenList);
+                temp=&quot;&quot;;
+            }
+        }
+        else{
+            temp+=line[i];
+        }
+<A NAME="2"></A>    }
+    if(temp.length()&gt;0){
+        addTokens(temp,tokenList);
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match20-0.html#2',2,'match20-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    }
+}
+
+void insertionSort(vector&lt;tokenFreq&gt; &amp;tokenList){
+    int i,j;
+    tokenFreq t;
+    for(i=1;i&lt;tokenList.size();i++){
+        t=tokenList[i];
+        j=i-1;
+        while(j&gt;=0 &amp;&amp; tokenList[j].frequency&lt;t.frequency){
+            tokenList[j+1]=tokenList[j];
+            j--;
+        }
+        tokenList[j+1]=t;
+    }
+<A NAME="1"></A>}
+
+void selectionSort(vector&lt;tokenFreq&gt; &amp;tokenList){</B></FONT>
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match20-0.html#1',2,'match20-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    int i,j,min;
+    tokenFreq t;
+    for(i=0;i&lt;tokenList.size()-1;i++){
+        min=i;
+        for(j=i+1;j&lt;tokenList.size();j++){
+            if(tokenList[j].frequency&lt;tokenList[min].frequency){
+                min=j;
+            }
+        }
+        if(min!=i){</B></FONT>
+            t=tokenList[i];
+            tokenList[i]=tokenList[min];
+            tokenList[min]=t;
+        }
+    }
+}
+
+void writeToFile(vector&lt;tokenFreq&gt; tokenList,string fName){
+    fstream fs;
+    fs.open(fName, fstream::in|fstream::out|fstream::app);
+    for(tokenFreq it:tokenList){
+        fs&lt;&lt;it.word+&quot;:&quot;;
+        fs&lt;&lt;it.frequency;
+        fs&lt;&lt;&quot;\n&quot;;
+    }
+    fs.flush();
+    fs.close();
+}
+
+int main(int argc, char** argv) {
+    string fName = &quot;speech.txt&quot;;
+    cout&lt;&lt;&quot;Enter you file:&quot;;
+    getline(cin,fName);
+    string line;
+    ifstream fData(fName);
+    vector&lt;tokenFreq&gt; tokenList;
+    while(getline(fData,line)){
+        tokenizeLine(line,tokenList);
+    }
+    writeToFile(tokenList,&quot;tokens&quot;+fName);
+    selectionSort(tokenList);
+    writeToFile(tokenList,&quot;selectsort&quot;+fName);
+    insertionSort(tokenList);
+    writeToFile(tokenList,&quot;insertsort&quot;+fName);
+    return 0;
+}
+</PRE>
+</BODY>
+</HTML>

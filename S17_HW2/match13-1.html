@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Sierk Daniel Kanis_386716_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Sierk Daniel Kanis_386716_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  main.cpp
+//  Huiswerk2
+//
+//  Created by Sierk Kanis on 26/02/17.
+//  Copyright © 2017 Sierk Kanis. All rights reserved.
+//
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;fstream&gt;
+#include &lt;vector&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sstream&gt;
+
+using namespace std;
+
+// the struct to store the tokens in.
+struct TokenFreq {
+    string value;
+    int freq;
+};
+
+//This function reads the specified input file line by line, identifies all
+//the unique tokens in the file and the frequency of each token. It stores all
+//the identified (token, freq) pairs in a vector and returns this vector to the calling function.
+vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name){
+    ifstream inFile;
+    string line;
+    string token;
+    vector&lt;TokenFreq&gt; tokens;
+    bool flag = 0;
+    int place = -1;
+    inFile.open(inFile_name);
+    
+    //if the file can't be opened.
+    if (inFile.fail()){
+        cout &lt;&lt; &quot;Fail to open the file tmp.txt.\n&quot;;
+        exit(-1);
+    }
+    
+    while ( !inFile.eof() ){
+        getline(inFile, line);
+        stringstream ss(line);
+        while(getline(ss, token, ' ')){
+            //makes all tokens lowercase
+            transform(token.begin(), token.end(), token.begin(), ::tolower);
+            
+            // checks if token is in vector
+            for(int i = 0; i &lt; tokens.size(); i++){
+                if(token == tokens[i].value){
+                    flag = 1;
+                    place = i;
+                }
+            }
+            // when token already is in vector increase its frequency
+            if(flag == 1){
+                tokens[place].freq++;
+                flag = 0;
+            }
+            // else token will be a added.
+            else{
+                TokenFreq word;
+                word.value = token;
+                word.freq = 1;
+                tokens.push_back(word);
+            }
+        }
+    }
+    inFile.close();
+    return tokens;
+<A NAME="0"></A>}
+
+// the selection sort algorithm to sort a vector&lt;TokenFreq&gt; in ascending order of token frequency.
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match13-0.html#0',2,'match13-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>void selectionSort(vector&lt;TokenFreq&gt; &amp; tokFreqVector, int n) {
+    int i, j, minIndex;
+    TokenFreq tmp;
+    for (i = 0; i &lt; n - 1; i++) {
+        minIndex = i;
+        for (j = i + 1; j &lt; n; j++)
+            if (tokFreqVector[j].freq &lt; tokFreqVector[minIndex].freq)
+                minIndex = j;
+        if (minIndex != i) {
+            tmp = tokFreqVector[i];
+            tokFreqVector[i] = tokFreqVector[minIndex];
+            tokFreqVector[minIndex] = tmp;
+        }
+    }
+<A NAME="1"></A>}
+
+// the insertion sort algorithm to sort a vector&lt;TokenFreq&gt; in descending order of token frequency.
+void insertionSort(vector&lt;TokenFreq&gt; &amp; tokFreqVector, int length) {</B></FONT><FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match13-0.html#1',2,'match13-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+    int i, j;
+    TokenFreq tmp;
+    for (i = 1; i &lt; length; i++) {
+        j = i;
+        while (j &gt; 0 &amp;&amp; tokFreqVector[j - 1].freq &lt; tokFreqVector[j].freq) {
+            tmp = tokFreqVector[j];
+            tokFreqVector[j] = tokFreqVector[j - 1];
+            tokFreqVector[j - 1] = tmp;
+            j--;
+        }
+    }
+}
+
+// This function receives a vector of TokenFreq objects and writes each token and
+// its frequency on a separate line in the specified output file.
+void writeToFile(vector&lt;TokenFreq&gt; tokens, string outFileName){
+    ofstream file;
+    file.open (outFileName);
+    for(int i = 0; i &lt; tokens.size(); i++){
+        file &lt;&lt; &quot;'&quot; &lt;&lt; tokens[i].value &lt;&lt; &quot;' : &quot;;
+        file &lt;&lt; tokens[i].freq &lt;&lt; &quot;, &quot; &lt;&lt; endl;
+    }
+    file.close();
+}
+
+// (1) asks the enduser of your program to specify the name of the input file,
+// (2) ) call the getTokenFreq() to identify each unique token and its frequency,
+// (3) call your selection sort  and insertion sort  functions to sort the vector
+// of TokenFreq objects assembled in (2);
+// and (4) call the WriteToFile() function to print out the sorted vectors in two
+// separate files, one in ascending order and the other in descending order.
+int main(int argc, const char * argv[]) {</B></FONT>
+    string inFile_name;// = &quot;SteveJobsSpeech2005.txt&quot;;
+    cout &lt;&lt; &quot;Please, enter the file name: &quot;;
+    getline (cin, inFile_name);
+    vector&lt;TokenFreq&gt; tokens = getTokenFreq(inFile_name);
+    selectionSort(tokens, tokens.size());
+    writeToFile(tokens, &quot;increasing.txt&quot;);
+    insertionSort(tokens, tokens.size());
+    writeToFile(tokens, &quot;decreasing.txt&quot;);
+    return 0;
+}
+</PRE>
+</BODY>
+</HTML>

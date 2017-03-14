@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Cindy Phan_350370_assignsubmission_file_homework1CindyPhan.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Cindy Phan_350370_assignsubmission_file_homework1CindyPhan.cpp</CENTER></H3><HR>
+<PRE>
+//This code was written by Cindy Phan :)
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void getLetterFreq(string s);
+void strToTokens(string s);
+
+int main() {
+	string s = &quot;Always remember that you are unique. Just like everyone else.&quot;;
+	getLetterFreq(s);
+	strToTokens(s);
+
+	system(&quot;Pause&quot;);
+	return 0;
+}
+
+void getLetterFreq(string s) {
+	char space = ' ';
+
+	int arr[26];
+	for (size_t i = 0; i &lt; 26; ++i)
+		arr[i] = 0;
+
+	char alphabet[26] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+		'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+
+<A NAME="0"></A>
+	//makes all characters lowercase and insensitive
+
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#0',2,'match21-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	for (size_t i = 0; i &lt; s.length(); ++i) {
+		switch (tolower(s[i])) {
+
+		case 'a': ++arr[0]; break;
+		case 'b': ++arr[1]; break;
+		case 'c': ++arr[2]; break;
+		case 'd': ++arr[3]; break;
+		case 'e': ++arr[4]; break;
+		case 'f': ++arr[5]; break;
+		case 'g': ++arr[6]; break;
+		case 'h': ++arr[7]; break;
+		case 'i': ++arr[8]; break;
+		case 'j': ++arr[9]; break;
+		case 'k': ++arr[10]; break;
+		case 'l': ++arr[11]; break;
+		case 'm': ++arr[12]; break;
+		case 'n': ++arr[13]; break;
+		case 'o': ++arr[14]; break;
+		case 'p': ++arr[15]; break;
+		case 'q': ++arr[16]; break;
+		case 'r': ++arr[17]; break;
+		case 's': ++arr[18]; break;
+		case 't': ++arr[19]; break;
+		case 'u': ++arr[20]; break;
+		case 'v': ++arr[21]; break;
+		case 'w': ++arr[22]; break;
+		case 'x': ++arr[23]; break;
+		case 'y': ++arr[24]; break;
+		case 'z': ++arr[25]; break;
+
+		}
+	}</B></FONT>
+	for (size_t i = 0; i &lt; 26; ++i) {
+		if (arr[i] != 0)
+			cout &lt;&lt; alphabet[i] &lt;&lt; &quot; : &quot; &lt;&lt; arr[i] &lt;&lt; &quot;, &quot;;
+	}
+
+}
+
+void strToTokens(string s) {
+	vector&lt;string&gt; vect1;
+
+	int count = 0;
+	for (size_t i = 0; i &lt; s.length() + 1; ++i) {
+		if (s[i] == ' ' || s[i] == '\0') {
+			string word1;
+
+			for (size_t j = count; j &lt; i; ++j) {
+				word1 = word1 + s[j];
+			}
+
+			vect1.push_back(word1);
+			count = i + 1;
+		}
+
+	}
+
+	vector&lt;string&gt;::const_iterator viter = vect1.cbegin();
+	for (viter; viter != vect1.cend(); ++viter)
+		cout &lt;&lt; &quot;'&quot; &lt;&lt; *viter &lt;&lt; &quot;', &quot;;
+
+	cout &lt;&lt; endl;
+}
+
+
+</PRE>
+</BODY>
+</HTML>

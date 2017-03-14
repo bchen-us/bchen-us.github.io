@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Wesley Goldfisher_386756_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Wesley Goldfisher_386756_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  Author: Wesley Goldfisher
+//  Date: 2 / 28 / 17
+//  IDE: Xcode
+//  Session: CSC 340.02
+//
+//  Delimeters: only whitespaces
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;fstream&gt;
+#include &lt;sstream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+struct TokenFreq {
+    string value;
+    int freq;
+    // TokenFreq struct object consists of a string variable value and an int variable freq
+};
+
+TokenFreq retTokFreq(string x, int y) {
+    // this function pulls in a string of value x and an int of value y to easily push back TokenFreq
+    
+    TokenFreq z = {x, y}; // initializes TokenFreq z equal to x and y
+    return z; // returns z
+}
+
+vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name) {
+    // this finction pulls in a string of value inFile_name in order to read an inputed file data
+    
+    ifstream inFile; // initializes ifstream object inFile in order to pull in input data
+    vector&lt;TokenFreq&gt; finalRes;
+    // initializes a vector of TokenFreq in order to store value and freq of each token to be returned at end of string
+    int n = 0; // initializes int variable n in order to keep an index of how many tokens are being inputed
+    int freq = 1; // initializes int variable freq to store frequency of each token being inputed
+    vector&lt;string&gt; getToks; // initializes a vector of strings in order to store the result
+    string str; // initializes a string variable s to store all the data from the final initialy
+    string w; // initializes a string variable w to loop through each token and compare it for counting frequency
+
+    inFile.open(inFile_name.c_str()); // opens txt file inFile_name through the ifstream object inFile
+    
+    if (inFile.fail()){
+        // if the reading a file fails then the following code is executed
+        cout &lt;&lt; &quot;Fail to open the file tmp.txt.\n&quot;; // prints out fail message
+        exit(-1); // exits program
+    }
+    
+    while(getline(inFile, str)) {
+        // while loop runs while each line is pulled in from ifstream object inFile
+        stringstream ss(str); // runs stringstream in order to seperate the tokens from line s into variable os
+        string pull; // initializes a string variable pull in order to store each token from stringstream for reinsetion into a vector
+        while (ss &gt;&gt; pull) {
+            // while loop runs while there are still values for os to transfer into pull
+            //pull.erase(remove_if(pull.begin(), pull.end(), [](char&amp; c){return !isalnum(c);}), pull.end());
+            // following function erases all delimiters from string variable pull which includes commas, colons, etc.
+            getToks.push_back(pull); // pull is inserted into vector getToks
+            n++; // adds int n by to index a new token
+        }
+    }
+
+    for(int i = 0; i &lt; n; i++) {
+        transform(getToks[i].begin(), getToks[i].end(), getToks[i].begin(), ptr_fun &lt;int,int&gt; ( &amp;tolower ));
+        // transforms all strings in getToks to a lower case value
+    }
+<A NAME="0"></A>    
+    sort(getToks.begin(), getToks.end()); // sorts the vector getToks into alabetical order in order to correctly count each token
+    
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match37-1.html#0',3,'match37-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    w = getToks[0]; // string w is set equal to the first index of vector getToks in order to correctly count first items in list
+    for(int i = 0; i &lt; getToks.size(); i++){
+        // for loop initializes variable i and adds it by one on each iteration. It runs while int i is less that the size of getToks
+        
+        if(w != getToks[i]) {
+            // if w is not equal to the next iteration getToks then the following code is run
+            finalRes.push_back(retTokFreq(w, freq)); // the return value of retTokFreq is inserted into vector finalRes
+            freq = 0; // freq is set equal to 0 to restart counting
+            w = getToks[i]; // string w is set equal to getToks at index i to restart counting
+<A NAME="1"></A>        }
+        
+        freq++; // adds freq by one on each iteration</B></FONT>
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match37-1.html#1',3,'match37-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    }
+    
+    inFile.close(); // closes inFile
+
+    return finalRes; // returns the value of vector finalRes
+}
+
+
+void selectionSort(vector&lt;TokenFreq&gt; &amp; tokFreqVector) {
+    // selectionSort function pulls in vector of TokenFreq variable tokFreqVector
+    
+    TokenFreq returnTF; // initializes a TokenFreq variable returnTF in order to switch the index of the TokenFreq to a new index
+    int i, j, minIndex; // initializes int i and j to be used for iteration of for loops and minIndex is to keep track of the specific indexes
+    
+    for(i = 0; i &lt; tokFreqVector.size(); i++){
+        // for loop runs while i is less than the size of tokFreqVector minus 1. i is set at 0 and adds by one at each iteration
+        minIndex = i; // minIndex is set equal to value of i
+        for (j = i + 1; j &lt; tokFreqVector.size(); j++){</B></FONT>
+            // for loop runs while j is less than the size of tokFreqVector. j is set equal to i plus 1 and adds j by one on each iteration
+            if (tokFreqVector[j].freq &lt; tokFreqVector[minIndex].freq)
+                // if the int freq of tokFreqVector at index j is less than the int freq of tokFreqVector at index minIndex than the following code is executed
+<A NAME="2"></A>                minIndex = j; // minIndex is set equal to j
+        }
+        
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match37-1.html#2',3,'match37-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>        if(minIndex != i) {
+            // if int minIndex is not equal to int i than the following code is executed to move the larger items down
+            returnTF = tokFreqVector[i]; // the TokenFreq variable returnTF is set equal to tokFreqVector at index i
+            tokFreqVector[i] = tokFreqVector[minIndex]; // tokFreqVector at index i is set equal to tokFreqVector at index minIndex
+            tokFreqVector[minIndex] = returnTF; // tokFreqVector at index minIndex is set equal to TokenFreq variable returnTF
+        }
+    }
+}
+
+void insertionSort(vector&lt;TokenFreq&gt; &amp; tokFreqVector) {
+    // insertionSort function pulls in vector of TokenFreq variable tokFreqVector
+    
+    TokenFreq returnTF;// initializes a TokenFreq variable returnTF in order to switch the index of the TokenFreq to a new index
+    int y, z; // initializes int y and z to be used for iteration of for loops
+    
+    for (y = 0; y &lt; tokFreqVector.size(); y++) {
+        // for loop runs while y is less than the size of tokFreqVector. y is set at 0 and adds by one at each iteration
+        z = y+1; // int z is set equal y plus 1
+        while(z &lt; tokFreqVector.size()) {</B></FONT>
+            // while loop runs while z is less than the size of tokFreqVector.
+            if(tokFreqVector[y].freq &lt; tokFreqVector[z].freq){
+                // if the int freq of tokFreqVector at index y is less than the int freq of tokFreqVector at index z than the following code is executed
+                returnTF = tokFreqVector[y]; // the TokenFreq variable returnTF is set equal to tokFreqVector at index y
+                tokFreqVector[y] = tokFreqVector[z]; // tokFreqVector at index y is set equal to tokFreqVector at index z
+                tokFreqVector[z] = returnTF; // tokFreqVector at index z is set equal to TokenFreq variable returnTF
+            }
+            z++; // adds z by one
+        }
+    }
+    
+}
+
+void writeToFile( vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName) {
+    ofstream outFile; // ofstream variable outFile is initialized in order to create and output a file
+    outFile.open(outFileName.c_str()); // opens txt file outFileName through the ofstream object outFile
+    
+    if (outFile.fail()){
+        // if creating the reading a file fails then the following code is executed
+        cout &lt;&lt; outFileName + &quot; failed to be created\n&quot;; // prints out fail message
+        exit(-1); // exits program
+    }
+
+    outFile &lt;&lt; &quot;[&quot;; // start of the vector of tokens and their frequencies
+    for (int x = 0; x &lt; tokFreqV.size(); x++) {
+        // for loop iterates through size of the vector tokFreqV. initializes int x equal to 0 and adds x by one on each iteration
+        outFile &lt;&lt; &quot;('&quot; &lt;&lt; tokFreqV[x].value &lt;&lt; &quot;', &quot; &lt;&lt; tokFreqV[x].freq &lt;&lt; &quot;)&quot; ; // prints out the string value and int freq in tokFreqV at index x to the outFile
+        if(x != tokFreqV.size()-1) {
+            // if x is not equal to the last index in tokFreqV then a comma is printed into the outFile
+            outFile &lt;&lt; &quot;, &quot; &lt;&lt; endl;
+        }
+    }
+    outFile &lt;&lt; &quot;]&quot; &lt;&lt; endl;// end of the vector of tokens and their frequencies
+    
+    outFile.close(); // closes outFile
+}
+
+
+int main() {
+    string x = &quot;&quot;; // intializes string x to default value for storing of user inputed string for input file
+    vector&lt;TokenFreq&gt; selectToks; // initializes vector of TokenFreq to be used to sorted in ascending order
+    vector&lt;TokenFreq&gt; insertToks; // initializes vector of TokenFreq to be used to sorted in descending order
+
+    
+    cout&lt;&lt;&quot;Please Enter the input File Name: &quot;; // prints out a prompt for user
+    getline (std::cin,x); // getline function pulls in user entered information and sets string x equal to that value
+    
+    selectToks = getTokenFreq(x); // the vector of TokenFreq from file of the name x are placed into vector selectToks
+    insertToks = getTokenFreq(x); // the vector of TokenFreq from file of the name x are placed into vector insertToks
+    
+    selectionSort(selectToks); // the selectrionSort function runs algorithm through vector selectToks and changes it to ascending order
+    insertionSort(insertToks);// the insertionSort function runs algorithm through vector selectToks and changes it to descending order
+
+    writeToFile(selectToks, &quot;selection_sort_TokenFreq.txt&quot;); // creates a file named AscendOutfile.txt with vector selectToks printed to it
+    writeToFile(insertToks, &quot;insertion_sort_TokenFreq.txt&quot;); // creates a file named DecendOutfile.txt with vector insertToks printed to it
+    
+    return 0;
+}
+</PRE>
+</BODY>
+</HTML>

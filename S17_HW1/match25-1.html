@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Alejandro Hannan-Ibarra_350323_assignsubmission_file_340hw1.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Alejandro Hannan-Ibarra_350323_assignsubmission_file_340hw1.cpp</CENTER></H3><HR>
+<PRE>
+/*
+this was written and compiled in devc++
+author: Alejandro Hannan-Ibarra
+*/
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+<A NAME="0"></A>
+using namespace std;
+
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#0',2,'match25-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>void getLetterFreq(string s){//this function checks the frequency of all the letters in the alphabet in a string
+    int count;
+    for(char q ='a';q &lt;= 'z';q++){//this will loop through the entire alphabet
+        count = 0;
+        for(int i = 0; i &lt; s.length(); i++){//compares the current letter of the alphabet to the every character in the string
+        	if(s[i] &lt; 91)//checks to see if its an upper case charecter and down cases it if it is
+				s[i]+= 32;</B></FONT>
+            if(s[i] == q)//compares to the alphabet letter
+                count++;
+        }
+        if(count!= 0){//this was added for less screen clutter so the letters with 0 frequency dont appear
+			cout&lt;&lt;&quot;there are &quot;&lt;&lt;count&lt;&lt;&quot; &quot;&lt;&lt;q&lt;&lt;&quot; in this string.&quot;&lt;&lt;endl;//prints the frequency of each letter
+   		}
+    }
+}
+<A NAME="1"></A>
+void StrToTokens(string s){
+	string token(&quot;&quot;);
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#1',2,'match25-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	int lastToken = 0;
+	vector&lt;string&gt; Token;
+	for(int i = 0; i &lt;= s.length(); i++){
+		if(s[i] == ' ' || i == s.length()){//checks for delimeters or end of string
+			token = s.substr(lastToken, i-lastToken);//makes a token in themo that is from the last delimiter to the current delimiter
+			Token.push_back(token);//puts the tokens into a vector
+			token = &quot;&quot;;//resets the token variable
+			lastToken = i+1;//sets the start of token at the next letter</B></FONT>
+		}
+		
+	}
+	for(int i = 0; i&lt;Token.size(); i++){//goes through the vector of tokens and prints them all
+		cout&lt;&lt;Token[i]&lt;&lt;endl;
+	}
+	
+}
+
+int main() {
+	string s(&quot;This is a very short sentence.&quot;);
+	getLetterFreq(s);
+	StrToTokens(s);
+}
+</PRE>
+</BODY>
+</HTML>

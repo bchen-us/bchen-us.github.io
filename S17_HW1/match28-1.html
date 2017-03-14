@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Deven Selzer_350351_assignsubmission_file_Project 1.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Deven Selzer_350351_assignsubmission_file_Project 1.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  main.cpp
+//  Project 1
+//
+//  Created by Deven Selzer on 2/13/17.
+//  Copyright © 2017 Deven Selzer. All rights reserved.
+//
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+void getLetterFreq(string s){
+    
+    
+    vector&lt;int&gt; frequency (26);
+    
+    
+    char alpha[] = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot; ;
+    vector&lt;char&gt; alphabet( alpha, alpha+sizeof(alpha)-1 ) ;
+    
+    //converts string to upper case
+    for (int i=0; i&lt;s.length(); ++i)
+<A NAME="0"></A>        s[i]=toupper(s[i]);
+
+    //parse for frequencies
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match28-0.html#0',2,'match28-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    for(int parse = 0; parse &lt; s.size(); parse++){
+        for(int j = 0; j &lt; alphabet.size(); j++){
+            if (s.at(parse) == alphabet[j]){
+                frequency[j]++;
+            }
+                
+        }
+    }
+    
+    //printout of frequencies
+    for(int i = 0; i &lt; alphabet.size(); i++){
+        cout &lt;&lt; alphabet[i] &lt;&lt; &quot;: &quot; &lt;&lt; frequency[i] &lt;&lt; endl;
+    }
+    cout &lt;&lt; endl;
+}
+
+void StrToTokens(string s){</B></FONT>
+    
+    
+    vector&lt;char&gt; words;
+    
+    //formatting
+    cout &lt;&lt; &quot;'&quot;;
+    
+    for(int i = 0; i &lt; s.size(); i++){
+        
+        //pushback valid chars to vector
+        if (s.at(i) != ' '){
+            words.push_back(s.at(i));
+            cout &lt;&lt; s.at(i);
+        }
+        
+        //print vector and clear
+        if (s.at(i) == ' '){
+            cout &lt;&lt; &quot;', '&quot;;
+            words.clear();
+            
+        }
+    }
+    cout &lt;&lt; &quot;'&quot; &lt;&lt; endl &lt;&lt; endl;
+}
+
+
+int main(int argc, const char * argv[]) {
+    // insert code here...
+    string s =&quot;In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole, filled with the ends of worms and an oozy smell, nor yet a dry, bare, sandy hole with nothing in it to sit down on or to eat: it was a hobbit-hole, and that means comfort.&quot;;
+    
+    getLetterFreq(s);
+    
+    StrToTokens(s);
+    
+    return 0;
+}
+
+</PRE>
+</BODY>
+</HTML>

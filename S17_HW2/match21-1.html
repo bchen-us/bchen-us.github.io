@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Tina Nguyen_386719_assignsubmission_file_Tina_Nguyen_Project2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Tina Nguyen_386719_assignsubmission_file_Tina_Nguyen_Project2.cpp</CENTER></H3><HR>
+<PRE>
+/*
+    Name: Tina Nguyen
+    IDE: CodeBlocks
+    Session: CSC340-01
+    Date: 2/28/2017
+
+
+*/
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;cstring&gt;
+#include &lt;fstream&gt;
+#include &lt;sstream&gt;
+#include &lt;cstdio&gt;
+
+using namespace std;
+
+struct TokenFreq{       //Struct for each token in the string and its frequency
+    string value;
+    int freq;
+};
+
+
+vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name){
+    char delimiter[] = &quot; ,.\&quot;&quot;;  //4 types of delimiters
+    char *toekin;
+    string text;
+    TokenFreq word;             //struct called word is created.
+    vector&lt;TokenFreq&gt; tokens;   //creates a vector containing TokenFreq(structs), called &quot;tokens&quot;
+    ifstream readfile;
+    readfile.open(inFile_name.c_str()); //Opens inFile_name
+ while (!readfile.eof()) {
+    getline(readfile, text);
+    toekin = strtok(&amp;text[0], delimiter); //Obtains all tokens by delimiters from the string/file.
+        while (toekin != NULL){
+            word.value = toekin;   //Stores each string token into word.value
+<A NAME="0"></A>            word.freq = 1;         //Store word frequency
+           // cout &lt;&lt; word.value &lt;&lt; endl;   //Prints out all words stored into token, as a tester.
+            tokens.push_back(word);
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#0',2,'match21-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>            for(int i = 0; i &lt; tokens.size(); i++){
+                    for(int j = i+1; j &lt; tokens.size(); j++){   // Holds a token to compare to the rest of the vector for any duplicates.
+                        if(tokens[i].value == tokens[j].value){ //If a duplicate is found, increase freq by 1, delete the duplicate.</B></FONT>
+                            tokens[i].freq += 1;
+                            tokens.erase(tokens.begin()+j);
+                        }
+                    }
+
+            }
+            toekin = strtok(NULL,delimiter);
+<A NAME="1"></A>        }
+ }
+    readfile.close();
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#1',2,'match21-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    return tokens;
+}
+
+void selectionSort( vector&lt;TokenFreq&gt; &amp; tokFreqVector ){
+    TokenFreq temp;
+    TokenFreq min;
+
+    for(int i=0; i &lt; tokFreqVector.size(); i++){ //Iterates through vector
+<A NAME="2"></A>            for(int j=0; j &lt; tokFreqVector.size(); j++){ //Iterates through vector while comparing j to i
+                if(tokFreqVector[j].freq &lt; tokFreqVector[i].freq){ //compares first element with whole vector, swaps LOWEST freq to the front.</B></FONT>
+                    min = tokFreqVector[j];
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#2',2,'match21-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>                    temp = tokFreqVector[i];
+                    tokFreqVector[j] = temp;
+                   tokFreqVector[i] = min;
+                }
+
+            }
+
+    }
+
+}
+
+void insertionSort( vector&lt;TokenFreq&gt; &amp; tokFreqVector ){
+    TokenFreq temp;
+    TokenFreq min;
+
+    for(int i=0; i &lt; tokFreqVector.size(); i++){ //Iterates through vector
+            for(int j=0; j &lt; tokFreqVector.size(); j++){ //Iterates through vector while comparing j to i
+                if(tokFreqVector[j].freq &gt; tokFreqVector[i].freq){ //compares first element with whole vector, swaps HIGHEST freq to the front.
+                    min = tokFreqVector[j];
+                    temp = tokFreqVector[i];
+                    tokFreqVector[j] = temp;</B></FONT>
+                   tokFreqVector[i] = min;
+                }
+
+            }
+
+    }
+
+}
+
+void writeToFile( vector&lt;TokenFreq&gt; &amp;tokFreqV, string outFileName){
+   ofstream tofile;
+    vector&lt;TokenFreq&gt; tokens;
+    tokens = tokFreqV;
+    tofile.open(outFileName.c_str());
+        for(int i=0; i &lt; tokens.size(); i++){
+    tofile &lt;&lt; &quot; [ &quot; &lt;&lt; tokens[i].value &lt;&lt; &quot; : &quot; &lt;&lt; tokens[i].freq &lt;&lt; &quot; ] &quot; &lt;&lt; endl; //Writes to file if it's not at the end of reading file.
+    }
+    tofile.close();
+
+}
+
+
+
+int main(){
+    char filename[999]; //Max char size 999 for the input of filename.
+    char filename2[999];
+    ifstream myfile;
+    cout &lt;&lt; &quot;Type input file name:       (Type: SteveJobsSpeech2005.txt)&quot; &lt;&lt; endl;
+    cin.getline(filename, 999);
+
+	vector&lt;TokenFreq&gt; tokens = getTokenFreq(filename);
+	selectionSort(tokens);
+	vector&lt;TokenFreq&gt; tokens2 = getTokenFreq(filename);
+	insertionSort(tokens2);
+
+    cout &lt;&lt; endl &lt;&lt; endl &lt;&lt; &quot;Type output file name for SelectionSort List(Must end in .txt): &quot;  &lt;&lt; endl; //Type output file
+    cin.getline(filename, 999);
+
+    cout &lt;&lt; endl &lt;&lt; endl &lt;&lt; &quot;Type output file name for insertionSort List(Must end in .txt): &quot;  &lt;&lt; endl; //Type output file
+    cin.getline(filename2, 999);
+
+
+	writeToFile(tokens,filename); //Obtains all tokens(structs) in vector and writes to indicated file.
+	writeToFile(tokens2,filename2);
+
+    return 0;
+    }
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Sirena Bevilacqua_350363_assignsubmission_file_Homework 1 SirenaBevilacqua.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Sirena Bevilacqua_350363_assignsubmission_file_Homework 1 SirenaBevilacqua.cpp</CENTER></H3><HR>
+<PRE>
+/* 
+ * File:   main.cpp
+ * Author: Sirena Bevilacqua
+ *
+ * Created on February 13, 2017, 7:11 PM
+ */
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+void StrToTokens(string);
+void getLetterFreq(string);
+
+int main() {
+    string name;
+    cout &lt;&lt; &quot; Please enter your name: &quot;;
+    getline(cin, name);
+    cout &lt;&lt; name &lt;&lt; &quot;\n&quot;;
+    if (name.length() &gt; 100) {
+        cout &lt;&lt; &quot; Your string holds more than 100 tokens. Please enter a valid string, consisting of no more than 100 tokens. &quot; &lt;&lt; endl;
+    }
+
+    getLetterFreq(name);
+    StrToTokens(name);
+<A NAME="0"></A>}
+
+void getLetterFreq(string input) {
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match0-1.html#0',3,'match0-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    int frquency[26];
+    char letter[26] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    for (int i = 0; i &lt; 26; i++) {
+        int count = 0;
+        for (int j = 0; j &lt; input.length(); j++) {
+            if (input[j] == letter[i]) {
+                count++;
+            }
+        }
+        frquency[i] = count;
+    }
+    for (int k = 0; k &lt; 26; k++) {
+        cout &lt;&lt; &quot;Letter &quot; &lt;&lt; letter[k] &lt;&lt; &quot; has frequency : &quot; &lt;&lt; frquency[k] &lt;&lt; endl;
+    }
+}
+
+void StrToTokens(string input) {
+    int startindex = 0;
+    int reInitializePointer = 0;
+    int j = 0;
+    do {
+        char strchar[100];
+        for (int i = startindex; i &lt; input.length(); i++) {
+            if (input[i] != ' ') {
+                startindex++;
+                strchar[j] = input[i];
+                j++;
+            } else {
+                startindex = startindex + 1;
+                reInitializePointer = j;
+                j = 0;
+                break;
+            }
+        }
+        cout &lt;&lt; strchar &lt;&lt; endl;
+        // Re-initializing the array so that it doesn't hold its previous array values.
+        for (int k = 0; k &lt; reInitializePointer; k++) {
+            strchar[k] = ' ';
+        }
+    } while (startindex &lt; input.length());
+}</B></FONT>
+</PRE>
+</BODY>
+</HTML>

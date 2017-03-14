@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Jawynson Pranz Sunga_386731_assignsubmission_file_hw2.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Jawynson Pranz Sunga_386731_assignsubmission_file_hw2.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+struct TokenFreq //new datatype
+{
+	string value;
+	int freq;
+<A NAME="0"></A>};
+
+vector&lt;TokenFreq&gt; getTokenFreq(string inFile_name)
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match7-0.html#0',2,'match7-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>{
+	vector&lt;TokenFreq&gt; output; //store tokens and their frequencies in this vector
+	ifstream inFile(inFile_name.c_str()); //read input text file
+	
+	//tokenizer
+	string temp;
+	while (inFile &gt;&gt; temp){
+		int index = -1;
+		for (int i = 0; i &lt; output.size(); i++){
+			if (output[i].value.compare(temp) == 0){
+				index = i;</B></FONT>
+				break;
+			}
+		}
+		if (index == -1){
+			TokenFreq t = {temp, 1};
+			output.push_back(t);
+		}
+		else {
+			output[index].freq++;
+		}
+	}
+	return output;
+}
+
+<A NAME="1"></A>void selectionSort(vector&lt;TokenFreq&gt; &amp; tokFreqVector) //selection sort algorithm taken from website provided
+{
+	int i,j;
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match7-0.html#1',2,'match7-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	int min;
+	TokenFreq temp; 
+	int n = tokFreqVector.size(); 
+
+	for(i = 0; i &lt; n - 1; i++){
+    	min = i; 
+    	for(j = i + 1; j &lt; n; j++){
+      		if(tokFreqVector[j].freq &lt; tokFreqVector[min].freq){ </B></FONT>
+        	min = j;
+      		}
+    	}
+
+    	if(min != i){
+      		temp = tokFreqVector[min];
+<A NAME="2"></A>      		tokFreqVector[min] = tokFreqVector[i];
+      		tokFreqVector[i] = temp;
+    	}
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match7-0.html#2',2,'match7-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	}
+}
+
+void insertionSort(vector&lt;TokenFreq&gt; &amp; tokFreqVector) //insertion sort algorithm taken from website provided
+{
+	int i, j;
+	TokenFreq temp;
+	int length = tokFreqVector.size();
+	for (i = 1; i &lt; length; i++){
+		j = i;
+		while (j &gt; 0 &amp;&amp; tokFreqVector[j].freq &gt; tokFreqVector[j - 1].freq){ //[j - 1] &gt; [j] ascending, [j] &gt; [j - 1] descending
+			temp = tokFreqVector[j];
+			tokFreqVector[j] = tokFreqVector[j - 1];
+			tokFreqVector[j - 1] = temp;
+			j--;
+		}
+	}
+}
+
+void writeToFile(vector&lt;TokenFreq&gt; &amp; tokFreqV, string outFileName)
+{
+	ofstream outFile(outFileName.c_str());
+	for(int i = 0; i &lt; tokFreqV.size(); i++){ 
+		outFile &lt;&lt; tokFreqV[i].value &lt;&lt; &quot;: &quot; &lt;&lt; tokFreqV[i].freq &lt;&lt; endl; //print out all the tokens and its frequencies
+	}
+	outFile.close(); //close the file
+}</B></FONT>
+
+int main()
+{
+	string output1 = &quot;SelectionSortAscending.txt&quot;; //name of first file of two files
+	string output2 = &quot;InsertionSortDescending.txt&quot;; //name of second file of tgwo files
+	string fileName = &quot;&quot;; //input
+	
+	cout &lt;&lt; &quot;Enter the file name(ex. name.txt): &quot;; //asks user to specify the name of the input file
+	cin &gt;&gt; fileName;
+	cout &lt;&lt; &quot;\n&quot; &lt;&lt;&quot;SelectionSortAscending.txt and InsertionSortDescending.txt were created&quot; &lt;&lt; &quot;\n&quot; &lt;&lt; endl;
+	
+	vector&lt;TokenFreq&gt; tokFreqVector = getTokenFreq(fileName); //create a new vector called tokFreqVector of datatype TokenFreq of all tokens and its frequency of article
+	
+	selectionSort(tokFreqVector); //sort tokFreqVector
+	vector&lt;TokenFreq&gt; tokFreqV1 = tokFreqVector; //create new sorted vector
+	writeToFile(tokFreqV1, output1); //create a text file and print out the sorted vector in there
+	
+	insertionSort(tokFreqVector); //sort tokFreqVector
+	vector&lt;TokenFreq&gt; tokFreqV2 = tokFreqVector; //create new sorted vector
+	writeToFile(tokFreqV2, output2); //create a text file and print out the sorted vector in there
+	
+	system(&quot;pause&quot;);
+	return 0;
+}
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

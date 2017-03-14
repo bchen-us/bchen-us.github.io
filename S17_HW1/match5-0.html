@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Jordan Cruz-Goodwin_350311_assignsubmission_file_CSC340 Homework1.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Jordan Cruz-Goodwin_350311_assignsubmission_file_CSC340 Homework1.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  main.cpp
+//  CSC340 homework1
+//
+//  Created by Jordan Cruz on 2/07/17.
+//  Copyright © 2017 Jordan Cruz-Goodwin. All rights reserved.
+//
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void StrToTokens(string);
+void getLetterFreq(string);
+
+int main() {
+    string paragraph;
+    cout &lt;&lt; &quot;Please Enter Paragraph:&quot;;
+    //Collecting the input from user by calling getLine
+    getline(cin, paragraph);
+    cout &lt;&lt; paragraph &lt;&lt; &quot;\n&quot;;
+<A NAME="0"></A>    //Determine if the input is within the given limit
+    if (paragraph.length() &gt; 100) {
+        cout &lt;&lt; &quot;The string is limited to 100 characters. Please try again&quot; &lt;&lt; endl;
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match5-1.html#0',3,'match5-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    } // end if statement
+    getLetterFreq(paragraph);
+    StrToTokens(paragraph);
+}
+
+//Function to determine which letter occurs the most frequent
+void getLetterFreq(string input){
+    //arrays to hold total amount in english alphabet
+    int frequency [26];
+    char alphabet [26] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+    //Loop determine the letters input by user
+    for (int i = 0; i &lt; 26; i++) {
+        int count = 0;
+        //Loop to determine which letter are being used
+        for (int j = 0; j &lt; input.length(); j++) {
+            if(input[j] == alphabet[i]){
+                count++;
+            }
+        }
+        //assign the frequency each letter is occuring
+        frequency[i] = count;
+    }
+    //Loop to print out the letter and how frequent it occurs
+    for(int k = 0; k &lt; 26; k++){
+        cout &lt;&lt; &quot;Letter &quot; &lt;&lt; alphabet[k] &lt;&lt; &quot; has frequency :&quot; &lt;&lt; frequency[k] &lt;&lt; endl;
+    }
+}
+
+//Function to change string into tokens
+void StrToTokens(string input)
+<A NAME="1"></A>{
+    cout &lt;&lt; &quot;\n 'Word Tokens' \n&quot;;
+    string userString = &quot; &quot;;</B></FONT>
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match5-1.html#1',3,'match5-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    for (int i = 0; i &lt; input.size(); i++)
+    {
+        // print the word if space is found and initiate next word
+        if(input[i] == ' ')
+        {
+            cout &lt;&lt; userString &lt;&lt; endl;
+            userString = &quot;&quot;;
+        }
+        // else add to the current word
+        else
+        {
+            userString = userString + input[i];
+        }
+    }
+    
+    cout &lt;&lt; endl;
+}</B></FONT>
+
+
+</PRE>
+</BODY>
+</HTML>

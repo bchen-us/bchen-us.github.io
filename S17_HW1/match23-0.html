@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Vanita Rani_350369_assignsubmission_file_CSC021417.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Vanita Rani_350369_assignsubmission_file_CSC021417.cpp</CENTER></H3><HR>
+<PRE>
+/*
+Name: 		Vanita Rani
+Course: 	CSC340-02
+Date: 		February 15, 2017
+IDE: 		Dev-C++ 5.11
+Objective: 	to print letter frequency and every token in the string 
+*/
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+//declare empty functions with string parameter
+void getLetterFreq(string);
+void StrToTokens(string );
+
+//receive input from user and call functions
+int main () {
+	string s;
+	cout &lt;&lt; &quot;Enter a sentence/paragraph (Enter all information at once, word limit=100) : &quot; &lt;&lt; endl;
+	getline(cin, s);
+	
+	//check to see if the input is less than 100 words 
+	if (s.length() &gt; 100) {
+		cout &lt;&lt; &quot;You had more than 100 words, please try again.&quot; &lt;&lt; endl;
+	}
+
+	 	getLetterFreq(s);
+		StrToTokens(s);
+<A NAME="0"></A>}
+
+//function to get the frequency of each letter from the input
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match23-1.html#0',3,'match23-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>void getLetterFreq(string s) {
+	int alphaFreq [26];
+	char alphaArray [26] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+	
+	//loop to go through 26 spaces in alphaArray
+	for (int a = 0 ; a &lt; 26; a++) {
+		int counter = 0;
+		
+		//loop to go through every space in the input 
+		for (int b = 0; b &lt; s.length(); b++) {
+			
+			//check if space in input consists of character provided in alphaArray
+			if (s[b] == alphaArray[a]) { 
+				counter++;	
+			}
+		}
+		alphaFreq [a] = counter;
+	}
+	cout &lt;&lt; &quot;The letter frequencies are: &quot; &lt;&lt; endl;
+	
+	//loop to print letter frequencies 
+	for (int c = 0; c &lt; 26; c++) {</B></FONT>
+		if (alphaFreq [c] != 0) {
+			cout &lt;&lt; alphaArray[c] &lt;&lt; &quot;: &quot; &lt;&lt; alphaFreq[c] &lt;&lt; &quot; &quot;;
+		}
+	}
+	cout &lt;&lt; endl;
+}
+
+//function to identify and print the tokens from the input
+void StrToTokens(string s) {
+   	string token = &quot;&quot;;
+   	string savedToken =&quot;&quot;;
+	cout &lt;&lt; &quot;The tokens will be: &quot;;
+	
+	//loop going through string to check for delimiters
+   	for (int i = 0; i &lt;= s.size(); i++) {
+       	if (s[i] == ' ') {
+       		
+       		//if there is not delimiter print the token
+            if (token.size() != 0) {
+            	cout &lt;&lt; &quot;'&quot; &lt;&lt; token &lt;&lt; &quot;', &quot;;
+				token = &quot;&quot;;
+            }
+        
+		//move to next space if there is a delimiter
+        } else {
+           	token = token + s[i];  
+       	}
+   	}
+    if (s.size() != 0) { 
+		cout &lt;&lt; &quot;'&quot; &lt;&lt; token &lt;&lt; &quot;'. &quot; &lt;&lt; endl;
+	}
+	savedToken = token;
+}
+</PRE>
+</BODY>
+</HTML>

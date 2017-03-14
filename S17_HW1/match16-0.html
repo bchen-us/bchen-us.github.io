@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Kaiela Okstad_350302_assignsubmission_file_CSC 340 HW 1.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Kaiela Okstad_350302_assignsubmission_file_CSC 340 HW 1.cpp</CENTER></H3><HR>
+<PRE>
+// Kaiela Okstad
+// ID Number 912764429
+// Used CLion to write program
+// CSC 340.01
+// Due datw 2/15/2017
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;list&gt;
+
+using namespace std;
+
+void StrToTokens(string s);
+void getLetterFreq(string s);
+//declared the functions before the main function so there would be no problem with it being undefined later
+
+int main()
+{
+    string s;
+    // initalize string s before input
+
+    cout &lt;&lt; &quot;Type out a sentence: &quot;;
+    getline (cin, s);
+    // receive string from user by asking them to input their own string
+
+    if(s.length() &gt; 100){
+        // if statement to make sure that the string is less then 100 characters
+        cout &lt;&lt; &quot;String is longer than 100 characters. Type a shorter quote.&quot; &lt;&lt; endl;
+        cout &lt;&lt; &quot;Type out a sentence: &quot;;
+        getline (cin, s);
+        // receive new string from user
+    }
+
+    getLetterFreq(s);
+    StrToTokens(s);
+}
+
+void getLetterFreq(string s){
+
+    char alphabetArray[26] = { 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+    //create an array of all the letters in the alphabet
+
+<A NAME="0"></A>    int frequencyArray[26];
+    //create an array that counts the frequency of the letter at the same position of the letter
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match16-1.html#0',3,'match16-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    for(int index = 0 ; index &lt; 26 ; index++){
+        //this is a for loop to go through and count the frequency of each letter, that's why index is less than 26 like the alphabet array
+        int countLetter = 0;
+        // start the count at zero for each letter
+
+        for(int position = 0 ; position &lt; s.length(); position++){
+            if(s[position] == alphabetArray[index]){
+                countLetter++;
+                // the count will grow as long as the letter in string s is the same as in the alphabet index position
+            }
+        }
+
+        frequencyArray[index] = countLetter;
+        // the frequency of the letter at spot index will be whatever count is
+    }
+
+    for (int positionTwo = 0 ; positionTwo &lt; 26 ; positionTwo++ ) {
+        //positionTwo starts at 0 and goes 27 times to go through each letter
+        cout &lt;&lt; alphabetArray[positionTwo] &lt;&lt; &quot;=&quot; &lt;&lt; frequencyArray[positionTwo] &lt;&lt; &quot;, &quot; ;
+        // this statement prints the letter at z location in the alphabetArray and the frequency at positionTwo location in the frequencyArray
+    }
+    // the above for loop is used to print out the letter with its corresponding frequency within the string
+
+    cout &lt;&lt; &quot;\n&quot; ;
+    // prints a new line
+}
+
+void StrToTokens(string s) {</B></FONT>
+
+    for (int index = 0; s[index] != '\0'; index++) {
+        //The above for loop makes sure that the position index is in inside string s is an alphabetic letter, creating a token
+
+        printf(&quot;%c&quot;, s[index]);
+        // using %c to print the character at the location in s at position index
+
+        if (s[index] == ' ') {
+            printf(&quot;\n&quot;);
+        }
+        // the above if statement says that if the position index is in in string s is a non alphabetic letter, it will go to a new line to start the next token
+    }
+}
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Vidit Joy Manglani_364446_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Vidit Joy Manglani_364446_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  main.cpp
+//  csc340
+//
+//  Created by Vidit Joy Manglani on 2/11/17 for Dr. Hui Yang @SFSU CSC340-1
+//  Copyright © 2017 Vidit Joy Manglani. All rights reserved.
+//
+//
+
+#include &lt;iostream&gt;
+#include&lt;vector&gt;
+
+using namespace std;
+//*String to Token*//
+void StrToTokens(string s)
+{
+    string tokens[100];
+    int WordCount = 0;
+    vector &lt;char&gt; word;
+    ///iterate through string
+    for(int i=0; i&lt;=s.length(); i++)
+    {
+        if(s[i] != ' ')//skip spaces
+        {
+            if(s[i] != '\0')//skip end of string
+                
+            {
+                word.push_back(s[i]);///copy char to word
+            }
+        }
+        else
+        {
+            if(i&gt;0) //ignore empty first char
+            {
+                if(s[i-1]!= ' ')
+                    //if the previous letter is also not a space then it is the end of a token.
+                {
+                    word.clear(); WordCount++;
+                   
+                }
+            }
+        }
+        
+<A NAME="0"></A>        
+        ///copy token(one char at a time) to string array
+        string token(word.begin(),word.end());
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match20-1.html#0',3,'match20-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>        tokens[WordCount]=token;
+    }
+    ///print tokens
+    
+    
+    for (int out=0;out&lt;=WordCount; out++)
+    {
+        cout &lt;&lt; tokens[out]&lt;&lt;endl;
+    }
+    
+    
+    
+}
+
+
+//*Letter Frequency*//
+<A NAME="1"></A>void getLetterFreq(string s)
+{
+    cout  &lt;&lt;&quot;Your paragraph contains &quot;&lt;&lt;endl;
+    for(char alpha = 'A'; alpha &lt;= 'Z'; alpha++)    ///iter uppercase alphabet</B></FONT><FONT color="#f63526"><A HREF="javascript:ZweiFrames('match20-1.html#1',3,'match20-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+    {
+        int count = 0;
+        for(int i = 0; i &lt;= s.length(); i++)
+        {
+            if(toupper(s[i])==alpha) /// toupper counts lowercase==uppercase
+            {
+                count++;
+            }
+            
+        }</B></FONT>
+        if(count&gt;0)//print each alphabet count
+        {
+            cout &lt;&lt; count &lt;&lt; &quot; &quot; &lt;&lt; alpha &lt;&lt; &quot;'s&quot; &lt;&lt; endl;
+        }
+        
+    }
+}
+
+//*Main*//
+int main(int argc, const char * argv[]) {
+    
+    string s = &quot;Always remember that you are unique.  Just like everyone else.&quot;;
+    
+    cout &lt;&lt; &quot;Enter a paragraph:&quot;;
+    getline(cin, s);
+
+    cout&lt;&lt; &quot; Letter Frequency:&quot;&lt;&lt;endl;
+    getLetterFreq(s);
+    
+    cout&lt;&lt;&quot; Words in the string:&quot;&lt;&lt;endl;
+    StrToTokens(s);
+    
+    
+    return 0;
+}
+</PRE>
+</BODY>
+</HTML>

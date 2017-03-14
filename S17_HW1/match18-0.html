@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Steve Rentschler_364443_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Steve Rentschler_364443_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;fstream&gt;
+<A NAME="0"></A>#include &lt;iostream&gt;
+using namespace std;
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match18-1.html#0',3,'match18-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>void getLetterFreq(string s){
+
+char AZ[26] = {'a','b','c','d','e','f','g','h','i','j','k','l', // iniciates array of the alphabet
+               'm','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+int freqAZ[26]; // iniciates frequency counter array
+
+    for ( int i = 0; i &lt; 26; i++){ // goes through the alphabet for the counter
+
+        int AZcount = 0;// sets the counter
+
+    for ( int k = 0; k &lt; s.length(); k++){ // goes through the alphabet to find how many repeated letters there are
+
+        if (s[k] == AZ[i]){
+
+        AZcount++; // adds to counter for every letter counted
+        }
+    }
+        freqAZ[i] = AZcount; // assigns the number of letters for counter
+    }
+    for( int j = 0; j &lt; 26; j++ ){ // goes through the alphabet to print out letter and counter
+
+    cout &lt;&lt; AZ[j] &lt;&lt; freqAZ[j] &lt;&lt; endl; // prints out letter and frequency
+
+    }
+}
+void StrToTokens(string s){</B></FONT>
+
+    string word = &quot;&quot;; //intializes string words
+
+        for( int i = 0; i &lt; s.size(); i++) //interates through
+        {
+            if (s[i] == ' ') // finds a space to separate words
+            {
+                while (word.size() != 0){ // tells whether a word is there
+
+                    cout&lt;&lt;word&lt;&lt;endl; // prints out first word
+                    word = &quot;&quot;;
+                }
+            }
+            else{
+
+                word += s[i]; // adds words to array
+            }
+
+        }
+        cout&lt;&lt;word; // prints out next word
+    }
+
+
+int main(){
+
+string s =&quot;you are unique just like everyone else&quot;; // intializes string of words
+
+getLetterFreq(s); // call the getLetterFreq function
+StrToTokens(s); // calls the StrToToken function
+
+    return 0;
+}
+
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Patrick Wong_350374_assignsubmission_file_main.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Patrick Wong_350374_assignsubmission_file_main.cpp</CENTER></H3><HR>
+<PRE>
+/*
+  Name: main.cpp
+  Copyright:
+  Author: Patrick
+  Date: 2/14/17
+  Description: IDE: Code::Blocks, Compiler: GNU GCC
+*/
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+
+char getMostFreqLetter(string s)
+{
+    char letter = 0;
+<A NAME="0"></A>    string w = s;
+    int letterCount[1]={0}; //letter with the highest count
+    int numOfChar[26]={0}; //number of times a char shows up, numOfChar[0] =a, [1]=b, [2]=c....
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match13-1.html#0',3,'match13-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    for  (int i =0; i &lt; w.length(); i++) //cycles thru the string s
+    {
+        if ((w.at(i) == 'A')||(w.at(i) == 'a')){numOfChar[0]++;}//looks for a's and counts them
+        else if ((w.at(i) == 'B')||(w.at(i) == 'b')) {numOfChar[1]++;}//looks for b' and counts them
+        else if ((w.at(i) == 'C')||(w.at(i) == 'c')) {numOfChar[2]++;}//same for c to z
+        else if ((w.at(i) == 'D')||(w.at(i) == 'd')) {numOfChar[3]++;}
+        else if ((w.at(i) == 'E')||(w.at(i) == 'e')) {numOfChar[4]++;}
+        else if ((w.at(i) == 'F')||(w.at(i) == 'f')) {numOfChar[5]++;}
+        else if ((w.at(i) == 'G')||(w.at(i) == 'g')) {numOfChar[6]++;}
+        else if ((w.at(i) == 'H')||(w.at(i) == 'h')) {numOfChar[7]++;}
+        else if ((w.at(i) == 'I')||(w.at(i) == 'i')) {numOfChar[8]++;}
+        else if ((w.at(i) == 'J')||(w.at(i) == 'j')) {numOfChar[9]++;}
+        else if ((w.at(i) == 'K')||(w.at(i) == 'k')) {numOfChar[10]++;}
+        else if ((w.at(i) == 'L')||(w.at(i) == 'l')) {numOfChar[11]++;}
+        else if ((w.at(i) == 'M')||(w.at(i) == 'm')) {numOfChar[12]++;}
+        else if ((w.at(i) == 'N')||(w.at(i) == 'n')) {numOfChar[13]++;}
+        else if ((w.at(i) == 'O')||(w.at(i) == 'o')) {numOfChar[14]++;}
+        else if ((w.at(i) == 'P')||(w.at(i) == 'p')) {numOfChar[15]++;}
+        else if ((w.at(i) == 'Q')||(w.at(i) == 'q')) {numOfChar[16]++;}
+        else if ((w.at(i) == 'R')||(w.at(i) == 'r')) {numOfChar[17]++;}
+        else if ((w.at(i) == 'S')||(w.at(i) == 's')) {numOfChar[18]++;}
+        else if ((w.at(i) == 'T')||(w.at(i) == 't')) {numOfChar[19]++;}
+        else if ((w.at(i) == 'U')||(w.at(i) == 'u')) {numOfChar[20]++;}
+        else if ((w.at(i) == 'V')||(w.at(i) == 'v')) {numOfChar[21]++;}
+        else if ((w.at(i) == 'W')||(w.at(i) == 'w')) {numOfChar[22]++;}
+        else if ((w.at(i) == 'X')||(w.at(i) == 'x')) {numOfChar[23]++;}
+        else if ((w.at(i) == 'Y')||(w.at(i) == 'y')) {numOfChar[24]++;}
+        else if ((w.at(i) == 'Z')||(w.at(i) == 'z')) {numOfChar[25]++;}
+    }</B></FONT>
+    for (int i =0; i &lt; 26; i++)
+    {
+        if (letterCount[0]&lt;numOfChar[i]) //compares count of each letter
+        {
+            letterCount[0]=numOfChar[i]; // stores letter that has larger count
+            letter =i; //keeps track of which letter that has highest count
+        }
+    }
+    return letter+65; //+65 adjusts for the alphabet
+}
+
+void StrToTokens(string s)
+{
+    string w = s;
+    w.push_back(' '); //adds a whitespace at the end of string
+    string temp; //holds each letter of word
+    string word; //holds the entire word
+    for (int i =0; i&lt;w.length() ; i++)
+    {
+        if (w.at(i)!=' ')
+        {
+            temp=(w.at(i)); //holds the the letter at i
+            word+=temp; //holds the entire word until the whitespace
+        }
+        else
+        {
+            cout&lt;&lt;'&quot;'&lt;&lt;word&lt;&lt;'&quot;'&lt;&lt;','&lt;&lt;endl; //prints the word
+            word.clear(); //clears the word so it can hold the next word
+        }
+    }
+}
+int main()
+{
+    string s(&quot;Always remember that you are unique. Just like everyone else.&quot;);
+    char mostFreq = getMostFreqLetter(s); //calls function GetMostFreqLetter, assigns to local char
+    cout &lt;&lt;&quot;The most frequent letter is: &quot; &lt;&lt;mostFreq &lt;&lt;endl;
+
+    StrToTokens(s); //calls the StrToToken function
+
+    return 0;
+}
+</PRE>
+</BODY>
+</HTML>
