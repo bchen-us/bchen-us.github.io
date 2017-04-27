@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Wesley Goldfisher_451080_assignsubmission_file_SquareMatrix</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>SquareMatrix.cpp</CENTER></H3><HR>
+<PRE>
+//
+// Name: Wesley Goldfisher
+// Date: 3/27/17
+// IDE: Xcode
+// Session: CSC 340.02
+//
+// file: SquareMatrix.cpp
+
+
+#include &quot;SquareMatrix.h&quot;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+<A NAME="0"></A>
+using namespace std;
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match34-1.html#0',3,'match34-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>SquareMatrix::SquareMatrix() {
+    numMatrix.clear(); // clears 2d vector of doubles numMatrix
+    for(int i = 0; i &lt; 10; i++) {
+        // for loop runs while i is less than 10 and adds i by one on each iteration
+        vector&lt;double&gt; initial; // initializes a vector of doubles named initial
+        for(int j = 0; j &lt; 10; j++) {
+            // for loop runs while j is less than 10 and adds j by one on each iteration
+            initial.push_back(0.0); // pushes back the value 0.0 into the vector of doubles initial
+        }
+        numMatrix.push_back(initial); // pushes back the value of the double vector initial into the 2d vector of doubles numMatrix
+    }
+}
+
+SquareMatrix::SquareMatrix(vector&lt;vector&lt;double&gt;&gt; v2d) {
+    bool flagSize = true; // initializes bool variable flagSize and sets it equal to true
+    
+    for(int i = 0; i &lt; v2d.size(); i++) {
+        // for loop runs while i is less than the size of 2d vector of doubles v2d and adds i by one on each iteration
+        if(v2d[i].size() != v2d.size()) {
+            // if the size of v2d at index i is not equal to the size of v2d then the following code is executed
+            flagSize = false; // bool variable flagSize is set equal to false
+            break; // ends for loop
+        }
+    }
+    
+    if(flagSize) {
+        // if flagSize is true then the following code is executed
+        numMatrix.clear(); // clears 2d vector of doubles numMatrix
+        for(int i = 0; i &lt; v2d.size(); i++) {
+            // for loop runs while i is less than the size of v2d and i adds by one on each iteration
+            vector&lt;double&gt; initial; // initializes a vector of doubles named initial
+            for(int j = 0; j &lt; v2d[i].size(); j++) {
+                // for loop runs while j is less than the size of v2d and adds j by one on each iteration
+                initial.push_back(v2d[i][j]); // pushes back the value v2d at index i and subindex j into vector of doubles initial
+            }
+            numMatrix.push_back(initial); // pushes back the vector of doubles initial into the 2d vector od doubles numMatrix
+        }
+    } else {
+        // otherwise if the matrix is not square then matrix is intialized to default 10 by 10 matrix
+        numMatrix.clear(); // clears 2d vector of doubles numMatrix
+        for(int i = 0; i &lt; 10; i++) {
+            // for loop runs while i is less than 10 and adds i by one on each iteration
+            vector&lt;double&gt; initial; // initializes a vector of doubles named initial
+            for(int j = 0; j &lt; 10; j++) {
+                // for loop runs while j is less than 10 and adds j by one on each iteration
+                initial.push_back(0.0); // pushes back the value 0.0 into the vector of doubles initial
+            }
+            numMatrix.push_back(initial); // pushes back the value of the double vector initial into the 2d vector of doubles numMatrix
+        }
+    }
+}
+
+double SquareMatrix::getValue(int x, int y) {
+    if((x &lt; numMatrix.size()) &amp;&amp; (y &lt; numMatrix.size()) &amp;&amp; (x &gt;= 0) &amp;&amp; (y &gt;= 0)) {
+        // if x and y are less than the size of numMatrix and are greater or equal to 0 then the following code is executed
+        return numMatrix[x][y]; // returns the value of numMatrix at the index x and subindex y
+    }
+    return 0; // returns the value 0 in order to indicate the value doesn't exist within the current matrix
+}
+
+void SquareMatrix::setValue(int x, int y, double value) {
+    if((x &lt; numMatrix.size()) &amp;&amp; (y &lt; numMatrix.size()) &amp;&amp; (x &gt;= 0) &amp;&amp; (y &gt;= 0)) {
+        // if x and y are less than the size of numMatrix and are greater or equal to 0 then the following code is executed
+        numMatrix[x][y] = value; // sets the value of numMatrix at the index x and subindex y equal to the double variable value
+<A NAME="1"></A>    }
+}</B></FONT>
+
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match34-1.html#1',3,'match34-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>SquareMatrix SquareMatrix::operator * (SquareMatrix &amp;m1) {
+    if(numMatrix.size() == m1.numMatrix.size()) {
+        // if the size of the matrix of m1 is equal to the size of this matrix then the following code is executed
+        vector&lt;vector&lt;double&gt;&gt; result; // initializes  a 2d vector of doubles result
+        
+        // following code initializes a third matrix result equal to 0
+        for(int i = 0; i &lt; numMatrix.size(); i++) {
+            // for loop runs while i is less than the size of this matrix and the i addes by one on each iteration
+            vector&lt;double&gt; initial; // initializes a vector of double initial
+            for(int j = 0; j &lt; numMatrix.size(); j++) {
+                // for loop runs while j is less than the size of this matrix and the j addes by one on each iteration
+                initial.push_back(0); // pushes back the value 0.0 into the vector of doubles initial
+            }
+            result.push_back(initial);  // pushes back the value of the double vector initial into the 2d vector of doubles result
+        }
+        
+        // following code is used to multiply m1 and m2 together
+        for(int i = 0; i &lt; numMatrix.size(); i++) {
+            // for loop runs while i is less than the size of this matrix and the i addes by one on each iteration
+            for(int j = 0; j &lt; numMatrix[i].size(); j++) {
+                // for loop runs while j is less than the size of this matrix and the j addes by one on each iteration
+                result[i][j] = 0; // sets the value of result at index i and subindex j equal to 0
+                for (int a = 0; a &lt; numMatrix.size(); a++) {
+                        // for loop runs while a is less than the size of this matrix and the a addes by one on each iteration
+                        result[i][j] += (numMatrix[i][a] * m1.numMatrix[a][j]);
+                        // adds the product of this matrix at index i and subindex a and m1 at index a and subindex j to the value of result at index a and subindex j on each iteration
+                }
+                    
+            }
+        }
+            
+        return SquareMatrix(result); // returns the matrix created from result
+    }
+    // otherwise a default SquareMatrix is returned in order to indicate an error in multiplying the two inputed matrices
+    return SquareMatrix();
+}</B></FONT>
+
+SquareMatrix SquareMatrix::operator * (int scalar) {
+    vector&lt;vector&lt;double&gt;&gt; result; // initializes  a 2d vector of doubles result
+    for (int i =0; i &lt; numMatrix.size(); i++) {
+        // for loop runs while i is less than the size of this matrix and the i addes by one on each iteration
+        vector&lt;double&gt; initial; // initializes a vector of double initial
+        for(int j = 0; j &lt; numMatrix[i].size(); j++) {
+            // for loop runs while j is less than the size of this matrix and the j addes by one on each iteration
+            double num = (getValue(i, j) * scalar); // initializes double num and sets it equal to the value at index i and subindex j times the int scalar
+            initial.push_back(num); // pushes back the value num into vector of doubles initial
+        }
+        result.push_back(initial); // pushes back the value of vector of doubles into vector result
+    }
+    
+    return SquareMatrix(result); // returns the matrix created from result
+}
+
+SquareMatrix SquareMatrix::operator + (SquareMatrix &amp;m1) {
+    if(numMatrix.size() == m1.numMatrix.size()) {
+        // if the size of the matrix of m1 is equal to the size of this matrix then the following code is executed
+        vector&lt;vector&lt;double&gt;&gt; result;// initializes  a 2d vector of doubles result
+        for(int i = 0; i &lt; numMatrix.size(); i++) {
+            // for loop runs while i is less than the size of this matrix and the i addes by one on each iteration
+            vector&lt;double&gt; initial; // initializes a vector of double initial
+            for(int j = 0; j &lt; numMatrix[i].size(); j++) {
+                // for loop runs while j is less than the size of this matrix and the j addes by one on each iteration
+                double pushNum = (getValue(i,j) + m1.getValue(i,j));
+                // initializes double pushNum and sets it equal to the value of this matrix at i,j plus the value of m1 at i,j
+                initial.push_back(pushNum); // pushes back the value of pushNum into the vector of doubles initial
+            }
+            result.push_back(initial); // pushes back the value of initial into the vector of doubles initial
+        }
+        return SquareMatrix(result); // returns the matrix created from result
+    }
+    // otherwise a default SquareMatrix is returned in order to indicate an error in multiplying the two inputed matrices
+<A NAME="2"></A>    return SquareMatrix();
+}
+
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match34-1.html#2',3,'match34-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>SquareMatrix SquareMatrix::operator - (SquareMatrix &amp;m1) {
+    if(numMatrix.size() == m1.numMatrix.size()) {
+        // if the size of the matrix of m1 is equal to the size of this matrix then the following code is executed
+        vector&lt;vector&lt;double&gt;&gt; result;// initializes  a 2d vector of doubles result
+        for(int i = 0; i &lt; numMatrix.size(); i++) {
+            // for loop runs while i is less than the size of this matrix and the i addes by one on each iteration
+            vector&lt;double&gt; initial; // initializes a vector of double initial
+            for(int j = 0; j &lt; numMatrix[i].size(); j++) {
+                // for loop runs while j is less than the size of this matrix and the j addes by one on each iteration
+                double pushNum = (getValue(i,j) - m1.getValue(i,j));
+                // initializes double pushNum and sets it equal to the value of this matrix at i,j minus the value of m1 at i,j
+                initial.push_back(pushNum); // pushes back the value of pushNum into the vector of doubles initial
+            }
+            result.push_back(initial); // pushes back the value of initial into the vector of doubles initial
+        }
+        return SquareMatrix(result); // returns the matrix created from result
+    }
+    // otherwise a default SquareMatrix is returned in order to indicate an error in multiplying the two inputed matrices
+    return SquareMatrix();
+}
+
+ostream&amp; operator &lt;&lt; (ostream &amp;out, SquareMatrix m) {
+    
+    out &lt;&lt; &quot;(&quot;;
+    for (int i = 0; i &lt; m.numMatrix.size(); i++) {
+        // for loop runs while i is less than the size of numMatrix in m and i is added by one on each iteration
+        for (int j = 0; j &lt; m.numMatrix.size(); j++) {
+            // for loop runs while j is less than the size of numMatrix in m and j is added by one on each iteration
+            if((j == 0) &amp;&amp; (i != 0)) {
+                // if j is equal to 0 and i is not equal to 0 then the following code is executed
+                out &lt;&lt; &quot;\n  &quot; &lt;&lt; m.numMatrix[i][j]; // prints the value of numMatrix at index i and subindex j on a new line
+            } else if((j==0) &amp;&amp; (i==0)) {</B></FONT>
+                out &lt;&lt; &quot; &quot; &lt;&lt; m.numMatrix[i][j]; // prints the value of numMatrix at index i and subindex j;
+            }else {
+                //otherwise the following code is executed
+                out &lt;&lt; m.numMatrix[i][j]; // prints the value of numMatrix at index i and subindex j
+            }
+            if (j != (m.numMatrix.size() - 1)) {
+                // if j does not equal to the size of numMatrix in m minus 1 then the following code is executed
+                out &lt;&lt; &quot;, &quot; &lt;&lt; setw(3); // prints comma seperator with white space of 3
+            }
+        }
+    }
+    out &lt;&lt; &quot;)&quot;;
+    
+    return out; // returns the value of out
+}
+
+
+</PRE>
+<HR>
+<H3><CENTER>SquareMatrix.h</CENTER></H3><HR>
+<PRE>
+//
+// Name: Wesley Goldfisher
+// Date: 3/27/17
+// IDE: Xcode
+// Session: CSC 340.02
+//
+// file: SquareMatrix.h
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+<A NAME="3"></A>#ifndef SquareMatrix_h
+#define SquareMatrix_h
+
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match34-1.html#3',3,'match34-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>class SquareMatrix {
+private:
+    vector&lt;vector&lt;double&gt;&gt; numMatrix; // initializes private vector of vector of doubles numMatrx
+public:
+    SquareMatrix(); // default constructor creates 10 by 10 matrix with each value equal to 0.0
+    SquareMatrix(vector&lt;vector&lt;double&gt;&gt; v2d); // default constructor creates matrix from inputed 2d vector v2d values
+    double getValue(int x, int y); // accessor for the value of the matrix at position (x,y)
+    void setValue(int x, int y, double value); // mutator which sets the value of matrix at position (x,y) equal to value</B></FONT>
+    SquareMatrix operator * (SquareMatrix &amp; m1); // overloaded *: m3 = m1*m2
+    SquareMatrix operator * (int scalar); // overloaded *: m3 = m1*scalar
+    SquareMatrix operator + (SquareMatrix &amp; m1); // overloaded +: m3 = m1+m2
+    SquareMatrix operator - (SquareMatrix &amp; m1); // overloaded -: m3 = m1-m2
+    friend ostream&amp; operator &lt;&lt;(ostream &amp;out, SquareMatrix m); // overloaded &lt;&lt; operator prints out the entire matrix neatly
+};
+
+#endif /* SquareMatrix_h */
+</PRE>
+</BODY>
+</HTML>

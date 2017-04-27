@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Riza Shrestha_451141_assignsubmission_file_Poly</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Polynomial.cpp</CENTER></H3><HR>
+<PRE>
+<A NAME="0"></A>#include &quot;Polynomial.h&quot;
+
+//Polynomial constructor with user-input parameters
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match11-1.html#0',3,'match11-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>polynomial::polynomial(){
+   mdegree = 0;
+   coeffs = new double[mdegree + 1];
+   for(int i = 0; i &lt; mdegree + 1; ++i){
+       coeffs[i] = 0;
+   }
+}
+
+polynomial::polynomial(int highestdegree){
+   mdegree = highestdegree;
+   coeffs = new double[mdegree + 1];
+   for(int i = 0; i &lt; mdegree + 1; ++i){
+       coeffs[i] = 0;
+   }
+}
+
+//returns degree of a polynomial
+
+int polynomial::degree(){
+   for(int i = mdegree; i &gt;= mdegree; --i){
+       if(coeffs[i] != 0){
+           return i;
+       }
+   }
+   return -1;
+}
+
+//returns the coefficient of the x-power term
+<A NAME="1"></A>
+double polynomial::getCoeff(int power){
+   if(power &lt; 0 || power &gt; mdegree + 1)</B></FONT>
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match11-1.html#1',3,'match11-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>       return 0;
+   return coeffs[power];
+}
+
+//get data from user
+void polynomial::setPolynomial(){
+   cout &lt;&lt; &quot;Input  maximum degree: &quot;;
+   cin &gt;&gt; mdegree;
+   if(coeffs != NULL){
+       delete[] coeffs;
+   }
+   coeffs = new double[mdegree + 1];
+   for(int i = 0; i &lt; mdegree + 1; ++i){
+       cout &lt;&lt; &quot;Input coefficient of degree &quot; &lt;&lt; i &lt;&lt; &quot;: &quot;;
+       cin &gt;&gt; coeffs[i];
+   }
+}
+
+//replaces the coefficient of the x=power term with newCoefficient
+<A NAME="2"></A>
+void polynomial::setCoeff(int power, double newCoeff){
+   coeffs[power] = newCoeff;</B></FONT>
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match11-1.html#2',3,'match11-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+// Overloading operator to divide a polynomial by a scalar variable
+
+polynomial polynomial::operator / (int val){
+   polynomial p(mdegree);
+   for(int i = 0; i &lt; mdegree + 1; ++i){
+       p.setCoeff(i, getCoeff(i) / val);
+   }
+   return p;
+}
+
+//Overloading operator to negate a polynomial
+
+polynomial polynomial::operator - (){
+   polynomial p(mdegree);
+   for(int i = 0; i &lt; mdegree + 1; ++i){
+       p.setCoeff(i, -1 * getCoeff(i));
+       setCoeff(i, -1 * getCoeff(i));
+   }
+   return p;
+}
+
+polynomial polynomial::operator + (polynomial p){
+   polynomial ret(mdegree &gt; p.mdegree ? mdegree : p.mdegree);
+   for(int i = 0; i &lt; mdegree + 1; ++i){
+       ret.setCoeff(i, getCoeff(i) + p.getCoeff(i));
+   }
+   return ret;
+}
+
+polynomial polynomial::operator - (polynomial p){
+   polynomial ret(mdegree &gt; p.mdegree ? mdegree : p.mdegree);
+   for(int i = 0; i &lt; mdegree + 1; ++i){
+       ret.setCoeff(i, getCoeff(i) - p.getCoeff(i));
+   }
+   return ret;
+}
+
+ostream&amp; operator &lt;&lt; (ostream &amp;out, polynomial p){
+   double c;
+   for(int i = p.mdegree; i &gt;= 0; --i){
+       c = p.getCoeff(i);
+       if(c != 0){
+           if(c &gt; 0){
+               out &lt;&lt; &quot; +&quot; &lt;&lt; c &lt;&lt; &quot;*x^&quot; &lt;&lt; i;
+           }
+           else{
+               out &lt;&lt; &quot; &quot; &lt;&lt; c &lt;&lt; &quot; * x^&quot; &lt;&lt; i;
+           }
+       }
+   }
+   return out;
+}</B></FONT>
+</PRE>
+<HR>
+<H3><CENTER>Polynomial.h</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+
+using namespace std;
+
+#ifndef polynomial_H
+<A NAME="3"></A>#define polynomial_H
+
+//Header File
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match11-1.html#3',3,'match11-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>class polynomial
+{
+public:
+    //Default constructor
+   polynomial();
+   polynomial(int highestdegree);
+  
+   int degree();
+   double getCoeff(int power);
+   void setPolynomial();
+   //replaces the coefficient of the x-power term
+    void setCoeff(int power, double newCoeff);
+   polynomial operator / (int val);
+   //overloading operator to negate a polynomial
+   polynomial operator - ();
+   //overloading adds two polynomials
+   polynomial operator + (polynomial p);
+   //overloading subtract polynomial
+   polynomial operator - (polynomial p);
+   friend ostream&amp; operator &lt;&lt; (ostream &amp;out, polynomial p);
+private:
+   int mdegree;
+   double *coeffs;
+};</B></FONT>
+
+#endif
+</PRE>
+</BODY>
+</HTML>

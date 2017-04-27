@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Jordan Cruz-Goodwin_451150_assignsubmission_file_hw4_squareMatrix</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>squareMatrix.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  squareMatrix.cpp
+//  hw4_squareMatrix
+//
+//  Created by Jordan Cruz on 3/27/17.
+//  Copyright © 2017 Jordan CruzJordan Cruz-Goodwin. All rights reserved.
+//
+
+#include &quot;squareMatrix.h&quot;
+#include &lt;iostream&gt;
+<A NAME="0"></A>
+using namespace std;
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match25-1.html#0',3,'match25-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>squareMatrix::squareMatrix(){
+    begin(10);
+}
+
+squareMatrix::squareMatrix(vector&lt;vector&lt;double&gt; &gt;vector2d){
+    bool sizeGood = true;
+    long size = vector2d.size();
+    
+    for (int i= 0; i &lt; size; ++i) {
+        if (vector2d[i].size() != size) {
+            sizeGood = false;
+            break;
+        }
+    }
+    if (sizeGood) {
+        matrix.clear();
+        for (int i = 0; i &lt; vector2d.size(); ++i) {
+            vector&lt;double&gt;temp;
+            for (int  j = 0; j &lt; vector2d.size(); ++j) {
+                temp.push_back(vector2d[i][j]);
+            }
+            matrix.push_back(temp);
+        }
+    }
+    else {
+        begin(10);
+<A NAME="1"></A>    }
+}
+
+double squareMatrix::getVal(int i, int j){</B></FONT><FONT color="#f63526"><A HREF="javascript:ZweiFrames('match25-1.html#1',3,'match25-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+    if(i &lt; matrix.size() &amp;&amp; j &lt; matrix.size() &amp;&amp; i &gt;= 0 &amp;&amp; j &gt;= 0){
+        return matrix[i][j];
+    }
+    return 0;
+}
+
+<A NAME="2"></A>void squareMatrix::setVal(int j, int k, double value){
+    if(j &lt; matrix.size() &amp;&amp; k &lt; matrix.size() &amp;&amp; j &gt;= 0 &amp;&amp; k &gt;= 0){</B></FONT>
+        matrix[j][k];
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match25-1.html#2',3,'match25-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    }
+}
+
+void squareMatrix::begin(int size){
+    matrix.clear();
+    for (int i = 0; i &lt; size; ++i) {
+        vector&lt;double&gt;temp;
+        for (int j = 0; j &lt; size; ++j) {
+            temp.push_back(0.0);
+        }
+        matrix.push_back(temp);
+    }
+<A NAME="3"></A>}</B></FONT>
+
+void squareMatrix::matrixResize(int newsizeOf){
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match25-1.html#3',3,'match25-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    vector&lt;vector&lt;double&gt; &gt;new_vector;
+    for (int i = 0; i &lt; newsizeOf; ++i) {
+        vector&lt;double&gt;temp;
+        for (int j = 0; j &lt; newsizeOf; ++j) {
+            temp.push_back(getVal(i,j));
+        }
+        new_vector.push_back(temp);
+    }</B></FONT>
+    matrix = new_vector;
+<A NAME="4"></A>}
+
+squareMatrix operator * (squareMatrix x1, squareMatrix x2){
+<FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match25-1.html#4',3,'match25-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    if (x1.matrix.size() == x2.matrix.size()) {
+        vector&lt;vector&lt;double&gt; &gt;new_vector;
+        
+        for (int i = 0;  i &lt; x1.matrix.size(); ++i) {
+            vector&lt;double&gt;temp;
+            for (int j = 0; j &lt; x1.matrix.size(); ++j) {
+                temp.push_back(0);
+            }
+            new_vector.push_back(temp);
+        }
+        for (int i = 0; i &lt; x1.matrix.size(); ++i) {
+            for (int j = 0; j &lt; x1.matrix.size(); ++j) {
+                new_vector[i][j] = 0;
+                for (int k = 0; k &lt; x1.matrix.size(); ++k) {
+                    new_vector[i][j] += x1.matrix[i][k] + x2.matrix[k][j];
+                }
+            }
+        }
+        return squareMatrix(new_vector);</B></FONT>
+    }
+    else{
+        return squareMatrix();
+    }
+}
+<A NAME="5"></A>
+squareMatrix operator * (squareMatrix x1, int value){
+    vector&lt;vector&lt;double&gt; &gt;new_vector;
+<FONT color="#c8c2a7"><A HREF="javascript:ZweiFrames('match25-1.html#5',3,'match25-top.html#5',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    for (int i = 0;  i &lt; x1.matrix.size(); ++i) {
+        vector&lt;double&gt;temp;
+        for (int j = 0; j &lt; x1.matrix[i].size(); ++j) {
+            temp.push_back(x1.getVal(i,j) * value);
+        }
+        new_vector.push_back(temp);
+    }
+    return squareMatrix(new_vector);
+<A NAME="6"></A>}</B></FONT>
+
+squareMatrix operator - (squareMatrix x1, squareMatrix x2){
+<FONT color="#50ebec"><A HREF="javascript:ZweiFrames('match25-1.html#6',3,'match25-top.html#6',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    if (x1.matrix.size() == x2.matrix.size()) {
+        vector&lt;vector&lt;double&gt; &gt;new_vector;
+        for (int i = 0; i &lt; x1.matrix.size(); ++i) {
+            vector&lt;double&gt;temp;
+            for (int j = 0; j &lt; x1.matrix[i].size(); ++j) {</B></FONT>
+                temp.push_back(x1.getVal(i,j) - x2.getVal(i,j));
+            }
+            new_vector.push_back(temp);
+        }
+        return new_vector;
+    }
+<A NAME="7"></A>    else{
+        return squareMatrix();
+    }
+<FONT color="#c58917"><A HREF="javascript:ZweiFrames('match25-1.html#7',3,'match25-top.html#7',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+ostream&amp; operator &lt;&lt; (ostream &amp;out, squareMatrix n){
+    for (int i = 0; i &lt; n.matrix.size(); ++i) {
+        for (int j = 0; j &lt; n.matrix[i].size(); ++j) {
+            out &lt;&lt; n.matrix[i][j] &lt;&lt; &quot; &quot;;
+        }
+        out &lt;&lt; endl;
+    }
+    out &lt;&lt; endl;
+    return out;
+}</B></FONT>
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Jose Medina_451104_assignsubmission_file_SquareMatrix</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>SquareMatrix.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;SquareMatrix.h&quot;
+#include &lt;iostream&gt;
+
+using namespace std;
+<A NAME="1"></A>
+SquareMatrix::SquareMatrix(){ //initializing the matrix to 10x10 
+   initialize(10);
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#1',2,'match21-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+SquareMatrix::SquareMatrix(vector&lt;vector&lt;double&gt; &gt; v2d){
+   bool sizeOK = true;
+   int size = v2d.size();
+   for(int i = 0; i &lt; size; ++i){
+       if(v2d[i].size() != size){
+           sizeOK = false;
+           break;
+       }
+   }
+   if(sizeOK){
+       mat.clear();
+       for(int i = 0; i &lt; v2d.size(); ++i){
+           vector&lt;double&gt; temp;
+           for(int j = 0; j &lt; v2d[i].size(); ++j){
+               temp.push_back(v2d[i][j]);
+           }
+           mat.push_back(temp);
+       }
+   }
+   else{
+       initialize(10);
+   }
+}
+
+double SquareMatrix::getValue(int i, int j){
+   if(i &lt; mat.size() &amp;&amp; j &lt; mat.size() &amp;&amp; i &gt;= 0 &amp;&amp; j &gt;= 0){
+       return mat[i][j];
+   }
+   return 0;
+}
+
+void SquareMatrix::setValue(int i, int j, double value){
+   if(i &lt; mat.size() &amp;&amp; j &lt; mat.size() &amp;&amp; i &gt;= 0 &amp;&amp; j &gt;= 0){
+       mat[i][j] = value;
+<A NAME="0"></A>   }
+}</B></FONT>
+
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#0',2,'match21-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>void SquareMatrix::initialize(int size){
+   mat.clear();
+   for(int i = 0; i &lt; size; ++i){
+       vector&lt;double&gt; temp;
+       for(int j = 0; j &lt; size; ++j){
+           temp.push_back(0.0);
+       }
+       mat.push_back(temp);
+<A NAME="6"></A>   }</B></FONT>
+}
+
+<FONT color="#50ebec"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#6',2,'match21-top.html#6',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>void SquareMatrix::resizeMatrix(int newSize){
+   vector&lt;vector&lt;double&gt; &gt; new_vector;
+   for(int i = 0; i &lt; newSize; ++i){
+       vector&lt;double&gt; temp;
+       for(int j = 0; j &lt; newSize; ++j){</B></FONT>
+           temp.push_back(getValue(i, j));
+       }
+       new_vector.push_back(temp);
+   }
+<A NAME="2"></A>   mat = new_vector;
+}
+
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#2',2,'match21-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>SquareMatrix operator * (SquareMatrix m1, SquareMatrix m2){
+   if(m1.mat.size() == m2.mat.size()){
+       vector&lt;vector&lt;double&gt; &gt; new_vector;
+      
+       for(int i = 0; i &lt; m1.mat.size(); ++i){ //vector
+           vector&lt;double&gt; temp;
+           for(int j = 0; j &lt; m1.mat.size(); ++j){
+               temp.push_back(0);
+           }
+           new_vector.push_back(temp);
+       }
+       
+       for(int i = 0; i &lt; m1.mat.size(); ++i){ //multyplication
+           for(int j = 0; j &lt; m1.mat.size(); ++j){
+               new_vector[i][j] = 0;
+               for(int k = 0; k &lt; m1.mat.size(); ++k){
+                   new_vector[i][j] += m1.mat[i][k] + m2.mat[k][j];
+               }
+           }
+       }
+       return SquareMatrix(new_vector);
+   }
+   else{
+       return SquareMatrix();
+   }
+<A NAME="5"></A>}
+
+SquareMatrix operator * (SquareMatrix m1, int val){</B></FONT>
+<FONT color="#c8c2a7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#5',2,'match21-top.html#5',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>   vector&lt;vector&lt;double&gt; &gt; new_vector;
+   for(int i = 0; i &lt; m1.mat.size(); ++i){
+       vector&lt;double&gt; temp;
+       for(int j = 0; j &lt; m1.mat[i].size(); ++j){</B></FONT>
+           temp.push_back(m1.getValue(i, j) * val);
+       }
+       new_vector.push_back(temp);
+   }
+<A NAME="3"></A>   return SquareMatrix(new_vector);
+}
+
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#3',2,'match21-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>SquareMatrix operator - (SquareMatrix m1, SquareMatrix m2){
+   if(m1.mat.size() == m2.mat.size()){
+       vector&lt;vector&lt;double&gt; &gt; new_vector;
+       for(int i = 0; i &lt; m1.mat.size(); ++i){
+           vector&lt;double&gt; temp;
+           for(int j = 0; j &lt; m1.mat[i].size(); ++j){
+               temp.push_back(m1.getValue(i, j) - m2.getValue(i, j));
+           }
+           new_vector.push_back(temp);
+       }
+       return new_vector;
+   }
+   else{
+       return SquareMatrix();
+   }
+}
+
+ostream&amp; operator &lt;&lt;(ostream &amp;out, SquareMatrix m){
+   for(int i = 0; i &lt; m.mat.size(); ++i){
+       for(int j = 0; j &lt; m.mat[i].size(); ++j){
+           out &lt;&lt; m.mat[i][j] &lt;&lt; &quot; &quot;;
+       }
+       out &lt;&lt; endl;
+   }
+   out &lt;&lt; endl;
+   return out;
+}</B></FONT>
+
+
+</PRE>
+<HR>
+<H3><CENTER>SquareMatrix.h</CENTER></H3><HR>
+<PRE>
+#include &lt;vector&gt;
+
+using namespace std;
+
+<A NAME="4"></A>#ifndef SQUAREMATRIX_H_
+#define SQUAREMATRIX_H_
+
+<FONT color="#151b8d"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#4',2,'match21-top.html#4',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>class SquareMatrix{
+private:
+   vector&lt;vector&lt;double&gt; &gt; mat;
+   void initialize(int size);
+public:
+   SquareMatrix();
+   SquareMatrix(vector&lt;vector&lt;double&gt; &gt; v2d);
+   double getValue(int i, int j);
+   void setValue(int i, int j, double value);</B></FONT>
+   void resizeMatrix(int newSize);
+   friend SquareMatrix operator * (SquareMatrix m1, SquareMatrix m2);
+   friend SquareMatrix operator * (SquareMatrix m1, int val);
+   friend SquareMatrix operator - (SquareMatrix m1, SquareMatrix m2);
+  // friend ostream&amp; operator &lt;&lt;(ostream &amp;out, SquareMatrix m);
+};
+
+#endif
+</PRE>
+</BODY>
+</HTML>

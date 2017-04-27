@@ -1,0 +1,977 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Devesh Patel_451093_assignsubmission_file_polynomial</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Polynomial.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+<A NAME="2"></A>#include &lt;cstdlib&gt;
+#include &quot;Polynomial.h&quot;
+using namespace std;
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match22-0.html#2',2,'match22-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	class Polynomial{
+	public:
+    Polynomial(){coef = new double[];degree=0;coef[degree]=0;};
+Polynomial(const Polynomial&amp; pol);
+  ~Polynomial(){delete [] coef;}
+   int getDegree(){return degree;};
+void input();
+void output();
+ void add(const Polynomial&amp; pol);
+void subtract(const Polynomial&amp; pol);
+ void mult(const Polynomial&amp; pol);
+void div(const Polynomial&amp; divisor, Polynomial&amp; quotient, Polynomial&amp; remainder);
+ Polynomial&amp; operator=(const Polynomial&amp; pol);
+friend Polynomial operator+(const Polynomial&amp;, const Polynomial&amp;);
+friend Polynomial operator-(const Polynomial&amp;, const Polynomial&amp;);
+ friend Polynomial operator*(const Polynomial&amp;, const Polynomial&amp;);
+friend Polynomial operator/(const Polynomial&amp;, const Polynomial&amp;);
+friend Polynomial operator%(const Polynomial&amp;, const Polynomial&amp;);
+friend istream&amp; operator&gt;&gt;(istream&amp;, Polynomial&amp;);
+friend ostream&amp; operator&lt;&lt;(ostream&amp;, const Polynomial &amp;);
+private:
+double* coef;
+ int degree;
+ Polynomial(const Polynomial&amp; base, double scalar,int mdegree);
+void reset(); // sets degree to zero, array one elem, and the coefficient to 0.0   
+ void checkandreduce(); // check if the degree has decreased after addition and reduce the polynomial
+};	 
+	ostream&amp; operator &lt;&lt;(ostream&amp; output, const Polynomial&amp; pol){	    int cdegree;	    
+int first = 0;
+	    cdegree = pol.degree+1;	    while (cdegree&gt;0){	        cdegree--;
+ if(pol.coef[cdegree]==0)continue;
+if(pol.coef[cdegree]&gt;0){
+  if((cdegree==0) &amp;&amp; (first==0)){
+	                output&lt;&lt; pol.coef[cdegree];
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==0) &amp;&amp; (first==1)){
+	                output&lt;&lt; &quot;+&quot; &lt;&lt; pol.coef[cdegree];
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==0) &amp;&amp; (pol.coef[cdegree]!=1)){
+	                output&lt;&lt; pol.coef[cdegree]&lt;&lt;&quot;*x&quot;;n  ,jr
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==1)&amp;&amp;(pol.coef[cdegree]!=1)){
+	                output&lt;&lt; &quot;+&quot; &lt;&lt; pol.coef[cdegree]&lt;&lt;&quot;*x&quot;;
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==0) &amp;&amp; (pol.coef[cdegree]==1)){
+	                output&lt;&lt; &quot;x&quot;;
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==1)&amp;&amp;(pol.coef[cdegree]==1)){
+	                output&lt;&lt; &quot;+&quot; &lt;&lt; &quot;x&quot;;
+	                continue;
+	            }
+	            if((first==0)&amp;&amp;(pol.coef[cdegree]==1)){
+	                output &lt;&lt; &quot;x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	            if((first==1)&amp;&amp;(pol.coef[cdegree]==1)){
+	                output &lt;&lt; &quot;+x^&quot; &lt;&lt; cdegree;
+	                continue;
+	            }
+	            if(first==0){
+	                output &lt;&lt; pol.coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	            if(first==1){
+	                output &lt;&lt; &quot;+&quot; &lt;&lt; pol.coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+	                continue;
+	            }
+       }
+ if(pol.coef[cdegree]&lt;0){
+if(cdegree==0){
+	                output&lt;&lt; pol.coef[cdegree];
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==1)&amp;&amp;(pol.coef[cdegree]==-1)){
+	                output&lt;&lt; &quot;-x&quot;;
+	                first=1;
+	                continue;
+	            }
+	            if(pol.coef[cdegree]==-1){
+	                output &lt;&lt; &quot;-x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	            else{
+output &lt;&lt; pol.coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	        }
+	         
+	    }  
+	    return output;
+	}
+	 
+	 
+	 
+	Polynomial&amp; Polynomial::operator=(const Polynomial&amp; pol){
+	    Polynomial finpol;
+	    finpol.degree = pol.degree;
+	    delete [] finpol.coef;
+	    finpol.coef = new double [finpol.degree+1];
+	    for(int finaldeg = finpol.degree+1; finaldeg &gt;= 0; finaldeg--){
+	        finpol.coef[finaldeg] = pol.coef[finaldeg];
+	    }
+	}
+	 
+	Polynomial operator +(const Polynomial&amp; pol1, const Polynomial&amp; pol2){
+	    Polynomial finpol;
+	    if(pol1.degree&lt;=pol2.degree)finpol.degree=pol2.degree;
+	    if(pol1.degree&gt;pol2.degree)finpol.degree=pol1.degree;
+	    delete [] finpol.coef;
+	    finpol.coef = new double[finpol.degree+1];
+	    finpol.add(pol1);
+	    finpol.add(pol2);
+136	    return finpol;
+	}
+	Polynomial operator -(const Polynomial&amp; pol1, const Polynomial&amp; pol2){
+	    Polynomial finpol;
+	    if(pol1.degree&lt;=pol2.degree)finpol.degree=pol2.degree;
+	    if(pol1.degree&gt;pol2.degree)finpol.degree=pol1.degree;
+	    delete [] finpol.coef;
+	    finpol.coef = new double[finpol.degree+1];
+	    finpol.add(pol1);
+	    finpol.subtract(pol2);
+	    return finpol;
+	     
+	}
+	Polynomial operator *(const Polynomial&amp; pol1, const Polynomial&amp; pol2){
+	    Polynomial finpol;
+	    finpol.degree = pol1.degree + pol2.degree;
+	    delete [] finpol.coef;
+	    finpol.coef = new double[finpol.degree+1];
+	    finpol.add(pol1);
+	    finpol.mult(pol2);
+	    return finpol;
+	}
+	Polynomial operator /(const Polynomial&amp; pol1, const Polynomial&amp; pol2){
+	    Polynomial finpol;
+if(pol1.degree&lt;pol2.degree)finpol.degree=pol2.degree-pol1.degree;
+if(pol1.degree&gt;pol2.degree)finpol.degree=pol1.degree-pol2.degree;
+if(pol1.degree==pol2.degree)finpol.degree=0;
+delete [] finpol.coef;
+finpol.coef = new double[finpol.degree+1];
+finpol.add(pol1);
+return finpol;
+
+}
+Polynomial operator %(const Polynomial&amp; pol1, const Polynomial&amp; pol2){
+
+}
+	 	Polynomial::Polynomial(const Polynomial&amp; base, double scalar, int mdegree)
+{	    degree = base.degree+mdegree;
+int i = degree;
+int j = base.degree;
+coef = new double[degree+1];
+do{
+coef[i] = scalar * base.coef[j];
+i--;
+j--;
+}while((i&gt;=0)&amp;&amp;(j&gt;=0));
+}
+
+void Polynomial::add(const Polynomial&amp; pol){
+int ndegree = degree;
+int adegree = pol.degree;
+do{
+	        if(ndegree==adegree){
+	            while(ndegree&gt;=0){
+	                coef[ndegree] = coef[ndegree] + pol.coef[ndegree];
+	                ndegree--;
+	            }
+	            break;
+	        }
+	        if(ndegree&gt;adegree){
+	            while(ndegree!=adegree){
+	                ndegree--;
+	            }
+	            while(ndegree&gt;=0){
+	                coef[ndegree] += pol.coef[ndegree];
+	                ndegree--;
+	            }
+	            break;
+	        }
+	        if(ndegree&lt;adegree){
+	            degree=adegree;
+	while(ndegree!=adegree){
+	                coef[adegree] = pol.coef[adegree];
+	                adegree--;
+	            }
+	            while(ndegree&gt;=0){
+	                coef[ndegree] += pol.coef[ndegree];
+		ndegree--;
+	            }
+	            break;
+	        }
+	    }while(ndegree&gt;=0);
+	}
+	 
+	void Polynomial::subtract(const Polynomial&amp; pol){
+	    int ndegree = degree;
+	    int sdegree = pol.degree;
+	    do{
+	        if(ndegree==sdegree){
+	            while(ndegree&gt;=0){
+	                coef[ndegree] = coef[ndegree] - pol.coef[ndegree];
+	                ndegree--;
+	            }
+	            break;
+	        }
+	        if(ndegree&gt;sdegree){
+	            while(ndegree!=sdegree){
+	                ndegree--;
+	            }
+while(ndegree&gt;=0){
+	                coef[ndegree] -= pol.coef[ndegree];
+	                ndegree--;
+	            }
+	            break;
+	        }
+	        if(ndegree&lt;sdegree){
+	            degree=sdegree;
+	            while(ndegree!=sdegree){
+	                coef[sdegree] = pol.coef[sdegree]*-1;
+	                sdegree--;
+}
+	            while(ndegree&gt;=0){
+	                coef[ndegree] -= pol.coef[ndegree];
+	                ndegree--;
+	            }
+	            break;
+	        }
+	    }while(ndegree&gt;=0);
+	}
+
+	void Polynomial::mult(const Polynomial&amp; pol){
+	    Polynomial multypol;
+	    multypol.degree=pol.degree+degree;
+delete [] multypol.coef;
+multypol.coef = new double[multypol.degree+1];
+for(int i = pol.degree; i &gt;= 0; i--){
+Polynomial tmp(*this,pol.coef[i],i);
+multypol.add(tmp);
+}
+    delete [] coef;
+coef = new double[multypol.degree+1];
+degree=multypol.degree;
+for(int finaldeg = degree+1; finaldeg &gt;= 0; finaldeg--){
+coef[finaldeg] = multypol.coef[finaldeg];
+}
+}
+
+void Polynomial::div(const Polynomial&amp; divisor, Polynomial&amp; quotient, Polynomial&amp; remainder){}
+void Polynomial::input(){ //DONE
+int cdegree;
+cin &gt;&gt; degree;
+cdegree = degree;
+delete [] coef;
+coef=new double [cdegree+1];
+while (cdegree&gt;=0){
+cin &gt;&gt; coef[cdegree];
+cdegree--;
+}
+}
+	 
+	void Polynomial::output(){ //DONE
+	    int cdegree;
+	    int first = 0;
+	    cdegree = degree+1;
+	    while (cdegree&gt;0){
+	        cdegree--;
+	        if(coef[cdegree]==0)continue;
+	        if(coef[cdegree]&gt;0){
+	            if((cdegree==0) &amp;&amp; (first==0)){
+	                cout&lt;&lt; coef[cdegree];
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==0) &amp;&amp; (first==1)){
+	                cout&lt;&lt; &quot;+&quot; &lt;&lt; coef[cdegree];
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==0) &amp;&amp; (coef[cdegree]!=1)){
+	                cout&lt;&lt; coef[cdegree]&lt;&lt;&quot;*x&quot;;
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==1)&amp;&amp;(coef[cdegree]!=1)){
+	                cout&lt;&lt; &quot;+&quot; &lt;&lt; coef[cdegree]&lt;&lt;&quot;*x&quot;;
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==0) &amp;&amp; (coef[cdegree]==1)){
+	                cout&lt;&lt; &quot;x&quot;;
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==1)&amp;&amp;(coef[cdegree]==1)){
+	                cout&lt;&lt; &quot;+&quot; &lt;&lt; &quot;x&quot;;
+	                continue;
+	            }
+	            if((first==0)&amp;&amp;(coef[cdegree]==1)){
+	                cout &lt;&lt; &quot;x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	            if((first==1)&amp;&amp;(coef[cdegree]==1)){
+	                cout &lt;&lt; &quot;+x^&quot; &lt;&lt; cdegree;
+	                continue;
+	            }
+	            if(first==0){
+	                cout &lt;&lt; coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	            if(first==1){
+	                cout &lt;&lt; &quot;+&quot; &lt;&lt; coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+	                continue;
+	            }
+	        }
+	        if(coef[cdegree]&lt;0){
+	            if(cdegree==0){
+	                cout&lt;&lt; coef[cdegree];
+	                first=1;
+	                continue;
+	            }
+if((cdegree==1)&amp;&amp;(coef[cdegree]==-1)){
+cout&lt;&lt; &quot;-x&quot;;
+first=1;
+continue;
+}
+if(coef[cdegree]==-1){
+cout &lt;&lt; &quot;-x^&quot; &lt;&lt; cdegree;
+first=1;
+continue;
+}
+else{
+cout &lt;&lt; coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+first=1;
+  continue;
+}
+}
+
+}
+}
+
+370	int main()
+	{
+	    Polynomial poly1,poly2;
+	    char choice;
+    int done = 0;
+    cout &lt;&lt; &quot;CGS 2: Polynomial calculator&quot; &lt;&lt; endl;    do{
+	        cout &lt;&lt; endl &lt;&lt; endl &lt;&lt;&quot;0. Quit&quot;
+	        &lt;&lt; endl &lt;&lt;&quot;1. Enter polynomials&quot;
+	        &lt;&lt; endl &lt;&lt;&quot;2. Add&quot;
+        &lt;&lt; endl &lt;&lt;&quot;3. Subtract&quot;
+	        &lt;&lt; endl &lt;&lt;&quot;4. Multiply&quot;
+	        &lt;&lt; endl &lt;&lt;&quot;5. Divide&quot;
+	        &lt;&lt; endl &lt;&lt;&quot;6. Remainder&quot; &lt;&lt; endl &lt;&lt; endl;
+	         
+	         
+	        do{
+	            cout &lt;&lt; &quot;Enter your choice : &quot;;
+	            cin &gt;&gt; choice;
+	            if((choice!='6') &amp;&amp; (choice!='5') &amp;&amp; (choice!='4') &amp;&amp; (choice!='3')
+               &amp;&amp; (choice!='2') &amp;&amp; (choice!='1') &amp;&amp; (choice!='0')){
+                cout &lt;&lt; &quot;'&quot; &lt;&lt; choice &lt;&lt; &quot;' is an invalid choice&quot;&lt;&lt; endl;
+	            }
+	        }while((choice!='6') &amp;&amp; (choice!='5') &amp;&amp; (choice!='4') &amp;&amp; (choice!='3')
+	               &amp;&amp; (choice!='2') &amp;&amp; (choice!='1') &amp;&amp; (choice!='0'));
+        if(choice=='0')exit(1);
+        if(choice=='1'){
+            cout &lt;&lt; &quot;Enter polynomial 1 (degree then coefficients) : &quot;;
+           poly1.input();
+	            cout &lt;&lt; &quot;Enter polynomial 2 (degree then coefficients) : &quot;;
+	            poly2.input();
+	            done=1;
+	        }
+	        if(choice=='2'){
+	            if(done==0){
+	                cout &lt;&lt; &quot;Enter the polynomial first&quot; &lt;&lt; endl;
+	                continue;
+	            }
+	            cout &lt;&lt; &quot;(&quot; &lt;&lt; poly1 &lt;&lt; &quot;)+(&quot; &lt;&lt; poly2 &lt;&lt; &quot;)=&quot; &lt;&lt; (poly1+poly2);
+	        }
+	        if(choice=='3'){
+	            if(done==0){
+	                cout &lt;&lt; &quot;Enter the polynomial first&quot; &lt;&lt; endl;
+	                continue;
+	            }
+	            cout &lt;&lt; &quot;(&quot; &lt;&lt; poly1 &lt;&lt; &quot;)-(&quot; &lt;&lt; poly2 &lt;&lt; &quot;)=&quot; &lt;&lt; (poly1-poly2);
+	        }
+	        if(choice=='4'){
+	            if(done==0){
+	                cout &lt;&lt; &quot;Enter the polynomial first&quot; &lt;&lt; endl;
+	                continue;
+	            }
+	            cout &lt;&lt; &quot;(&quot; &lt;&lt; poly1 &lt;&lt; &quot;)*(&quot; &lt;&lt; poly2 &lt;&lt; &quot;)=&quot; &lt;&lt; (poly1*poly2);
+	        }
+	        if(choice=='5'){
+	            if(done==0){
+	                cout &lt;&lt; &quot;Enter the polynomial first&quot; &lt;&lt; endl;
+	                continue;
+	            }
+	            cout &lt;&lt; &quot;(&quot; &lt;&lt; poly1 &lt;&lt; &quot;)/(&quot; &lt;&lt; poly2 &lt;&lt; &quot;)=&quot; &lt;&lt; (poly1/poly2);
+	        }
+	        if(choice=='6'){
+	            if(done==0){
+	                cout &lt;&lt; &quot;Enter the polynomial first&quot; &lt;&lt; endl;
+	                continue;
+	            }
+	            cout &lt;&lt; &quot;(&quot; &lt;&lt; poly1 &lt;&lt; &quot;)%(&quot; &lt;&lt; poly2 &lt;&lt; &quot;)=&quot; &lt;&lt; (poly1%poly2);
+	        }
+	    }while(choice!=0);
+	     
+	     
+	    return 0;
+	}</B></FONT>
+
+
+
+</PRE>
+<HR>
+<H3><CENTER>Polynomial.h</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+<A NAME="3"></A>#ifndef POLYNOMINAL_h
+#define POLYNOMINAL_h
+
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match22-0.html#3',2,'match22-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	class Polynomial{
+	public:
+    Polynomial(){coef = new double[];degree=0;coef[degree]=0;};
+Polynomial(const Polynomial&amp; pol);
+  ~Polynomial(){delete [] coef;}
+   int getDegree(){return degree;};
+void input();
+void output();
+ void add(const Polynomial&amp; pol);
+void subtract(const Polynomial&amp; pol);
+ void mult(const Polynomial&amp; pol);
+void div(const Polynomial&amp; divisor, Polynomial&amp; quotient, Polynomial&amp; remainder);
+ Polynomial&amp; operator=(const Polynomial&amp; pol);
+friend Polynomial operator+(const Polynomial&amp;, const Polynomial&amp;);
+friend Polynomial operator-(const Polynomial&amp;, const Polynomial&amp;);
+ friend Polynomial operator*(const Polynomial&amp;, const Polynomial&amp;);
+friend Polynomial operator/(const Polynomial&amp;, const Polynomial&amp;);
+friend Polynomial operator%(const Polynomial&amp;, const Polynomial&amp;);
+friend istream&amp; operator&gt;&gt;(istream&amp;, Polynomial&amp;);
+friend ostream&amp; operator&lt;&lt;(ostream&amp;, const Polynomial &amp;);
+private:
+double* coef;
+ int degree;
+ Polynomial(const Polynomial&amp; base, double scalar,int mdegree);
+void reset(); // sets degree to zero, array one elem, and the coefficient to 0.0   
+ void checkandreduce(); // check if the degree has decreased after addition and reduce the polynomial
+ ostream&amp; operator &lt;&lt;(ostream&amp; output, const Polynomial&amp; pol){)
+};	 </B></FONT>
+	
+</PRE>
+<HR>
+<H3><CENTER>main.cpp</CENTER></H3><HR>
+<PRE>
+	#include &lt;iostream&gt;
+	#include &lt;cstdlib&gt;
+<A NAME="0"></A>	#include  &quot;Polynomial.h&quot;
+using namespace std;
+	 
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match22-0.html#0',2,'match22-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	class Polynomial{
+	public:
+    int degree;
+Polynomial(){coef = new double[1];degree=0;coef[degree]=0;};
+   //Polynomial(const Polynomial&amp; pol);
+   ~Polynomial(){delete [] coef;}
+	    void input();
+  void output();    void reset(int ndeg);
+    void add(const Polynomial&amp; pol);
+void subtract(const Polynomial&amp; pol);
+	    void mult(const Polynomial&amp; pol);
+		void div(const Polynomial&amp; divisor, const Polynomial&amp; quotient, const Polynomial&amp; remainder);
+	    friend Polynomial operator+(const Polynomial&amp;, const Polynomial&amp;);
+	    friend istream&amp; operator&gt;&gt;(istream&amp;, Polynomial&amp;);
+	    friend ostream&amp; operator&lt;&lt;(ostream&amp;, const Polynomial &amp;);
+	private:
+	    double* coef;
+	    //int degree;
+	    Polynomial(const Polynomial&amp; base, double scalar,int mdegree);
+   Polynomial(const Polynomial&amp; base, const Polynomial&amp; divypol);	   
+ checkandreduce(); // check if the degree has decreased after addition and reduce the polynomial
+ 
+	};
+ 
+void Polynomial::reset(int ndeg){
+    degree = ndeg;
+    delete [] coef;
+	    coef = new double[ndeg+1];
+    for(int r=ndeg; r&gt;=0; r--){
+        coef[r] = 0;
+	    }
+	}
+	 
+	void Polynomial::checkandreduce(){
+	    for(int kl = degree; kl&gt;=0; kl--){
+       if(coef[kl]==0)continue;
+        else{
+	            degree = kl;
+	            break;
+	        }
+	    }
+	}
+	 
+<A NAME="1"></A>	ostream&amp; operator &lt;&lt;(ostream&amp; output, const Polynomial&amp; pol){
+	    int cdegree;</B></FONT>
+	    int first = 0;
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match22-0.html#1',2,'match22-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	    cdegree = pol.degree+1;
+	    while (cdegree&gt;0){
+	        cdegree--;
+	        if(pol.coef[cdegree]==0)continue;
+	        if(pol.coef[cdegree]&gt;0){
+	            if((cdegree==0) &amp;&amp; (first==0)){
+	                output&lt;&lt; pol.coef[cdegree];
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==0) &amp;&amp; (first==1)){
+	                output&lt;&lt; &quot;+&quot; &lt;&lt; pol.coef[cdegree];
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==0) &amp;&amp; (pol.coef[cdegree]!=1)){
+	                output&lt;&lt; pol.coef[cdegree]&lt;&lt;&quot;*x&quot;;
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==1)&amp;&amp;(pol.coef[cdegree]!=1)){
+	                output&lt;&lt; &quot;+&quot; &lt;&lt; pol.coef[cdegree]&lt;&lt;&quot;*x&quot;;
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==0) &amp;&amp; (pol.coef[cdegree]==1)){
+	                output&lt;&lt; &quot;x&quot;;
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==1)&amp;&amp;(pol.coef[cdegree]==1)){
+	                output&lt;&lt; &quot;+&quot; &lt;&lt; &quot;x&quot;;
+	                continue;
+	            }
+	            if((first==0)&amp;&amp;(pol.coef[cdegree]==1)){
+	                output &lt;&lt; &quot;x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	            if((first==1)&amp;&amp;(pol.coef[cdegree]==1)){
+	                output &lt;&lt; &quot;+x^&quot; &lt;&lt; cdegree;
+	                continue;
+	            }
+	            if(first==0){
+	                output &lt;&lt; pol.coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	            if(first==1){
+	                output &lt;&lt; &quot;+&quot; &lt;&lt; pol.coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+	                continue;
+	            }
+	        }
+	        if(pol.coef[cdegree]&lt;0){
+	            if(cdegree==0){
+	output&lt;&lt; pol.coef[cdegree];
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==1)&amp;&amp;(pol.coef[cdegree]==-1)){
+	                output&lt;&lt; &quot;-x&quot;;
+	                first=1;
+	                continue;
+	            }
+	            if(pol.coef[cdegree]==-1){
+	                output &lt;&lt; &quot;-x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	            else{
+	                output &lt;&lt; pol.coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	        }
+	         
+	    }  
+	    return output;
+	}
+	 
+	Polynomial operator +(const Polynomial&amp; pol1, const Polynomial&amp; pol2){
+	    Polynomial finpol;
+	    if(pol1.degree&lt;=pol2.degree)finpol.reset(pol2.degree);
+	    if(pol1.degree&gt;pol2.degree)finpol.reset(pol1.degree);
+	    finpol.add(pol1);
+	    finpol.add(pol2);
+	    return finpol;
+	}
+	 
+	Polynomial operator -(const Polynomial&amp; pol1, const Polynomial&amp; pol2){
+	    Polynomial finpol2;
+	    if(pol1.degree&lt;=pol2.degree)finpol2.reset(pol2.degree);
+	    if(pol1.degree&gt;pol2.degree)finpol2.reset(pol1.degree);
+	    finpol2.add(pol1);
+	    finpol2.subtract(pol2);
+	    return finpol2;
+	}
+	 
+	Polynomial operator *(const Polynomial&amp; pol1, const Polynomial&amp; pol2){
+	    Polynomial finpol3;
+	    finpol3.reset(pol2.degree+pol1.degree);
+	    finpol3.add(pol1);
+	    finpol3.mult(pol2);
+	    return finpol3;
+	}
+	 
+	Polynomial operator /(const Polynomial&amp; pol1, const Polynomial&amp; pol2){
+	    Polynomial finpol3;
+	    Polynomial quotient;
+    Polynomial rem;
+    finpol3.reset(pol1.degree);
+	    cout &lt;&lt; endl &lt;&lt; &quot;reset: &quot; &lt;&lt; finpol3 &lt;&lt; endl;
+	    quotient.reset(pol1.degree-pol2.degree);    rem.reset(pol1.degree-pol2.degree);
+   finpol3.add(pol1);
+    cout &lt;&lt; endl &lt;&lt; &quot;add pol1: &quot; &lt;&lt; finpol3 &lt;&lt; endl;
+    //finpol3.degree=pol1.degree-pol2.degree
+    finpol3.div(pol2,quotient,rem);
+    cout &lt;&lt; endl &lt;&lt; &quot;div pol2: &quot; &lt;&lt; finpol3 &lt;&lt; endl;
+    return finpol3;
+}
+	 
+Polynomial operator %(const Polynomial&amp; pol1, const Polynomial&amp; pol2){
+	    Polynomial finpol4;
+    Polynomial quotient;
+	    Polynomial rem;
+	    finpol4.reset(pol1.degree-pol2.degree);
+	    cout &lt;&lt; endl &lt;&lt; &quot;reset: &quot; &lt;&lt; finpol4 &lt;&lt; endl;
+    quotient.reset(pol1.degree-pol2.degree);
+	    rem.reset(pol1.degree-pol2.degree);
+    finpol4.add(pol1);
+    cout &lt;&lt; endl &lt;&lt; &quot;add pol1: &quot; &lt;&lt; finpol4 &lt;&lt; endl;
+   finpol4.div(pol2,quotient,rem);
+    cout &lt;&lt; endl &lt;&lt; &quot;div pol2: &quot; &lt;&lt; finpol4 &lt;&lt; endl;
+    rem.reset(pol1.degree);
+	    rem.add(pol1);
+	    finpol4.mult(pol2);
+	    rem.subtract(finpol4);
+	    return finpol4;
+	}
+	 
+	Polynomial::Polynomial(const Polynomial&amp; base, double scalar, int mdegree){
+	    degree = base.degree + mdegree;
+	    int i = degree;
+	    int j = base.degree;
+	    degree = base.degree+mdegree;
+	    coef = new double[degree+1];
+	    do{
+	        coef[i] = scalar * base.coef[j];
+	        i--;
+	        j--;
+	    }while((i&gt;=0)&amp;&amp;(j&gt;=0));
+	}
+	 
+	void Polynomial::add(const Polynomial&amp; pol){
+	    int ndegree = degree;
+	    int adegree = pol.degree;
+	    do{
+	        if(ndegree==adegree){
+	            while(ndegree&gt;=0){
+	                coef[ndegree] = coef[ndegree] + pol.coef[ndegree];
+	                ndegree--;
+	            }
+            break;
+	        }
+	        if(ndegree&gt;adegree){
+	            while(ndegree!=adegree){
+	                ndegree--;
+	            }
+	            while(ndegree&gt;=0){
+	                coef[ndegree] += pol.coef[ndegree];
+	                ndegree--;
+	            }
+	            break;
+	        }
+	        if(ndegree&lt;adegree){
+	            degree=adegree;
+	            while(ndegree!=adegree){
+	                coef[adegree] = pol.coef[adegree];
+	                adegree--;
+	            }
+	            while(ndegree&gt;=0){
+	                coef[ndegree] += pol.coef[ndegree];
+	                ndegree--;
+	            }
+	            break;
+	        }
+	    }while(ndegree&gt;=0);
+	}
+	 
+	void Polynomial::subtract(const Polynomial&amp; pol){
+	    int ndegree = degree;
+	    int sdegree = pol.degree;
+	    do{
+	        if(ndegree==sdegree){
+	            while(ndegree&gt;=0){
+                coef[ndegree] = coef[ndegree] - pol.coef[ndegree];
+	                ndegree--;
+	            }
+	            break;
+	        }
+	        if(ndegree&gt;sdegree){
+	            while(ndegree!=sdegree){
+	                ndegree--;
+	            }
+	            while(ndegree&gt;=0){
+	                coef[ndegree] -= pol.coef[ndegree];
+	                ndegree--;
+	            }
+            break;
+	        }
+        if(ndegree&lt;sdegree){
+            degree=sdegree;
+	            while(ndegree!=sdegree){
+                coef[sdegree] = pol.coef[sdegree]*-1;
+                sdegree--;
+           }
+           while(ndegree&gt;=0){
+			   coef[ndegree] -= pol.coef[ndegree];
+                ndegree--;
+            }
+		   break;
+	        }
+	    }while(ndegree&gt;=0);
+}
+	 
+	void Polynomial::mult(const Polynomial&amp; pol){
+    Polynomial multypol;	    multypol.reset(pol.degree+degree);
+	    for(int i = pol.degree; i &gt;= 0; i--){
+	        Polynomial tmp(*this,pol.coef[i],i);
+        multypol.add(tmp);
+	    }
+    reset(multypol.degree);
+    for(int finaldeg = degree+1; finaldeg &gt;= 0; finaldeg--){
+	        coef[finaldeg] = multypol.coef[finaldeg];
+    }
+	}
+	 
+	void Polynomial::div(const Polynomial&amp; divy, const Polynomial&amp; quo, const Polynomial&amp; rem){
+	    Polynomial divypoly = *this;
+	    Polynomial resulta;
+	    degree = divypoly.degree-divy.degree;
+	    resulta.reset(degree);
+	    for(int i = degree; i &gt;=0; i--){
+	        divypoly.checkandreduce();
+	        Polynomial tmp(divypoly,divy);
+	        resulta.add(tmp);
+	        tmp.mult(divy);
+	        divypoly.subtract(tmp);
+	    }
+	    cout &lt;&lt; resulta;
+	    *this = resulta;
+	    output();
+	}
+	     
+	Polynomial::Polynomial(const Polynomial&amp; divypoly, const Polynomial&amp; divy){
+	    degree = (divypoly.degree-divy.degree);
+	    coef = new double[(degree+1)];
+	    coef[degree]=divypoly.coef[divypoly.degree]/divy.coef[divy.degree];
+	    for(int j=(degree-1);j&gt;=0;j--){
+	        coef[j]=0;
+	    }
+	}
+	 
+	void Polynomial::input(){ //DONE
+	    int cdegree;
+	    cin &gt;&gt; degree;
+	    cdegree = degree;
+	    delete [] coef;
+	    coef=new double [cdegree+1];
+	    while (cdegree&gt;=0){
+	        cin &gt;&gt; coef[cdegree];
+	        cdegree--;
+	    }
+	}
+	 
+	void Polynomial::output(){ //DONE
+	    int cdegree;
+	    int first = 0;
+	    cdegree = degree+1;
+	    while (cdegree&gt;0){
+	        cdegree--;
+	        if(coef[cdegree]==0)continue;
+	        if(coef[cdegree]&gt;0){
+	            if((cdegree==0) &amp;&amp; (first==0)){
+	                cout&lt;&lt; coef[cdegree];
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==0) &amp;&amp; (first==1)){
+	                cout&lt;&lt; &quot;+&quot; &lt;&lt; coef[cdegree];
+	                continue;
+	            }
+	            if((cdegree==1) &amp;&amp; (first==0) &amp;&amp; (coef[cdegree]!=1)){
+	                cout&lt;&lt; coef[cdegree]&lt;&lt;&quot;*x&quot;;
+	                first=1;
+	                continue;
+	            }
+if((cdegree==1) &amp;&amp; (first==1)&amp;&amp;(coef[cdegree]!=1)){
+cout&lt;&lt; &quot;+&quot; &lt;&lt; coef[cdegree]&lt;&lt;&quot;*x&quot;;
+continue;
+}
+if((cdegree==1) &amp;&amp; (first==0) &amp;&amp; (coef[cdegree]==1)){
+cout&lt;&lt; &quot;x&quot;;
+first=1;
+continue;
+}
+if((cdegree==1) &amp;&amp; (first==1)&amp;&amp;(coef[cdegree]==1)){
+cout&lt;&lt; &quot;+&quot; &lt;&lt; &quot;x&quot;;
+continue;
+}
+if((first==0)&amp;&amp;(coef[cdegree]==1)){
+cout &lt;&lt; &quot;x^&quot; &lt;&lt; cdegree;
+		first=1;
+		continue;
+		}
+if((first==1)&amp;&amp;(coef[cdegree]==1)){
+cout &lt;&lt; &quot;+x^&quot; &lt;&lt; cdegree;
+	continue;
+		}
+		if(first==0){
+		cout &lt;&lt; coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+		first=1;
+		continue;
+	            }
+	            if(first==1){
+	                cout &lt;&lt; &quot;+&quot; &lt;&lt; coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+	                continue;
+            }
+	        }
+	        if(coef[cdegree]&lt;0){
+	            if(cdegree==0){
+	                cout&lt;&lt; coef[cdegree];
+	                first=1;
+	                continue;
+	            }
+	            if((cdegree==1)&amp;&amp;(coef[cdegree]==-1)){
+	                cout&lt;&lt; &quot;-x&quot;;	                first=1;
+	                continue;	            }
+	            if(coef[cdegree]==-1){
+cout &lt;&lt; &quot;-x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	            else{
+	                cout &lt;&lt; coef[cdegree] &lt;&lt; &quot;*x^&quot; &lt;&lt; cdegree;
+	                first=1;
+	                continue;
+	            }
+	        }
+	         
+	    }
+	}
+	 
+	int main()
+	{
+	    Polynomial poly1,poly2;
+	    char choice;
+	    int done = 0;
+	    cout &lt;&lt; &quot;Polynomial calculator&quot; &lt;&lt; endl;
+	    do{
+	        cout &lt;&lt; endl &lt;&lt; endl &lt;&lt;&quot;0. Quit&quot;
+	        &lt;&lt; endl &lt;&lt;&quot;1. Enter polynomials&quot;
+	        &lt;&lt; endl &lt;&lt;&quot;2. Add&quot;
+	        &lt;&lt; endl &lt;&lt;&quot;3. Subtract&quot;
+	        &lt;&lt; endl &lt;&lt;&quot;4. Multiply&quot;
+	        &lt;&lt; endl &lt;&lt;&quot;5. Divide&quot;
+	        &lt;&lt; endl &lt;&lt;&quot;6. Remainder&quot; &lt;&lt; endl &lt;&lt; endl;
+	         
+	         
+	        do{
+	            cout &lt;&lt; &quot;Enter your choice : &quot;;
+	            cin &gt;&gt; choice;
+	            if((choice!='6') &amp;&amp; (choice!='5') &amp;&amp; (choice!='4') &amp;&amp; (choice!='3')
+	               &amp;&amp; (choice!='2') &amp;&amp; (choice!='1') &amp;&amp; (choice!='0')){
+	                cout &lt;&lt; &quot;'&quot; &lt;&lt; choice &lt;&lt; &quot;' is an invalid choice&quot;&lt;&lt; endl;
+	            }
+	        }while((choice!='6') &amp;&amp; (choice!='5') &amp;&amp; (choice!='4') &amp;&amp; (choice!='3')
+	               &amp;&amp; (choice!='2') &amp;&amp; (choice!='1') &amp;&amp; (choice!='0'));
+	        if(choice=='0')exit(1);
+	        if(choice=='1'){
+	            cout &lt;&lt; &quot;Enter polynomial 1 (degree then coefficients) : &quot;;
+	            poly1.input();
+	            cout &lt;&lt; &quot;Enter polynomial 2 (degree then coefficients) : &quot;;
+	            poly2.input();
+	            done=1;
+	        }
+	        if(choice=='2'){
+	            if(done==0){
+	                cout &lt;&lt; &quot;Enter the polynomial first&quot; &lt;&lt; endl;
+	                continue;
+	            }
+	            cout &lt;&lt; &quot;(&quot; &lt;&lt; poly1 &lt;&lt; &quot;)+(&quot; &lt;&lt; poly2 &lt;&lt; &quot;)=&quot; &lt;&lt; (poly1+poly2);
+	        }
+	        if(choice=='3'){
+	            if(done==0){
+	                cout &lt;&lt; &quot;Enter the polynomial first&quot; &lt;&lt; endl;
+	                continue;
+	            }
+	            cout &lt;&lt; &quot;(&quot; &lt;&lt; poly1 &lt;&lt; &quot;)-(&quot; &lt;&lt; poly2 &lt;&lt; &quot;)=&quot; &lt;&lt; (poly1-poly2);
+	        }
+	        if(choice=='4'){
+	            if(done==0){
+	                cout &lt;&lt; &quot;Enter the polynomial first&quot; &lt;&lt; endl;
+	                continue;
+	            }
+	            cout &lt;&lt; &quot;(&quot; &lt;&lt; poly1 &lt;&lt; &quot;)*(&quot; &lt;&lt; poly2 &lt;&lt; &quot;)=&quot; &lt;&lt; (poly1*poly2);
+	        }
+	        if(choice=='5'){
+	            if(done==0){
+	                cout &lt;&lt; &quot;Enter the polynomial first&quot; &lt;&lt; endl;
+	                continue;
+	            }
+	            cout &lt;&lt; &quot;(&quot; &lt;&lt; poly1 &lt;&lt; &quot;)/(&quot; &lt;&lt; poly2 &lt;&lt; &quot;)=&quot; &lt;&lt; (poly1/poly2);
+	        }
+	        if(choice=='6'){
+	            if(done==0){
+	                cout &lt;&lt; &quot;Enter the polynomial first&quot; &lt;&lt; endl;
+	                continue;
+	            }
+	            cout &lt;&lt; &quot;(&quot; &lt;&lt; poly1 &lt;&lt; &quot;)%(&quot; &lt;&lt; poly2 &lt;&lt; &quot;)=&quot; &lt;&lt; (poly1%poly2);
+	        }
+	    }while(choice!=0);
+	     
+	     
+	    return 0;
+	}</B></FONT>
+
+
+</PRE>
+</BODY>
+</HTML>

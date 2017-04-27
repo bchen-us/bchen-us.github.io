@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Vanita Rani_451120_assignsubmission_file_Problem 1</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Implement.cpp</CENTER></H3><HR>
+<PRE>
+/*
+Name: 		Vanita Rani
+Course: 	CSC340-02
+Date: 		March 27, 2017
+IDE: 		Dev-C++ s5.11
+Objective: 	Problem 2: implementation for matrix problem
+*/
+#include &lt;iostream&gt;
+#include &quot;Polynomial.h&quot;
+
+<A NAME="0"></A>
+//initialize polynomial to 0 by having the coefficients to 0 
+Polynomial::Polynomial() {
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match12-1.html#0',3,'match12-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>   for(int i = 0; i &lt; sizeof(coefficients) + 1; i++){
+       coefficients[i] = 0;
+   }
+}
+
+//find the highest degree
+Polynomial::Polynomial(int highestDegree){
+	maxDegree = highestDegree;
+   	coefficients = new double[maxDegree];
+   	for(int i = 0; i &lt; maxDegree + 1; i++){
+       	coefficients[i] = 0;
+   }
+}
+
+//find the degree of the polynomial 
+int Polynomial::degree(){
+	for (int i = maxDegree; i &gt;= maxDegree; i--) {
+		if(coefficients[i] != 0) {
+<A NAME="1"></A>			return i;
+    	}
+    }</B></FONT>
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match12-1.html#1',3,'match12-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+//returns the degree/power
+double Polynomial::getCoeff(int power){
+	if(power &lt; 0 || power &gt; max_degree)
+       	return 0;
+   	return coefficients[power];
+}
+
+//Get information from user about polynomial
+void Polynomial::setPolynomial(){</B></FONT>
+	//get the maxdegree and degree of polynomial
+   cout &lt;&lt; &quot;Enter the degree of the polynomial: &quot;;
+<A NAME="2"></A>   cin &gt;&gt; maxDegree;
+   
+   //get coeffs from user 
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match12-1.html#2',3,'match12-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>   for(int i = 0; i &lt; maxDegree + 1; ++i){
+       cout &lt;&lt; &quot;Enter coefficient of degree &quot; &lt;&lt; i &lt;&lt; &quot;: &quot;;
+       cin &gt;&gt; coefficients[i];
+   }
+}
+
+//set coefficient x^(power) to newCoefficient
+void Polynomial::setCoefficient(int power, double newCoefficient){
+   coeffs[power] = newCoefficient;
+}
+
+//overload / operator 
+Polynomial Polynomial::operator / (int value){
+	cout &lt;&lt; &quot;What scalar number would you like to divide the polynomial by?&quot; &lt;&lt; endl;
+	cin &lt;&lt; value;
+   Polynomial q(maxDegree);
+   for(int i = 0; i &lt; maxDegree; i++){
+       q.setCoeff(i, getCoeff(i) / value);
+   }
+   return q;
+}
+
+//overload - operator
+Polynomial Polynomial::operator - (){
+   Polynomial r(maxDegree);
+   for(int i = 0; i &lt; maxDegree; i++){
+       r.setCoeff(i, -1 * getCoeff(i));
+       setCoeff(i, -1 * getCoeff(i));
+   }
+   return r;
+}
+
+//overload + operator 
+Polynomial Polynomial::operator + (Polynomial s) {
+	//if [maxDegree &gt; s.maxDegree] is true then return maxDegree, if not return s.maxDegree 
+   Polynomial s ( (maxDegree &gt; s.maxDegree) ? maxDegree : s.maxDegree);
+   for(int i = 0; i &lt; maxDegree; i++){
+       s.setCoeff(i, getCoeff(i) + s.getCoeff(i));
+   }
+   return s;
+<A NAME="3"></A>}</B></FONT>
+
+//overload &lt;&lt; operator
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match12-1.html#3',3,'match12-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>ostream&amp; operator &lt;&lt; (ostream &amp;out Polynomial a) {
+   double b;
+   for (int i = a.maxDegree; i &gt;= 0; i--) {
+       b = a.getCoeff(i);
+       if(b != 0){
+           if(b &gt; 0){
+               out &lt;&lt; &quot; +&quot; &lt;&lt; b &lt;&lt; &quot;*x^&quot; &lt;&lt; i;
+           }
+           else{
+               out &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; &quot; * x^&quot; &lt;&lt; i;
+           }
+       }
+   }
+   return out;
+}</B></FONT>
+</PRE>
+<HR>
+<H3><CENTER>Polynomial.h</CENTER></H3><HR>
+<PRE>
+/*
+Name: 		Vanita Rani
+Course: 	CSC340-02
+Date: 		March 27, 2017
+IDE: 		Dev-C++ 5.11
+Objective: 	Problem 2: header file of matrix problem
+*/
+#include &lt;iostream&gt;
+
+using namespace std;
+
+#ifndef Polynomial_h
+#define Polynomial_h
+
+class Polynomial {
+	private:
+<A NAME="4"></A>    	double coefficants [];
+    	int maxDegree;
+   
+<FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match12-1.html#4',3,'match12-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	public:
+   		Polynomial();
+   		Polynomial(int highestDegree);
+   		int degree();
+   		double getCoeff(int power);
+   		void setPolynomial();
+   		void setCoeff(int power, double newCoefficient);
+   		Polynomial operator / (int value);
+   		Polynomial operator - ();
+   		Polynomial operator + (Polynomial s);</B></FONT>
+   		friend ostream&amp; operator &lt;&lt; (ostream &amp;out, Polynomial a);
+};
+
+#endif
+</PRE>
+</BODY>
+</HTML>

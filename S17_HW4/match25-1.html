@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Brendan Ng_451136_assignsubmission_file_hw4part2</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>SquareMatrix.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  SquareMatrix.cpp
+//  hw4 part 2
+//
+//  Created by Brendan Ng on 3/23/17.
+//  Copyright © 2017 Brendan Ng. All rights reserved.
+//
+
+
+
+#include &lt;stdio.h&gt;
+#include &quot;SquareMatrix.h&quot;
+#include &lt;iostream&gt;
+<A NAME="0"></A>
+using namespace std;
+
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#0',2,'match25-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>SquareMatrix::SquareMatrix(){
+    initialize(10);//default is 10
+}
+
+SquareMatrix::SquareMatrix(vector&lt;vector&lt;double&gt; &gt; v2d){//initializes matrix
+    //checks if matrix is a square
+    
+    
+    bool match = true;//initializes match to true
+    
+    long size = v2d.size(); //initializes size to v2d.size
+    
+    for(int i = 0; i &lt; size; ++i){ //for loop that runs until size of matrix
+        
+        if(v2d[i].size() != size){ //if size do nnot match then break
+            
+            match = false;
+            
+            break;
+        }
+    }
+    
+    if(match){//if size matchs code is executed
+        
+      
+        
+        for(int i = 0; i &lt; v2d.size(); i++){ //for loop that runs until size of v2d.size
+            
+            vector&lt;double&gt; t;//vector t
+            
+            for(int j = 0; j &lt; v2d[i].size(); j++){ //for loop that runs until size of v2d.size
+                
+                t.push_back(v2d[i][j]);//push back v2d[i][j] to temp
+                
+            }
+            
+            matrix.push_back(t);//push back t to matrix
+        }
+    }
+    else{
+        
+        initialize(10); //initializes matrix to 10
+<A NAME="1"></A>    }
+}
+
+double SquareMatrix::getValue(int i, int j)const{//return value at position[i][j]</B></FONT><FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#1',2,'match25-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+    
+    if(i &lt; matrix.size() &amp;&amp; j &lt; matrix.size() &amp;&amp; i &gt;= 0 &amp;&amp; j &gt;= 0){
+        
+        return matrix[i][j];
+        
+    }
+    
+    return 0;
+}
+
+void SquareMatrix::setValue(int i, int j, double value){//puts value into position [i][j]
+    
+<A NAME="2"></A>    if(i &lt; matrix.size() &amp;&amp; j &lt; matrix.size() &amp;&amp; i &gt;= 0 &amp;&amp; j &gt;= 0){</B></FONT>
+        
+        matrix[i][j] = value; //value is put into matrix[i][j]
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#2',2,'match25-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    }
+}
+
+void SquareMatrix::initialize(int size){  //initializes value
+    
+
+    for(int i = 0; i &lt; size; i++){//for loop that runs until size of matrix
+        
+        vector&lt;double&gt; t; //vector t to hold value
+        
+        for(int j = 0; j &lt; size; j++){//for loop that runs until size of matrix
+
+            
+            t.push_back(0.0); //default is 0.0 pushback to t
+            
+        }
+        
+        matrix.push_back(t);//push back t to matrix
+    }
+<A NAME="4"></A>}</B></FONT>
+
+
+<FONT color="#151b8d"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#4',2,'match25-top.html#4',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>SquareMatrix SquareMatrix:: operator *(SquareMatrix &amp;p1)const{//overloaded operator matrix 1*matrix 2
+    
+        
+        vector&lt;vector&lt;double&gt;&gt;result; //vector result
+        
+    for(int i=0;i&lt;matrix.size();i++){// for loop that runs to the size of matrix
+
+            vector&lt;double&gt; d;
+            
+        for(int j=0;j&lt;matrix.size();j++){// for loop that runs to the size of matrix
+
+                d.push_back(0);//push back 0 into defult
+                
+            }
+            result.push_back(d);//push back defult into result
+ 
+        }
+        
+        
+    for(int i = 0; i&lt;matrix.size();i++){ // for loop that runs to the size of matrix
+
+        
+        for(int j=0;j&lt;matrix.size();j++){ // for loop that runs to the size of matrix
+
+            
+                result[i][j]=0;//defult result = 0
+                
+            for(int k = 0;k&lt;matrix.size();k++){// for loop that runs to the size of matrix
+
+                
+                    result[i][j]+=(matrix[i][k]*p1.matrix[k][j]);//new result = matrix 1*matix 2
+                    
+                }
+            }
+        }
+        return SquareMatrix(result);</B></FONT>
+    
+    return SquareMatrix();
+<A NAME="6"></A>}
+
+
+<FONT color="#50ebec"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#6',2,'match25-top.html#6',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>SquareMatrix SquareMatrix:: operator-( SquareMatrix &amp;p1)const  {//overloaded -
+    
+    
+        
+        vector&lt;vector&lt;double&gt;&gt;res; // vector result
+        
+        for(int i=0;i&lt;matrix.size();i++){// for loop that runs to the size of matrix
+            
+            vector&lt;double&gt; d; //vector initial
+            
+            for(int j=0;j&lt;matrix[i].size();j++){// for loop that runs to the size of matrix[i]</B></FONT>
+
+               double pushNum = (getValue(i, j) - p1.getValue(i,j)) ; //pushback vale of p1-p2
+                
+                d.push_back(pushNum);//pushback push num into defult
+                
+            }
+            res.push_back(d);//push back default to result
+            
+        }
+        
+        
+     
+<A NAME="7"></A>        return SquareMatrix(res);
+    
+    return SquareMatrix();
+<FONT color="#c58917"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#7',2,'match25-top.html#7',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+
+
+
+ostream&amp; operator &lt;&lt;(ostream &amp;print, SquareMatrix m){//overloaded &lt;&lt;
+    
+    
+    print&lt;&lt;&quot;(&quot;;
+    
+    for(int i = 0; i &lt; m.matrix.size(); ++i){// for loop that runs to the size of matrix[i]
+
+        
+        for(int j = 0; j &lt; m.matrix[i].size(); ++j){// for loop that runs to the size of matrix[i]
+
+            
+            print&lt;&lt; m.matrix[i][j] &lt;&lt; &quot; &quot;;//prints out value at location
+        }
+       
+        
+        print&lt;&lt; endl;
+       
+    }
+    
+    
+  print&lt;&lt;&quot;)&quot;&lt;&lt;endl;
+    
+    return print;
+}</B></FONT>
+
+
+
+
+
+
+
+</PRE>
+<HR>
+<H3><CENTER>main.cpp</CENTER></H3><HR>
+<PRE>
+
+//
+//  main.cpp
+//  hw4 part 2
+//
+//  Created by Brendan Ng on 3/23/17.
+//  Copyright © 2017 Brendan Ng. All rights reserved.
+//
+
+
+#include &quot;SquareMatrix.h&quot;
+#include &lt;iostream&gt;
+
+
+
+using namespace std;
+
+int main(){
+    
+    
+        int size = 0;
+    
+        double value = 0.0;
+    
+        cout &lt;&lt; &quot;Enter size of matrix&quot; &lt;&lt; endl;
+    
+        cin &gt;&gt;size; //stores size of matrix
+        
+<A NAME="3"></A>        cout &lt;&lt;endl;
+        
+        
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#3',2,'match25-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>        vector&lt;vector&lt;double&gt; &gt; vector1, vector2;//declear 2 matrix
+    
+    
+    
+    //matrix 1
+    
+        for(int i = 0; i &lt; size; i++){//loop that runs for the size of matrix
+            
+            
+            vector&lt;double&gt; t1;
+            
+           
+            
+            for(int j = 0; j &lt; size; ++j){ //loop that runs for the size of matrix
+                
+                    
+                cout &lt;&lt; &quot;Enter value at &quot;&lt;&lt; i &lt;&lt;&quot;, &quot;&lt;&lt;j&lt;&lt;&quot; of matrix 1&quot; &lt;&lt; endl; //asks user input for each value in matrix
+                
+                cin &gt;&gt; value;//stores value into value
+                
+                t1.push_back(value);//push back value in to t1
+                
+                cout &lt;&lt;endl;
+                
+            }
+        
+            vector1.push_back(t1); //push back t1 into v1
+
+            
+           
+        
+            
+        }</B></FONT>
+    
+    
+    
+    
+    
+    
+    
+<A NAME="5"></A>    //matrix 2
+    
+    
+<FONT color="#c8c2a7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#5',2,'match25-top.html#5',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    for(int i = 0; i &lt; size; i++){//loop that runs for the size of matrix
+
+        
+        vector&lt;double&gt; t2;
+        
+        
+        for(int j = 0; j &lt; size; j++){//loop that runs for the size of matrix
+
+            
+           cout &lt;&lt; &quot;Enter value at &quot;&lt;&lt; i &lt;&lt;&quot;, &quot;&lt;&lt;j&lt;&lt;&quot; of matrix 2&quot; &lt;&lt; endl;//asks user input for each value in matrix
+            
+            cin &gt;&gt; value;//stores value into value
+           
+            cout &lt;&lt;endl;
+            
+            t2.push_back(value);//push back value in to t2
+        }
+        
+        
+      
+        vector2.push_back(t2);//push back t2 into v2
+
+        
+      
+        
+    }
+    
+    
+        SquareMatrix m1(vector1), m2(vector2);
+    
+        cout &lt;&lt; &quot;Matrix 1:&quot; &lt;&lt; endl;
+        cout &lt;&lt; m1 &lt;&lt; endl;//prints out matrix 1
+        cout &lt;&lt; &quot;Matrix 2:&quot; &lt;&lt; endl;
+        cout &lt;&lt; m2 &lt;&lt; endl;//prints out matrix 2
+        cout &lt;&lt; &quot;Matrix1 * Matrix2&quot; &lt;&lt; endl;
+        cout &lt;&lt; m1 * m2 &lt;&lt; endl;//prints out matrix 1 *matrix 2
+        cout &lt;&lt; &quot;Matrix1 - Matrix2&quot; &lt;&lt; endl;
+        cout &lt;&lt; m1 - m2 &lt;&lt; endl;//prints out matrix 1 - matrix 2
+        return 0;
+    }</B></FONT>
+</PRE>
+</BODY>
+</HTML>

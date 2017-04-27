@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Vanita Rani_451120_assignsubmission_file_Problem 2</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>Matrix.h</CENTER></H3><HR>
+<PRE>
+/*
+Name: 		Vanita Rani
+Course: 	CSC340-02
+Date: 		March 27, 2017
+IDE: 		Dev-C++ 5.11
+Objective: 	Problem 1: to have all the functions in one header file
+*/
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+<A NAME="4"></A>#ifndef Matrix_h
+#define Matrix_h
+
+<FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match36-1.html#4',3,'match36-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>class Matrix{
+	private:
+   		vector&lt;vector&lt;double&gt; &gt; x;
+   		void initialize(int matrixsize);
+
+	public:
+   		Matrix();
+   		SquareMatrix(vector &lt; vector&lt;double&gt; &gt; v2d);
+   		double getValue(int i, int j);
+   		void setValue(int i, int j, double value);
+   		friend Matrix operator * (Matrix m1, Matrix m2);
+   		friend Matrix operator - (Matrix m1, Matrix m2);
+   		friend ostream&amp; operator &lt;&lt; (ostream &amp;out, Matrix m);
+};</B></FONT>
+
+#endif
+</PRE>
+<HR>
+<H3><CENTER>matrix.cpp</CENTER></H3><HR>
+<PRE>
+/*
+Name: 		Vanita Rani
+Course: 	CSC340-02
+Date: 		March 27, 2017
+IDE: 		Dev-C++ 5.11
+Objective: 	Problem 1: implementation for polynomial problem
+*/
+<A NAME="0"></A>#include &lt;iostream&gt;
+#include &quot;Matrix.h&quot;
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match36-1.html#0',3,'match36-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>Matrix::Matrix() {
+	//initialize matrix to 0.0
+	initialize(10);
+}
+//initializes a matrix by using values stored in a vector of vectors
+Matrix::SquareMatrix(vector &lt; vector&lt;double&gt; &gt; v2d ) {
+	bool matrixsize = true;
+   	int matrixsize = v2d.size();
+<A NAME="1"></A>   	for(int i = 0; i &lt; matrixsize; i++){
+       	if(v2d[i].size() != matrixsize){
+        	matrixsize = false;</B></FONT>
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match36-1.html#1',3,'match36-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>       	}
+   	}
+   	if(matrixsize){
+       	x.clear();
+       	for(int i = 0; i &lt; v2d.size(); i++){
+           	vector&lt;double&gt; vector1;
+           	for(int j = 0; j &lt; v2d[i].size(); j++){
+               	vector1.push_back(v2d[i][j]);
+<A NAME="2"></A>           	}
+           	x.push_back(vector1);
+      	}</B></FONT>
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match36-1.html#2',3,'match36-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>   	}
+}
+
+//returns value in matrix
+double Matrix::getValue(int i, int j) {
+	if(i &lt; x.size() &amp;&amp; j &lt; x.size() &amp;&amp; i &gt;= 0 &amp;&amp; j &gt;= 0){
+       	return x[i][j];
+   	}
+   	return 0; 
+}
+
+//sets the element to value
+void Matrix::setValue(int i, int j, double value) {
+	if(i &lt; x.size() &amp;&amp; j &lt; x.size() &amp;&amp; i &gt;= 0 &amp;&amp; j &gt;= 0){
+    	x[i][j] = value;
+   	}
+}</B></FONT>
+
+//overload * operator
+Matrix Matrix::operator * (Matrix m1, Matrix m2) {
+
+}
+
+<A NAME="3"></A>//overload - operator 
+Matrix Matrix::operator - (Matrix m1, Matrix m2) {
+
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match36-1.html#3',3,'match36-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+//overload &lt;&lt; operator 
+ostream&amp; operator &lt;&lt; (ostream &amp;out, Matrix m) {
+	for(int i = 0; i &lt; m.x.size(); ++i){
+       for(int j = 0; j &lt; m.x[i].size(); ++j){
+           out &lt;&lt; m.x[i][j] &lt;&lt; &quot; &quot;;
+       }
+       out &lt;&lt; endl;
+   }
+   out &lt;&lt; endl;
+   return out;
+}</B></FONT>
+</PRE>
+</BODY>
+</HTML>
