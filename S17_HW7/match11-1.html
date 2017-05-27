@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Shayan Mojtabavi_556597_assignsubmission_file_hw 7</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>listArr.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;listArr.h&quot;
+
+//default constuctor
+ListArr::ListArr() :num_dynArr(0) {
+	capacity = 100;
+	try {
+		dynArr = new int[capacity];
+	}
+<A NAME="0"></A>	catch (bad_alloc&amp; e)
+	{
+		cout &lt;&lt; e.what();
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match11-0.html#0',2,'match11-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	}
+	for (int i = 0; i&lt;capacity; i++)
+		dynArr[i] = 0;
+
+
+}
+
+//copy constructor 
+ListArr::ListArr(const ListArr&amp; rhs) {
+	//To copy the dynamic array
+	this-&gt;num_dynArr = rhs.num_dynArr;
+	capacity = rhs.capacity;
+	if (capacity &gt; 0) {
+		dynArr = new int[capacity];
+		for (int i = 0; i &lt; num_dynArr; i++)</B></FONT>
+			dynArr[i] = rhs.dynArr[i];
+	}
+
+    //To copy the linked list
+	if (rhs.head != NULL) {
+		head = new Node;
+		Node *ptrR = rhs.head;
+		Node *ptrL = head;
+		ptrL-&gt;val = ptrR-&gt;val;
+		while (ptrR-&gt;next != NULL) {
+			ptrR = ptrR-&gt;next;
+			ptrL-&gt;next = new Node;
+<A NAME="1"></A>			ptrL = ptrL-&gt;next;
+			ptrL-&gt;val = ptrR-&gt;val;
+		}
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match11-0.html#1',2,'match11-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>		sizeList = rhs.sizeList;
+	}
+}
+
+//overloaded assigment operator
+ListArr ListArr::operator=(const ListArr&amp; rhs)
+{
+	//To use the assignment operator for the dynamic array
+	if (rhs.capacity == 0) {  //special case
+		if (dynArr != NULL) {
+			delete[] dynArr;
+			dynArr = 0;
+		}
+		capacity = rhs.capacity;
+		num_dynArr = rhs.num_dynArr;
+	}
+	//if both are equal capacity left and right then copy the elements
+	if (capacity == rhs.capacity) {
+		num_dynArr = rhs.num_dynArr;
+		for (int i = 0; i&lt;num_dynArr; i++)
+			dynArr[i] = rhs.dynArr[i];
+	}</B></FONT>
+
+	if (capacity != rhs.capacity) {
+		resize(rhs.capacity);
+	}
+
+	//To use the assignment operator for the linked list 
+	if (head != NULL) {
+		Node *ptrL = head;
+		while (head-&gt;next != NULL) {
+			head = head-&gt;next;
+			delete ptrL;
+			ptrL = head;
+		}
+		if (head-&gt;next == NULL) {
+			delete head;
+		}
+	}
+
+	if (rhs.head != NULL) {
+		head = new Node;
+		Node *ptrR = rhs.head;
+		Node *ptrL = head;
+		ptrL-&gt;val = ptrR-&gt;val;
+		while (ptrR-&gt;next != NULL) {
+			ptrR = ptrR-&gt;next;
+			ptrL-&gt;next = new Node;
+			ptrL = ptrL-&gt;next;
+			ptrL-&gt;val = ptrR-&gt;val;
+
+		}
+<A NAME="2"></A>		sizeList = rhs.sizeList;
+	}
+
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match11-0.html#2',2,'match11-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	return *this;
+}
+
+//Allocate new space with exception handling, then move the data from the old space to the
+//pointer, delete the old space then point to the elements in the new space
+void ListArr::resize(int newCap) {
+	int *ptr = nullptr;
+	if (newCap &gt; 0 &amp;&amp; newCap != capacity) {
+		ptr = new int[newCap];
+		for (int i = 0; i&lt;capacity; i++) 
+			ptr[i] = dynArr[i];
+		capacity = newCap;
+		delete[] dynArr;
+		dynArr = ptr;
+	}
+}</B></FONT>
+
+
+void ListArr::push_back(int val) {
+
+	//To insert last element in the dynamic array
+
+	num_dynArr++;
+	//If number of elements is larger than the capacity resize an extra space and 
+	//insert the value in that new space
+	if (num_dynArr &gt; capacity) {
+		resize(num_dynArr);
+		dynArr[capacity - 1] = val;
+	}
+	//Else if the size is the same just insert the value in that last space in the array
+	else {
+		dynArr[num_dynArr-1] = val;
+	}
+	
+	//To insert a value at the end of the linked list
+	if (head == NULL) {
+		head = new Node;
+		head-&gt;val = val;
+	}
+	else {
+		Node *ptr = head;
+		while (ptr-&gt;next != NULL) {
+			ptr = ptr-&gt;next;
+		}
+		ptr-&gt;next = new Node;
+		ptr-&gt;next-&gt;val = val;
+	}
+	sizeList++;
+
+}
+
+
+void ListArr::pop_back() {
+	//Delete last number in dynamic array
+	num_dynArr--;
+	
+	//To delete last number at the end of the linked list
+	if (head != NULL) {
+		Node *ptr = head;
+		while (ptr-&gt;next &amp;&amp; ptr-&gt;next-&gt;next != NULL) {
+			ptr = ptr-&gt;next;
+		}
+		delete ptr-&gt;next;
+		ptr-&gt;next = NULL;
+		
+	}
+}
+
+//Destructor 
+ListArr::~ListArr()
+{
+	//Delete the dynamic array
+	if (dynArr != NULL)
+		delete[] dynArr;
+
+	//Delete the linked list
+	while (head != NULL) {
+		Node *ptr = head;
+		head = head-&gt;next;
+		delete ptr;
+	}
+
+}
+
+//Overloaded put operator to output the dynamic array and linked list
+ostream&amp; operator&lt;&lt;(ostream&amp; outS, ListArr &amp; rhs) {
+	//To output the dynamic array
+	outS &lt;&lt; &quot;Dynamic Array: &quot;;
+	for (int i = 0; i &lt; rhs.num_dynArr; i++) {
+		outS &lt;&lt; rhs.dynArr[i] &lt;&lt; &quot; &quot;;
+	}
+	outS &lt;&lt; endl;
+
+	//To output the linked list
+	ListArr::Node *ptr = rhs.head;
+	outS &lt;&lt; &quot;Linked List: &quot;;
+	while (ptr != NULL) {
+		outS &lt;&lt; ptr-&gt;val &lt;&lt; &quot; &quot;;
+		ptr = ptr-&gt;next;
+	}
+	outS &lt;&lt; endl;
+
+	return outS;
+}
+</PRE>
+</BODY>
+</HTML>

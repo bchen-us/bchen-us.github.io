@@ -1,0 +1,293 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Matthew Ridenour_556517_assignsubmission_file_PointersADT</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>PointersADT.cpp</CENTER></H3><HR>
+<PRE>
+//filename: PointersADT.cpp
+#include &quot;PointersADT.h&quot;
+#include &lt;iostream&gt;
+#include &lt;new&gt;
+
+using namespace std;
+
+//overloaded &lt;&lt; operator
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; oS, const PointersADT&amp; outPADT){
+	oS &lt;&lt; &quot;The linked list Reads:&quot; &lt;&lt; endl;
+	PointersADT::Node* cur;
+	for (cur = outPADT.head; cur != NULL; cur = cur-&gt;next){
+		oS &lt;&lt; cur-&gt; value &lt;&lt; &quot; &quot;;
+	}
+	oS &lt;&lt; endl &lt;&lt; &quot;The array reads:&quot; &lt;&lt;endl;
+	for (int i = 0; i &lt; outPADT.size_array; i++){
+		oS &lt;&lt; outPADT.array[i] &lt;&lt; &quot; &quot;;
+	}
+	oS &lt;&lt; endl;
+	return oS;
+}
+
+//overloaded = operator
+PointersADT PointersADT::operator=(const PointersADT&amp; rhs){
+    //if right hand side has no elements
+	if (rhs.capacity == 0){
+        if (array!=NULL){
+            delete [] array;
+            array = NULL;
+        }
+        capacity = 0;
+        size_array = 0;
+        size_linkedList = 0;
+        
+    	Node *curr = head;
+		for (curr = head; head; curr = head)
+		{
+  			head = head -&gt; next;
+  			delete curr; 
+  		}
+
+    }
+    //if left hand side is the same size as right hand side
+    else if (capacity==rhs.capacity){
+        size_array = rhs.size_array;
+        for (int i=0; i&lt;size_array; i++)
+            array[i] = rhs.array[i];
+        
+        //delete existing linked list
+    	Node *curr = head;
+		for (curr = head; head; curr = head)
+		{
+  			head = head -&gt; next;
+  			delete curr; 
+  		}
+		
+		//set the linked list equal
+		Node *curr1 = head;
+		Node *curr2 = rhs.head;
+		
+		while (curr2 -&gt; next != NULL){
+			curr1 -&gt; next = new Node;
+			curr2 = curr2 -&gt; next;
+            curr1 = curr1 -&gt; next;
+            curr1 -&gt; value = curr2 -&gt; value;
+		}
+		
+		curr1 -&gt; next = NULL;
+		size_linkedList = rhs.size_linkedList;
+    }
+    //if right hand side has elements, and the left hand side is a different size
+    else{
+        //delete the current *elements
+        if (array !=NULL){
+		
+            delete [] array;
+    		
+    		//delete the existing linked list
+			Node *curr = head;
+			for (curr = head; head; curr = head)
+			{
+  				head = head -&gt; next;
+  				delete curr; 
+  			}
+  			
+		}
+		//allocate space according to rhs.capacity
+        capacity = rhs.capacity;
+        size_array = rhs.size_array;
+        array = new int [capacity]; //need exception handling
+        
+        //set array equal to previous
+        for (int i=0; i&lt;size_array; i++)
+            array[i] = rhs.array[i];
+        
+    	size_linkedList = rhs.size_linkedList;
+    	
+    	//set new linked list equal to old one
+		head = new Node();
+		head -&gt; value = rhs.head -&gt; value;
+		Node *curr1 = head;
+		Node *curr2 = rhs.head;
+		while (curr2 -&gt; next != NULL){
+			curr1 -&gt; next = new Node;
+			curr2 = curr2 -&gt; next;
+            curr1 = curr1 -&gt; next;
+            curr1 -&gt; value = curr2 -&gt; value;
+		}
+		curr1 -&gt; next = NULL;
+	}
+    return *this; 
+}
+
+//default constructor
+PointersADT::PointersADT()
+{
+	size_array = 0;
+	head = NULL;
+	size_linkedList = 0;
+	array = NULL;
+}
+
+//copy constructor
+PointersADT::PointersADT( const PointersADT&amp; clone){
+	size_array = clone.size_array;
+<A NAME="0"></A>	size_linkedList = clone.size_linkedList;
+	capacity = clone.capacity;
+	//if capacity of the clone was greter than 0, ie. there are items in the array
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match34-1.html#0',3,'match34-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	if (capacity &gt; 0){
+		array = new int[capacity]; //space allocation
+		
+		//set new array equal to old one
+		for (int i = 0; i &lt; size_array; i++){
+			array[i] = clone.array[i];
+		}
+		
+		//set new list equal to old one		
+		head = new Node();</B></FONT>
+		head -&gt; value = clone.head -&gt; value;
+		Node *curr1 = head;
+		Node *curr2 = clone.head;
+		
+
+		while (curr2 -&gt; next != NULL){
+			curr1 -&gt; next = new Node;
+			curr2 = curr2 -&gt; next;
+            curr1 = curr1 -&gt; next;
+            curr1 -&gt; value = curr2 -&gt; value;
+		}
+		curr1 -&gt; next = NULL;
+		
+	}
+}
+
+//push back function
+void PointersADT::push_back(int val ){
+	if (size_linkedList==0)
+    {
+        head = new Node();
+        head -&gt; value = val;
+        head -&gt; next = NULL;
+        try
+  		{
+    		array= new int[100];
+    		capacity = 100;
+  		}
+  		catch (std::bad_alloc&amp; ba)
+  		{
+    		std::cerr &lt;&lt; &quot;bad_alloc caught: &quot; &lt;&lt; ba.what() &lt;&lt; '\n';
+  		}
+  		array[0] = val;
+    } else {
+        
+        Node *curr = head;
+        
+        while (curr -&gt; next != NULL){
+            curr = curr-&gt;next;
+        }
+
+        if (curr -&gt; next == NULL)
+        {
+            curr -&gt; next = new Node;
+            curr = curr -&gt; next;
+            curr -&gt; value = val;
+            curr -&gt; next = NULL;
+        }
+        array[size_array] = val;
+    }
+
+    size_linkedList++;
+    size_array = size_linkedList;
+}
+
+
+//destructor
+PointersADT::~PointersADT()
+{
+  //while (!isEmpty())
+  //  remove(1);
+	Node *curr = head;
+	for (curr = head; head; curr = head)
+	{
+  		head = head -&gt; next;
+  		delete curr; 
+  	}
+
+    
+	delete [] array;
+}  // end destructor
+
+
+//resize function
+void PointersADT::resize(int new_capacity)
+{
+    if (new_capacity &gt;0 ){
+        //step 1: allocate new space
+        //needs exception handling
+        int *temp = new int [new_capacity];
+        
+        //step 2: move data from the old space to this newly allocated space
+        ////case 1: new capacity is greater than capacity
+        for (int i=0; i&lt;size_array; i++)
+            temp[i] = array[i];
+            //case 2. new capacity is greater than capacity
+        
+        //step 3. adjust the members and delete the old space
+        capacity = new_capacity;
+        delete [] array;
+        
+        //step 4. point elements to the new space
+        array = temp;
+            
+    }
+}
+</PRE>
+<HR>
+<H3><CENTER>PointersADT.h</CENTER></H3><HR>
+<PRE>
+//filename: PointersADT.h
+#ifndef POINTERSADT_H
+#define POINTERSADT_H
+
+#include &lt;iostream&gt;
+<A NAME="1"></A>
+using namespace std;
+
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match34-1.html#1',3,'match34-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>class PointersADT{
+	private:
+		int *array;     //dynamic array
+		int size_array; //number of elements stored in the dynamic array
+		int capacity;   //the current number of integer spaces allocated to the dynamic array
+		struct Node {
+        	int value;
+
+        	Node *next;
+		};
+		Node *head; //point to the first node on the linked list
+		int size_linkedList;  //number of nodes on the linked list
+	public:</B></FONT>
+		friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; oS, const PointersADT&amp; outPADT);
+		PointersADT();
+		PointersADT( const PointersADT&amp; clone); 
+		
+		//overloading the assignment operator
+		PointersADT operator=(const PointersADT&amp;  rhs);
+		~PointersADT();
+		void push_back(int val );
+		void resize(int new_capacity);
+};
+
+#endif
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,350 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Brennan Fradelis_556567_assignsubmission_file_HW7zip</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>LinkedList.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+#include &quot;LinkedList.h&quot;
+#include &lt;new&gt;
+using namespace std;
+
+//Linked List Operations
+bool LinkedList::isEmpty() const {
+    return size_linkedList == 0;
+}
+int LinkedList::getLength() const {
+    return size_linkedList;
+}
+int LinkedList::getSize() const {
+    return size_array;
+}
+int LinkedList::getCapacity() const {
+    return capacity;
+}
+
+
+
+//Taken from ilearn. resize_ is used in pushback function
+void LinkedList::resize_(int new_capacity)
+{
+    if (new_capacity &gt; 0 ){
+        //step 1: allocate new space
+        int *tmp = new int [new_capacity];
+
+        //step 2: move data from the old space to this newly allocated space
+        ////case 1: new capacity is greater than capacity
+        for (int i=0; i&lt;size_array; i++)
+            tmp[i] = array[i];
+            //case 2. new capacity is greater than capacity
+
+        //step 3. adjust the members and delete the old space
+        capacity = new_capacity;
+        delete [] array;
+
+        //step 4. point elements to the new space
+        array = tmp;
+
+    }
+}
+////////////////////////////
+//1
+LinkedList::LinkedList() {
+
+    //Dynamic array
+<A NAME="0"></A>    size_array = 0;
+    capacity = 100;
+    //make sure there is enough contiguous memory for this array
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match23-0.html#0',2,'match23-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    try {
+        array = new int[capacity];
+    }
+    catch(bad_alloc&amp; e) {
+        std::cout &lt;&lt; e.what();
+    }
+    //Assign zeros to each slot in the capacity
+    for(int i=0; i&lt;capacity; i++) {</B></FONT>
+        array[i] = 0;
+    }
+
+    //Linked list
+    head = NULL;
+    size_linkedList = 0;
+}
+//////////////////////////
+//2
+LinkedList::~LinkedList() {
+
+    //Deallocating dynamic array memory
+    if(array!=NULL) {
+        delete [] array;
+    }
+////////////////////////////////////////
+
+    //Deallocating Linked List memory
+    Node *n1 = head;
+    while(n1 != NULL) {
+        head = n1-&gt;next;
+        delete n1;
+        n1 = head;
+    }
+
+<A NAME="1"></A>}
+//////////////////////////
+//#3
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match23-0.html#1',2,'match23-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>LinkedList::LinkedList(const LinkedList &amp;obj):size_linkedList(obj.size_linkedList) {
+
+    //Dynamic Array
+    size_array = obj.size_array;
+    capacity = obj.capacity;
+    if (capacity &gt; 0){
+        //allocating memory for array
+        try {
+            array = new int [capacity];
+        }
+        catch(bad_alloc&amp; e) {
+        std::cout &lt;&lt; e.what();
+    }
+
+        //moving each element from obj to array
+        for (int i = 0; i&lt;size_array; i++)
+            array[i] = obj.array[i];
+    }</B></FONT>
+    //This is the case for an empty array
+    else
+
+        array = NULL;
+
+////////////////////////////////////////////
+
+    //Linked List
+    if(obj.head == NULL) {
+<A NAME="2"></A>        head = NULL;
+    }
+
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match23-0.html#2',2,'match23-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    else {
+        //allocating new memory
+        head = new Node;
+        head-&gt;value = obj.head-&gt;value;
+
+        Node *newPtr = head;
+
+        //Looping through each element in the linked list
+        for(Node *i = obj.head-&gt;next; i != NULL; i = i-&gt;next) {
+
+
+            newPtr-&gt;next = new Node;
+            newPtr = newPtr-&gt;next;
+            newPtr-&gt;value = i-&gt;value;
+            }
+        newPtr-&gt;next = NULL;
+        }
+    }
+//////////////////////////////////
+//4
+LinkedList LinkedList::operator=(const LinkedList&amp;rhs) {
+//Dynamic Array
+
+if (rhs.capacity == 0){
+        if (array != NULL) {</B></FONT>
+            delete [] array;
+            array = NULL;
+        }
+        capacity = 0;
+        size_array = 0;
+
+    }
+    else if (capacity == rhs.capacity){
+        size_array = rhs.size_array;
+        for (int i = 0; i&lt;size_array; i++) {
+            array [i] = rhs.array[i];
+
+        }
+
+    }
+    else{
+<A NAME="3"></A>        if (array !=NULL)
+            delete [] array;
+        capacity = rhs.capacity;
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match23-0.html#3',2,'match23-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>        size_array = rhs.size_array;
+
+        try{
+            array = new int [capacity];
+
+        }     catch(bad_alloc&amp; e) {
+            std::cout &lt;&lt; e.what();
+    }
+
+        for (int i=0; i&lt;size_array; i++)
+            array[i] = rhs.array[i];
+    }</B></FONT>
+
+    ///////////////////////////////////////////
+
+    //Linked List
+    head = rhs.head;
+
+    return *this;
+
+}
+
+///////////////////////////////////////////////
+//5
+void LinkedList::pushBack(int val) {
+    //Dynamic array
+
+    //check if size is less than capacity
+    if(size_array &gt;= capacity) {
+    //doubling the capacity
+       resize_(2*capacity);
+   }
+    //setting the value to the the next element on the array
+    array[size_array+1] = val;
+    //incrementing the size of the array
+    size_array++;
+
+
+///////////////////////////////////////////////////////
+
+    //LinkedList
+    Node *ptr = head;
+    Node *newNode = new Node;
+    newNode-&gt;value = val;
+    newNode-&gt;next = NULL;
+    //checking if empty
+    if(size_linkedList != 0) {
+        while(ptr-&gt;next != NULL) {
+            ptr = ptr-&gt;next;
+        }
+        ptr-&gt;next = newNode;
+
+    } else {
+        head = newNode;
+    }
+    size_linkedList++;
+}
+//////////////////////
+//#6
+void LinkedList::popBack() {
+    //Dynamic array
+    //Sets the last element on the array to zero and decrements the size by 1
+    if(size_array != 0) {
+        array[size_array] = 0;
+        size_array--;
+    }
+
+/////////////////////////////////////////
+
+    //Linked List
+    Node *secondToLast = head;
+    Node *last = head-&gt;next;
+    if(size_linkedList != 0) {
+        while(last-&gt;next != NULL) {
+            secondToLast = last;
+            last = last-&gt;next;
+        }
+        delete last;
+        secondToLast-&gt;next = NULL;
+    } else {
+
+        delete head;
+    }
+
+}
+///////////////////////////
+//#7
+ostream &amp; operator&lt;&lt;(ostream&amp; os, LinkedList&amp; rhs) {
+    for(LinkedList::Node *i = rhs.head; i != NULL; i = i-&gt;next) {
+        os &lt;&lt; &quot;|&quot;;
+        os &lt;&lt; i-&gt;value;
+        os &lt;&lt; &quot;|&quot;;
+    }
+
+    return os;
+}
+</PRE>
+<HR>
+<H3><CENTER>LinkedList.h</CENTER></H3><HR>
+<PRE>
+#ifndef LINKEDLIST_H_INCLUDED
+#define LINKEDLIST_H_INCLUDED
+
+#include &lt;iostream&gt;
+using namespace std;
+class LinkedList {
+private:
+    int *array;
+    int size_array;
+    int capacity;
+struct Node{
+    int value;
+    Node *next;
+<A NAME="4"></A>    };
+
+Node *head; // points to first node on the Linked List
+<FONT color="#151b8d"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match23-0.html#4',2,'match23-top.html#4',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>int size_linkedList; // number of nodes on the Linked List
+public:
+
+
+
+
+//1. Default constructor. Initializes array and linkedList correspondingly
+LinkedList();
+
+//2. destructor
+~LinkedList();
+
+//3. copy constructor
+LinkedList(const LinkedList &amp;obj);
+
+//4. overloaded assignment operator
+LinkedList operator=(const LinkedList&amp;rhs);
+
+/*5. Inserts value to the end of dynamic array
+and the end of linkedlist, requires memory
+allocation, new operator */
+void pushBack(int val);
+
+/*6. Deletes the last number of array and linkedlist.
+Requires memory deallocation, delete operator*/
+void popBack();
+
+/*7. overloaded put operator. Prints data of dynamic
+array and linkedlist. Friend function of ADT*/
+friend ostream &amp; operator&lt;&lt;(ostream&amp; os, LinkedList&amp; rhs);
+
+
+
+
+///////////////////////////////////////////////////////////////
+//Linked List operators
+bool isEmpty() const;</B></FONT>
+int getLength() const;
+Node * find1(int index) const;
+//Accessors
+//size of linked list
+int getSize() const;
+
+//Arrays
+void resize_(int new_capacity);
+int getCapacity() const;
+};
+
+
+
+#endif // LINKEDLIST_H_INCLUDED
+</PRE>
+</BODY>
+</HTML>

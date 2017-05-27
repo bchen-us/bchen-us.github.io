@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Sirena Bevilacqua_556544_assignsubmission_file_Homework 7 Sirena Bevilacqua</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>ADTheader.h</CENTER></H3><HR>
+<PRE>
+/* 
+ * File:   Homework 7 ADT singly linked list Header File
+ * Author: Sirena Bevilacqua
+ * Session: CSC 340-02, 2:10 PM
+ * Created on May 8, 2017, 3:30 PM
+ */
+
+<A NAME="0"></A>#include&lt;iostream&gt;
+using namespace std;
+#define SIZE 100
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match6-1.html#0',3,'match6-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>struct Node {
+   int value;
+   Node *next;
+};
+class ADTlist
+{
+private:
+	int *array; // a dynamic array
+	int size_array; // the number of elements stored in the dynamic array
+	int capacity; // the current number of integer spaces allocated to the dynamic array
+
+	Node *head; // points to the first node on the linked list
+	int size_linkedList; // the number of nodes on the linked list
+public:</B></FONT>
+	ADTlist();
+	~ADTlist();
+	void push_back(int val);
+	void pop_back();
+	friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const ADTlist &amp;obj);
+};
+</PRE>
+<HR>
+<H3><CENTER>ADTlist.cpp</CENTER></H3><HR>
+<PRE>
+/* 
+ * File:   Homework 7 ADT singly linked list ADT list CPP File
+ * Author: Sirena Bevilacqua
+ * Session: CSC 340-02, 2:10 PM
+ * Created on May 8, 2017, 3:35 PM
+ */
+
+<A NAME="1"></A>#include &quot;ADTheader.h&quot;
+using namespace std;
+
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match6-1.html#1',3,'match6-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>ADTlist::ADTlist() {
+    capacity = SIZE; //the current number of integer spaces allocated to the dynamic array
+    array = new int[capacity]; //dynamic array
+    size_array = 0; //number of elements stored in the dynamic array  
+
+    head = NULL; //point to the first node on the linked list
+    size_linkedList = 0; //number of nodes on the linked list
+}
+
+<A NAME="2"></A>ADTlist::~ADTlist() {</B></FONT>
+    delete(array);
+    delete(head);
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match6-1.html#2',3,'match6-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+void ADTlist::push_back(int val) {
+    if (size_array == capacity) {
+        //increase array capacity by GrowBy
+        int *temp = new int[capacity + SIZE];
+        for (int i = 0; i &lt; size_array; i++) {
+            temp[i] = array[i]; //copy items to new array
+        }
+        array = new int[capacity + SIZE]; //assign new array to old array
+        for (int i = 0; i &lt; size_array; i++) {
+            array[i] = temp[i]; //copy items from new array
+        }
+        capacity += SIZE;
+        delete(temp); //delete new array
+    }
+    array[size_array++] = val; //insert value in array
+
+    //insert value in linked list
+    if (head == NULL) {
+        head = new Node();
+        head-&gt;value = val;
+        head-&gt;next = NULL;
+    } else {
+        Node *temp = head;
+        while (temp-&gt;next != NULL)//FIND LAST NODE
+            temp = temp-&gt;next;
+        temp-&gt;next = new Node(); //insert at last
+        temp-&gt;next-&gt;value = val;
+        temp-&gt;next-&gt;next = NULL;
+    }
+    size_linkedList++;
+
+}
+
+void ADTlist::pop_back() {
+    size_array--;
+    Node *temp = head;
+    for (int i = 0; i &lt; size_linkedList - 1; i++)//FIND LAST NODE
+        temp = temp-&gt;next;
+    delete(temp-&gt;next);
+    temp-&gt;next = NULL; //delete node
+    size_linkedList--;
+}
+
+ostream&amp; operator&lt;&lt;(ostream&amp; out, const ADTlist &amp;obj) {
+    out &lt;&lt; &quot;Array: &quot;;
+    for (int i = 0; i &lt; obj.size_array; i++)
+        out &lt;&lt; obj.array[i] &lt;&lt; &quot; &quot;; //print array
+    out &lt;&lt; endl &lt;&lt; &quot;Linked list: &quot;;
+	Node *temp = obj.head;
+    for (int i = 0; i &lt; obj.size_linkedList; i++)//FIND LAST NODE
+    {
+        out &lt;&lt; temp-&gt;value &lt;&lt; &quot; &quot;; //print linked list
+        temp = temp-&gt;next; //get next pointer
+    }
+    out &lt;&lt; endl;
+    return out; //return ostream
+
+}</B></FONT>
+
+</PRE>
+</BODY>
+</HTML>

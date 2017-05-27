@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Raul Serrano Hernandez_556572_assignsubmission_file_SerranoRaul</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>LinkedList.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  LinkedList.cpp
+//  ptrListArray
+//
+//  Created by Raul Serrano on 5/2/17.
+//  Copyright © 2017 Raul Serrano. All rights reserved.
+//
+
+#include &quot;LinkedList.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;new&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+
+//constructor
+LinkedList::LinkedList(): current(NULL), head(NULL), size_array(0), size_LL(0){
+    cpacity = 4;
+    try{
+        array = new int[cpacity];
+    }
+    catch(bad_alloc&amp; e){
+        cout&lt;&lt; e.what();
+    }
+    for(int i=0; i&lt; cpacity; i++){
+        array[i]=0;
+    }
+}
+
+ //copy constructor
+<A NAME="1"></A>LinkedList::LinkedList(const LinkedList&amp; copy)
+{
+    //create a copy of array
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match28-0.html#1',2,'match28-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    this-&gt;size_array = copy.size_array;
+    cpacity = copy.cpacity;
+    
+    if (cpacity &gt;0){
+        array = new int[cpacity]; //need exception handling
+        for (int i=0; i&lt;size_array; i++)
+            array[ i] = copy.array[i];
+    }
+    
+    //create a copy of Linked List
+    Node *read=copy.head;
+    Node *tail=NULL;
+    Node *here=NULL;
+    while (read !=NULL) {
+        here=new Node;
+        here-&gt;value = read-&gt;value;
+        here-&gt;next=NULL;
+        if(tail == NULL){
+            head=here;
+            tail=here;
+        }
+        else{
+            tail-&gt;next = here;
+            tail=here;
+        }
+        read=read-&gt;next;
+    }
+    size_LL=copy.size_LL;
+}//end copy constructor
+<A NAME="0"></A>
+
+// destructor
+</B></FONT><FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match28-0.html#0',2,'match28-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>LinkedList::~LinkedList(){
+    //delete array list
+    if(array!=NULL)
+        delete [] array;
+    
+    //delete linked list
+    Node *toDel=head;
+    while(toDel !=NULL){
+        head=toDel-&gt;next;
+        delete toDel;
+        toDel=head;
+    }
+    
+<A NAME="2"></A>}
+
+//overloaded equal operator
+LinkedList LinkedList::operator=(const LinkedList&amp; rhs){</B></FONT><FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match28-0.html#2',2,'match28-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+      //assigment operator for array
+      if (rhs.cpacity == 0){  //special case
+        if (array!=NULL){
+            delete [] array;
+            array = 0;
+        }
+        cpacity = rhs.cpacity;
+        size_array = rhs.size_array;
+    }
+    
+    //case 1: capacity == rhs.capacity
+    if (cpacity == rhs.cpacity){
+        size_array = rhs.size_array;
+        for  (int i=0; i&lt;size_array; i++)
+            array[ i] = rhs.array[i];
+    }
+    
+    //case 2. capacity != rhs.capacity
+    if(cpacity != rhs.cpacity){
+        cpacity = rhs.cpacity;</B></FONT>
+        if (array!=NULL)
+        delete [] array;
+        array=new int[cpacity];
+        array=rhs.array;
+    }
+    
+     //assigment operator for linked list
+    if (size_LL == rhs.size_LL)
+        return *this;
+    else if(size_LL != rhs.size_LL){
+        //delete old list to allocate new one
+        while (head != NULL) {
+            Node *toDel = head;
+            head = head-&gt;next;
+            delete toDel;
+        }
+        
+       //make a copy list of rhs list
+      LinkedList *aList = new LinkedList(rhs);
+      Node* current=NULL;
+      head = aList-&gt;head;
+      current = aList-&gt;current;
+      return *this;
+    }
+    return *this;
+  }//end overloaded assigment
+
+
+//fucntion to add values to the end of the array and LinkedList
+void LinkedList::push_back(int val){
+    //resize capacity
+    if(cpacity==size_array){
+        cpacity=cpacity*2;
+    }
+    
+    // create node
+    Node* temp = new Node;
+    temp-&gt;value = val;
+    temp-&gt;next = NULL;
+    
+    if(!head) {
+        head = temp;
+        size_LL++;
+        array[size_array++] = val;
+        return;
+    } else { 
+        Node* last = head;
+        while(last-&gt;next) last=last-&gt;next;
+        last-&gt;next = temp;
+        size_LL++;
+        array[size_array++] = val;
+    }
+    
+}//end push_back
+
+//this function deletes the last number in the array and linkedList
+void LinkedList::pop_back(){
+            // Remove back element in array
+            array[size_array - 1] = 0;
+            size_array = size_array - 1;
+    
+        //if only one value on linked list
+        if (head-&gt;next == NULL) {
+            delete head;
+            head = NULL;
+        }
+        //if linked list &gt; 1 value
+<A NAME="3"></A>        else {
+            Node *prev = head;
+            Node *last = head-&gt;next;
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match28-0.html#3',2,'match28-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>            while (last-&gt;next != NULL) {
+                prev = last;
+                last = last-&gt;next;
+            }
+            delete last;
+            prev-&gt;next = NULL;
+            size_LL--;
+        }
+    
+}//end pop_back</B></FONT>
+
+
+//overload operator to display data
+ostream&amp; operator&lt;&lt;(ostream&amp; out, const LinkedList&amp; rhs ){
+    LinkedList::Node *i;
+    out&lt;&lt; &quot;The Linked List values are: &quot;&lt;&lt;endl;
+    for(i = rhs.head; i != 0; i = i -&gt; next){
+        out &lt;&lt; i -&gt; value&lt;&lt; &quot; &quot;;
+    }
+    out&lt;&lt;endl;
+    out&lt;&lt;&quot;The array values are: &quot;&lt;&lt;endl;
+    for(int i=0; i&lt; rhs.size_array; i++){
+        
+        out&lt;&lt; rhs.array[i]&lt;&lt; &quot; &quot;;
+    }
+    
+    return out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+<HR>
+<H3><CENTER>LinkedList.h</CENTER></H3><HR>
+<PRE>
+//
+//  LinkedList.h
+//  ptrListArray
+//
+//  Created by Raul Serrano on 5/2/17.
+//  Copyright © 2017 Raul Serrano. All rights reserved.
+//
+
+#ifndef LinkedList_h
+#define LinkedList_h
+#include &lt;iostream&gt;
+using namespace std;
+<A NAME="4"></A>
+#include &lt;stdio.h&gt;
+
+<FONT color="#151b8d"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match28-0.html#4',2,'match28-top.html#4',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>class LinkedList{
+private:
+    int *array; //dynamic array
+    int size_array;//number of elements stored in the dynamic array
+    int cpacity;//the current number of integer spaces allocated to the dynamic array
+    struct Node{
+        int value;
+        Node *next;
+    };
+    Node *head;//point to the first node on the linked list
+    Node *current; 
+    int size_LL;//number of nodes on the linked list
+
+public:</B></FONT>
+    friend ostream&amp; operator&lt;&lt;(ostream&amp;, const LinkedList&amp; rhs );//overload operator to display data
+    LinkedList();//constructor
+    LinkedList( const LinkedList&amp;); //copy constructor
+    ~LinkedList();// destructor
+    LinkedList operator = (const LinkedList &amp;rhs);// overloaded equal operator
+    void traverse()const; // traverse LinkList
+    void push_back(int val);//fucntion to add values to the end of the array and LinkedList
+    void pop_back(); //this function deletes the last number in the array and linkedList
+    
+    
+    
+    
+    
+};
+
+
+#endif /* LinkedList_h */
+</PRE>
+</BODY>
+</HTML>

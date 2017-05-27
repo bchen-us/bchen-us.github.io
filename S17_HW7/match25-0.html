@@ -1,0 +1,349 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Sunny Wong_556512_assignsubmission_file_CSC 340 HW 7</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>ADT.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;ADT.h&quot;
+
+
+
+ADT::ADT() :size_linkedList(0), size_array(0) { // default linkedList constructor
+	// default array constructor
+	capacity = 20;
+	try {
+		arr = new int[capacity];
+	}
+	catch (bad_alloc &amp;e) {
+		cout &lt;&lt; &quot;Default array capacity allocation failed&quot; &lt;&lt; e.what();
+	}
+	for (int i = 0; i &lt; capacity; i++) {
+		arr[i] = 0;
+		size_array++;
+	}
+}
+
+ADT::~ADT() {
+	// destructor for array
+	if (arr != NULL) {
+		delete[]arr;
+	}
+	// destructor for linked list 
+	Node *temp = head;
+	while (temp != NULL) {
+		head = temp-&gt;next;
+		delete temp;
+		temp = head;
+	}
+}
+
+ADT::ADT(const ADT &amp;cloned) {
+<A NAME="0"></A>	// copy constructor for linked list
+	Node *temp = cloned.head; // original head
+	Node *tail = head; // tail of copied list; deep copy
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match25-1.html#0',3,'match25-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	Node *toIns = NULL;
+	while (temp != NULL) { // when original is list is not null
+		try {
+			toIns = new Node; // create new node
+		}
+		catch (bad_alloc &amp;e) {
+			cout &lt;&lt; &quot;LList Copy Constructor: New node creation failed.&quot; &lt;&lt; e.what();
+		}
+		toIns-&gt;value = temp-&gt;value; // copy value to new node
+		toIns-&gt;next = NULL; // points to null
+		if (head == NULL) {
+			head = toIns; // head now points to new node
+			tail = toIns; // tail also points to new node</B></FONT>
+			size_linkedList++;
+		}
+		else {
+			tail-&gt;next = toIns; // tail will point to new node
+			tail = toIns;	// make new node be the tail
+			size_linkedList++;
+		}
+		temp = temp-&gt;next; // continues copying next node
+	}
+
+	// copy constructor for array
+<A NAME="1"></A>	capacity = cloned.capacity;
+	size_array = cloned.size_array;
+	if (capacity &gt; 0) {
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match25-1.html#1',3,'match25-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>		try {
+			arr = new int[capacity];
+		}
+		catch (bad_alloc &amp;e) {
+			cout &lt;&lt; &quot;Array Copy Constructor: New capacity allocation failed.&quot; &lt;&lt; e.what();
+		}
+
+		for (int i = 0; i &lt; size_array; i++) {
+			arr[i] = cloned.arr[i];
+		}
+	}</B></FONT>
+	else {
+		delete[] arr;
+		arr = NULL;
+<A NAME="2"></A>	}
+}
+
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match25-1.html#2',3,'match25-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>ADT ADT::operator=(const ADT &amp;rhs) {
+	// assignment operator for array
+	if (rhs.capacity == 0) { // if assigning an empty list
+		if (arr != NULL) {
+			delete[] arr;
+			arr = 0;</B></FONT>
+		}
+		capacity = rhs.capacity;
+		size_array = rhs.size_array;
+	}
+	// if assigning arrays that have the same size already
+	if (size_array == rhs.size_array) {
+		// assign all elements of rhs to the array
+		size_array = rhs.size_array;
+		for (int i = 0; i &lt; rhs.size_array; i++) {
+			arr[i] = rhs.arr[i];
+		}
+<A NAME="3"></A>	}
+	else { // if lhs capacity != rhs capacity
+		delete[] arr; // delete lhs array
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match25-1.html#3',3,'match25-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>		capacity = rhs.capacity;
+		try {
+			arr = new int[capacity]; // allocate same size capacity to array
+		}
+		catch (bad_alloc &amp;e) {
+			cout &lt;&lt; &quot;Array assignment op: New capacity space allocation failed.&quot; &lt;&lt; e.what();
+		}
+
+		for (int i = 0; i &lt; rhs.size_array; i++) { // assign all elements of rhs to lhs array
+			arr[i] = rhs.arr[i];
+		}
+	}</B></FONT>
+
+	// assignment operator for linked list
+	Node *rhsTemp = rhs.head; // temp pointer to keep track of values of rhs list
+	Node *lhsTemp = head; // temp pointer for lhs values
+	if (size_linkedList == rhs.size_linkedList) { // case 1: if both linked lists are same size 
+		while (rhsTemp != NULL) {
+			lhsTemp-&gt;value = rhsTemp-&gt;value; // assign rhs value to lhs 
+			rhsTemp = rhsTemp-&gt;next; // move to next value for rhs list
+			lhsTemp = lhsTemp-&gt;next; // move to next value for lhs
+		}
+	}
+	else if (size_linkedList &lt; rhs.size_linkedList) { // case 2: if lhs list size &lt; rhs list size
+		size_linkedList = 0;
+		while (rhsTemp != NULL) {
+			if (lhsTemp != NULL) { // copy data until lhs reaches end of its list
+				lhsTemp-&gt;value = rhsTemp-&gt;value; // assign rhs value to lhs 
+				rhsTemp = rhsTemp-&gt;next; // move to next value for rhs list
+				lhsTemp = lhsTemp-&gt;next; // move to next value for lhs
+				size_linkedList++;
+			}
+			else {
+				push_back(rhsTemp-&gt;value);// create new node for lhs list with rhs value
+				rhsTemp = rhsTemp-&gt;next; // move to next value for rhs list
+			}
+		}
+	}
+	else { // case 3: if lhs list size &gt; rhs list size
+		   // cant use pop_back because it decreases array as well
+		   //  therefore, implement node deletion again		
+		Node*toDel = head; // keeps track of last node to be deleted
+		Node *prev = NULL;
+		while (size_linkedList != rhs.size_linkedList) {
+			if (toDel != NULL) {
+				prev = toDel; // points to previous node
+				toDel = toDel-&gt;next; // advances to next node until last one
+				if (toDel-&gt;next == NULL) { // when list reaches last node
+					prev-&gt;next = NULL; // set previous to point to null indicating that this is new last node
+					delete toDel; // delete last node
+					toDel = NULL;
+					size_linkedList--; // decrease list by 1
+				}
+			}
+			else {
+				toDel = head; // repeat deleting until lhs list size == rhs list size
+			}
+		}
+		while (lhsTemp != NULL) {
+			if (rhsTemp != NULL) {
+				lhsTemp-&gt;value = rhsTemp-&gt;value; // assign rhs value to lhs 
+				if (rhsTemp-&gt;next == NULL) {
+					lhsTemp-&gt;next = NULL;
+				}
+				rhsTemp = rhsTemp-&gt;next; // move to next value for rhs list
+				lhsTemp = lhsTemp-&gt;next; // move to next value for lhs list
+			}
+			else { // edge case when rhs list is already empty; will return an empty list for lhs
+				delete lhsTemp;
+				lhsTemp = NULL;
+				head = lhsTemp;
+			}
+		}
+	}
+	size_array = rhs.size_array; // fail-safe to make sure lhs has same size as rhs
+	return *this;
+}
+
+void ADT::push_back(int val) {
+<A NAME="4"></A>	// linked list push_back 
+	Node *current = head;
+	// if list is empty
+<FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match25-1.html#4',3,'match25-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	if (current == NULL) {
+		// create a new node and insert to list
+		Node *temp;
+		try {
+			temp = new Node; // create a new last node to be inserted to the back of list
+		}
+		catch (bad_alloc &amp;e) {
+			cout &lt;&lt; &quot;LList push_back if statement: New node creation failed.&quot; &lt;&lt; e.what();
+		}
+		temp-&gt;value = val; // assign the value to new node
+		temp-&gt;next = NULL; // points to null because only node in list
+		head = temp; // head will now point to first node in list
+		size_linkedList++; // increase list size</B></FONT>
+<A NAME="5"></A>	}
+	else {
+		while (current != NULL) { // if list is not empty
+<FONT color="#c8c2a7"><A HREF="javascript:ZweiFrames('match25-1.html#5',3,'match25-top.html#5',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>			if (current-&gt;next == NULL) { // if the current node points to the next node that is null
+				Node *last = current; // mark position of last node
+				Node *newLast;
+				try {
+					newLast = new Node; // create a new last node to be inserted to the back of list
+				}
+				catch (bad_alloc &amp;e) {
+					cout &lt;&lt; &quot;LList push_back else statement: New last node creation failed.&quot; &lt;&lt; e.what();
+				}
+				newLast-&gt;value = val; // assign its value
+				newLast-&gt;next = NULL; // make this new last node point to null</B></FONT>
+				last-&gt;next = newLast; // make previous last node point to newly created node
+				size_linkedList++; // increase list size
+				break; // stops infinite loop
+			}
+			else {
+				current = current-&gt;next; // moves to next node
+			}
+		}
+	}
+<A NAME="6"></A>
+	// array push_back
+	if (size_array == capacity) { // if array is already at max capacity, then create a larger array
+<FONT color="#50ebec"><A HREF="javascript:ZweiFrames('match25-1.html#6',3,'match25-top.html#6',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>		capacity = capacity * 2; // double capacity
+		int*push;
+		try {
+			push = new int[capacity]; // allocate new space for push_back
+		}
+		catch (bad_alloc &amp;e) {
+			cout &lt;&lt; &quot;Array push_back: Capacity space alloactation failed.&quot; &lt;&lt; e.what();
+		}
+		for (int i = 0; i &lt; size_array; i++) {
+			push[i] = arr[i]; //copy old array into new one
+		}
+		delete[]arr; // deallocate old array
+		push[size_array] = val; // add new value to end of array</B></FONT>
+		size_array++; // increase size by 1
+		arr = push; // point array to new array with push_back value
+		push = NULL; //deallocate push as no longer needed
+		delete[] push;
+	}
+	else if (  size_array &lt; 0 ||capacity == 0) { // if array is already empty
+		capacity = 20; // reset array space
+		size_array = 0;
+		arr = new int [capacity];
+		arr[size_array] = val; // add new value
+		size_array++; // increase size by 1
+	}
+	else {
+		arr[size_array] = val; // add new value to end of array if array is not at max capacity
+		size_array++; // increase size by 1
+	}
+}
+
+
+
+
+
+void ADT::pop_back() {
+	// array pop_back
+<A NAME="7"></A>	if (capacity != 0) {
+		capacity--;// capacity loses one space for pop
+		size_array--;// size loses one space
+<FONT color="#c58917"><A HREF="javascript:ZweiFrames('match25-1.html#7',3,'match25-top.html#7',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>		int *pop;
+		try {
+			pop = new int[capacity]; // allocate new space for pop_back
+		}
+		catch (bad_alloc &amp;e) {
+			cout &lt;&lt; &quot;Array pop_back: Capacity space alloactation failed.&quot; &lt;&lt; e.what();
+		}
+		for (int i = 0; i &lt; size_array; i++) {
+			pop[i] = arr[i]; //copy old array into new one
+		}</B></FONT>
+		delete[]arr; // deallocate old array space
+		arr = pop; // have array = popped array
+		pop = nullptr; //deallocate pop as no longer needed
+		delete[] pop;
+	}
+	else { // if user pops array until empty
+		delete[] arr;
+		arr = NULL;
+		
+	}
+
+	// linked list pop_back
+	Node*toDel = head; // keeps track of last node to be deleted
+	Node *prev = NULL;
+	if (toDel != NULL) {
+		while (toDel != NULL) {
+			prev = toDel; // points to previous node
+			toDel = toDel-&gt;next; // advances to next node until last one
+			if (toDel == NULL) {// case when head is pointing to only one node and doesnt want to be deleted; this takes care of it
+				delete prev;
+				prev = NULL;
+				head = prev;
+				break;
+			}
+			if (toDel-&gt;next == NULL) { // when list reaches last node
+				prev-&gt;next = NULL; // set previous node to point to null indicating that this is new last node
+				delete toDel; // delete last node
+				toDel = NULL;
+				size_linkedList--; // decrease list by 1
+			}
+		}
+	}
+}
+
+
+ostream&amp; operator&lt;&lt;(ostream &amp;oS, ADT &amp;rhs) {
+	ADT::Node *curr;
+	oS &lt;&lt; &quot;Array&quot; &lt;&lt; endl;
+	if (rhs.size_array &lt;0 || rhs.capacity == 0) {
+		oS &lt;&lt; &quot;Array is empty.&quot; &lt;&lt; endl;
+	}
+	for (int i = 0; i &lt; rhs.size_array; i++) {
+		oS &lt;&lt; rhs.arr[i];
+	}
+	oS &lt;&lt; endl;
+	oS &lt;&lt; &quot;Linked List&quot; &lt;&lt; endl;
+	for (curr = rhs.head; curr != NULL; curr = curr-&gt;next) {
+		oS &lt;&lt; curr-&gt;value;
+	}
+	if (rhs.head == NULL) {
+		oS &lt;&lt; &quot;List is empty.&quot; &lt;&lt; endl;
+	}
+	return oS;
+}
+
+</PRE>
+</BODY>
+</HTML>

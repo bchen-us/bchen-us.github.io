@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Teodora Caneva_556554_assignsubmission_file_hw7</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>dynamicList.cpp</CENTER></H3><HR>
+<PRE>
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+#include &quot;dynamicListheader.h&quot;
+
+DynamicList::DynamicList() {//constructor
+    //array
+    int *arry;
+    int arrsize = 10;
+    int capacity = 10;
+    arry = new int[10];
+
+    //list
+    struct Node {
+        int value;
+        Node *next;
+    };
+    Node *head;
+    head-&gt;value = 0;
+    head-&gt;next = nullptr;
+
+} 
+
+DynamicList::~DynamicList() {//de-constructor
+    // array
+    delete []arry;
+
+    //list
+    Node *temp = head;
+    Node *next;
+    //Node *next= head-&gt;next;
+    int i = 0;
+    while (i &lt; size_linkedlist) {
+        next = temp-&gt;next;
+        delete temp;
+        temp = next;
+        size_linkedlist--;
+    }
+
+} 
+
+<A NAME="0"></A>DynamicList::DynamicList(const DynamicList&amp; original) {
+    //copy constructor    
+    int capacity = capacity + 20;
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match30-1.html#0',3,'match30-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    int *arry = new int[original.capacity];
+    for (int i = 0; i &lt; original.arrsize; i++) {
+        arry[i] = original.arry[i];
+    }
+    arrsize = capacity;
+
+    //copy const for linked list
+
+    /*
+    size_linkedlist=original.size_linkedlist;
+    Node *current = original.head;
+     
+    if (current == nullptr ) {
+       head = nullptr;
+        
+   }*/
+    Node* cur = original.head;
+    Node* end = nullptr;</B></FONT>
+
+    while (cur) {
+        Node* n = new Node;
+        n-&gt;value = cur-&gt;value;
+
+        if (!head) {
+            head = n;
+            end = head;
+        } else {
+            end-&gt;next = n;
+            end = n;
+        }
+        cur = cur-&gt;next;
+    }
+}
+
+DynamicList&amp; DynamicList::operator=(const DynamicList &amp;item) {
+    //array
+    if (this != &amp;item) {
+        delete []arry;
+        for (int i = 0; i &lt; item.capacity; i++) {
+        arry[i] = item.arry[i];
+    }
+       // DynamicList (item);
+        this-&gt;arrsize = item.arrsize;
+
+    }
+    return *this;
+ //  
+    
+    //linked list   
+    if (this != &amp;item) {
+        delete this;
+        //DynamicList (item);
+    Node* current = item.head;
+    Node* tmp = nullptr;
+
+    while (current) {
+        Node* aNode = new Node;
+        aNode-&gt;value = current-&gt;value;
+
+        if (!head) {
+            head = aNode;
+            tmp = head;
+        } else {
+            tmp-&gt;next = aNode;
+            tmp = aNode;
+        }
+        current = current-&gt;next;
+    }
+        this-&gt;size_linkedlist = item.size_linkedlist;
+
+    }
+    return *this;
+
+
+}//assignment operator
+
+void DynamicList::pushback(int data) {
+    //add an element to the array
+    int *arr;
+    if (arrsize &lt; capacity) {
+        arrsize++;
+        arr[arrsize] = data;
+    } else if (arrsize == capacity) {
+        DynamicList(arr);
+        arrsize++;
+
+    }
+
+    //insert nodes at the front
+    Node *temp = head;
+    Node *next = head-&gt;next;
+    while (next != nullptr) {
+        next = next-&gt;next;
+    }
+
+    Node *newnode = new Node;
+    newnode-&gt;value = data;
+    newnode-&gt;next = nullptr;
+    next-&gt;next = newnode;
+
+    size_linkedlist++;
+}
+
+void DynamicList::pop() {
+    //array
+    //decrease size by one - remove last item
+    arrsize--;
+
+
+    //linked list
+    Node *temp = head;
+    Node *next = head-&gt;next;
+    for (int i = 0; i &lt; size_linkedlist; i++) {
+        next = next-&gt;next;
+    }
+    //find second to last node, record its location, delete last node
+    Node *newLastNode = next;
+    next = next-&gt;next;
+    delete next;
+    newLastNode-&gt;next = nullptr;
+
+}
+
+ostream&amp; operator&lt;&lt;(ostream &amp;os, const DynamicList&amp; list1) {
+    DynamicList one = list1;
+    
+    for (int i = 0; i &lt;one.arrsize; i++) {
+        os &lt;&lt; one.arry[i];
+    }
+    
+    while(one.head != nullptr){
+        os &lt;&lt; one.head-&gt;value &lt;&lt; &quot; &quot;;
+        one.head = one.head-&gt;next;
+    }
+
+    
+    return os;
+}
+</PRE>
+<HR>
+<H3><CENTER>dynamicListheader.h</CENTER></H3><HR>
+<PRE>
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/* 
+ * File:   headerfile.h
+ * Author: teodora
+ *
+ * Created on May 1, 2017, 9:35 PM
+ */
+
+#ifndef DYNAMICLISTHEADER_H
+#define DYNAMICLISTHEADER_H
+
+<A NAME="1"></A>#include &lt;iostream&gt;
+using namespace std;
+
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match30-1.html#1',3,'match30-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>class DynamicList{
+private:
+    int *arry;
+    int arrsize;
+    int capacity;
+    struct Node{
+        int value;
+        Node *next;
+    };
+    Node *head;
+    int size_linkedlist;
+
+    public:</B></FONT>
+    
+    DynamicList(); //constructor
+    ~DynamicList(); //de-constructor
+    DynamicList(const DynamicList&amp; original);//copy constructor 
+    DynamicList&amp; operator=(const DynamicList&amp; item);//assignment operator
+    void pushback(int data);
+    void pop();
+    
+    
+    friend ostream&amp; operator&lt;&lt;(ostream &amp;os, const DynamicList&amp; list1);
+    
+    //void traverse();
+    /*Array(int size_array);
+    ~Array();
+    void push_back(int value);
+    void pop_back();
+    LinkedList(Node node1);
+    ~LinkedList();
+    void push(int val);
+    void pop();
+    void traverse();*/
+};
+
+
+
+#endif /* HEADERFILE_H */
+
+</PRE>
+</BODY>
+</HTML>

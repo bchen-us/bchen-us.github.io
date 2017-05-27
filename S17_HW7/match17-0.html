@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Wynne London_556535_assignsubmission_file_Hw #7</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>myADT.cpp</CENTER></H3><HR>
+<PRE>
+/*Wynne London CSC340
+ *Created on Windows 10 using NetBeans IDE 8.2 w/ Cygwin
+ */
+
+#include &lt;cstdlib&gt;
+#include &lt;stdio.h&gt;
+#include &quot;myADT.h&quot;
+
+using namespace std;
+
+/*
+ * 
+ */
+
+myADT::~myADT() {
+    //delete array
+    if (array != NULL) {
+        delete [] array;
+    }
+    //delete node
+    if (head-&gt;next == NULL) {
+        delete head;
+    } else {
+        //continually delete nodes from left to right
+        while (head-&gt;next != NULL) {
+            Node *del = head;
+            head = head-&gt;next; //move head pointer to next node
+            del-&gt;next = nullptr; //sever node from rest of the list
+            delete del; //delete node
+            del = head; //move onto next node to be deleted
+        }
+        delete head;
+    }
+}
+<A NAME="0"></A>
+myADT::myADT() : size_array(0), size_linkedList(0) {
+    head = new Node;
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match17-1.html#0',3,'match17-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    capacity = 200;
+
+    try {
+        array = new int[capacity];
+    } catch (bad_alloc &amp;e) {
+        cout &lt;&lt; &quot;myADT::myADT():&quot; &lt;&lt; e.what();
+    }
+
+    for (int i = 0; i &lt; capacity; i++) {</B></FONT>
+        array[i] = 0;
+    }
+
+}
+
+myADT::myADT(const myADT &amp; clone) {
+    //copy dynamic array
+    size_array = clone.size_array;
+    capacity = clone.capacity;
+    if (capacity &gt; 0) {
+        //step 1. allocate space (skip exception handling)
+        array = new int [capacity];
+
+        //step 2. move data
+        for (int i = 0; i &lt; size_array; i++)
+            array[i] = clone.array[i];
+    } else {
+        this-&gt;array = NULL; //&quot;this-&gt;&quot; is not necessary
+    }
+
+    //copy singly linked list
+    size_linkedList = clone.size_linkedList;
+    Node *list1 = head;
+    Node *list2 = clone.head;
+
+    if (clone.size_linkedList == 0) {
+        head-&gt;value = 0;
+        head-&gt;next = nullptr;
+    } else {
+        while (list1-&gt;next != 0) {
+            list2-&gt;value = list1-&gt;value; //copy values from 'old' list to new list
+            list1 = list1-&gt;next;
+            list2 = list2-&gt;next;
+            if (list2-&gt;next = 0) { //continually create new nodes as needed on each iteration
+                Node *temp = new Node;
+                list2-&gt;next = temp;
+            }
+        }
+    }
+}
+<A NAME="1"></A>
+myADT myADT::operator=(const myADT &amp; rhs) {
+    //assign dynamic array
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match17-1.html#1',3,'match17-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    if (rhs.capacity == 0) {
+        if (array != NULL) {
+            delete [] array;
+            array = NULL;
+        }
+        capacity = 0;
+        size_array = 0;
+
+    } else if (capacity == rhs.capacity) {
+        size_array = rhs.size_array;
+        for (int i = 0; i &lt; size_array; i++)
+            array[i] = rhs.array[i];
+    } else {
+        //step 1. delete the current *elements
+        if (array != NULL)
+            delete [] array;
+        //step 2. allocate space according to rhs.capacity
+        capacity = rhs.capacity;
+        size_array = rhs.size_array;
+        array = new int [capacity]; //need exception handling
+        for (int i = 0; i &lt; size_array; i++)
+            array[i] = rhs.array[i];
+    }</B></FONT>
+
+    //assign singly linked list
+    Node *list1 = head;
+    Node *list2 = rhs.head;
+    //process is similar to copy constructor
+    if (rhs.size_linkedList == 0) {
+        delete list1; //delete old list and create a new one
+        head = new Node;
+        head-&gt;next = nullptr;
+        size_linkedList = 0;
+    } else if (rhs.size_linkedList &gt; 0) {
+        while (list1-&gt;next != 0) {
+            list2-&gt;value = list1-&gt;value;
+            list1 = list1-&gt;next;
+            list2 = list2-&gt;next;
+            if (list2-&gt;next = 0) {
+                Node *temp = new Node;
+                list2-&gt;next = temp;
+            }
+        }
+    }
+
+    return *this;
+}
+
+<A NAME="2"></A>void myADT::push_back(int val) {
+    //push_back onto array
+    capacity++;
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match17-1.html#2',3,'match17-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    int *temp = new int [capacity];
+    for (int i = 0; i &lt; size_array; i++) {
+        temp[i] = array[ i];
+    }
+    temp[capacity] = val;
+    delete [] array;
+    array = temp;</B></FONT>
+    delete temp;
+
+    //push_back onto singly linked list
+    Node *tmp = head;
+    Node *value = new Node;
+    value-&gt;value = val;
+    while (tmp-&gt;next != 0) { //iterates through list until the end is reached
+        tmp = tmp-&gt;next;
+    }
+    tmp-&gt;next = value; //add and connect new node with corresponding val
+    delete value;
+    delete tmp;
+}
+
+<A NAME="3"></A>void myADT::pop_back() {
+    //pop_back array
+    capacity--;
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match17-1.html#3',3,'match17-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    int *temp = new int [capacity]; //create new temp array with new capacity
+    for (int i = 0; i &lt; size_array; i++) { //copy existing values onto new list
+        temp[i] = array[i];
+    }
+    delete [] array;
+    array = temp;</B></FONT>
+    delete temp;
+
+    //pop_back singly linked list
+    Node *tmp = head;
+    Node *del = head;
+    while (del-&gt;next != 0) { //iterates list until del = last node &amp; tmp = previos node
+        tmp = del;
+        del = del-&gt;next;
+    }
+    delete del; //delete last node and sever from list by assigning tmp-&gt;next with null address
+    tmp-&gt;next = nullptr;
+}
+
+ostream&amp; operator&lt;&lt;(ostream&amp; outS, const myADT&amp; rhs) {
+//    for (int i = 0; i &lt; size_array; i++) {
+//        out &lt;&lt; array[i] &lt;&lt; endl;
+    }
+    return outS;
+}
+</PRE>
+<HR>
+<H3><CENTER>myADT.h</CENTER></H3><HR>
+<PRE>
+/*Wynne London CSC340
+ *Created on Windows 10 using NetBeans IDE 8.2 w/ Cygwin
+ */
+
+#ifndef MYADT_H
+#define MYADT_H
+#include &lt;iostream&gt;
+<A NAME="4"></A>
+using namespace std;
+
+<FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match17-1.html#4',3,'match17-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>class myADT {
+private:
+
+    int *array; //dynamic array
+    int size_array; //number of elements stored in the dynamic array
+    int capacity; //the current number of integer spaces allocated to the dynamic array
+
+    struct Node {
+        int value;
+        Node *next;
+    };
+
+    Node *head; //point to the first node on the linked list
+    int size_linkedList; //number of nodes on the linked list
+
+public:</B></FONT>
+    //big-3: destructor
+    ~myADT();
+    //big-3: copy constructor
+    myADT(const myADT&amp; clone);
+    //big-3: overloaded = (assignment operator)
+    myADT operator=(const myADT&amp; rhs);
+
+    myADT();
+    void push_back(int val);
+    void pop_back();
+    friend ostream&amp; operator&lt;&lt;(ostream&amp; out, const myADT&amp; rhs);
+};
+
+
+#endif /* MYADT_H */
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Marcus Mertilien_556513_assignsubmission_file_Hw7Package</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>dynamicarray.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;dynamicarray.h&quot;
+<A NAME="0"></A>
+dynamicarray::dynamicarray(){
+	//Array
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match31-0.html#0',2,'match31-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	array = new int[3]];
+	for(int i=0; i &lt;3; i++){
+		array[i]=0;
+	}
+	size_array=0;
+	capacity = 3;</B></FONT>
+	
+	//Linked List
+	head-&gt; value = 0
+	size_linkedList++;
+}
+</PRE>
+<HR>
+<H3><CENTER>dynamicarray.h</CENTER></H3><HR>
+<PRE>
+#ifndef &quot;dynamicarray.h&quot;
+<A NAME="1"></A>#define &quot;dynamicarray.h&quot;
+
+
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match31-0.html#1',2,'match31-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>class dynamicarray{
+	
+	private:
+		
+		//DYNAMIC ARRAY
+		int *array 				//dynamic array
+		int size_array			//number of elements stored in the dynamic array
+		int capacity			//number of int spaces allocated to dynamic array
+		
+		
+		//LINKED LIST
+		struct Node{
+			int value
+			Node *next
+		};
+		Node *head				//point to first onde on linked list
+		int size_linkedList;	//number of nodes on the linked list
+		
+	public:</B></FONT>
+		dynamicarray();
+		~dynamicarray();
+		copy();
+		void push(int);
+		void pop()
+		friend ostream&amp; operator&lt;&lt;(ostream &amp;output,const)
+		
+};
+
+
+#endif
+</PRE>
+</BODY>
+</HTML>

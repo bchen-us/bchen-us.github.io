@@ -1,0 +1,443 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Brendan Ng_556578_assignsubmission_file_hw7</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>array.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  array.cpp
+//  Hw7
+//
+//  Created by Brendan Ng on 5/5/17.
+//  Copyright © 2017 Brendan Ng. All rights reserved.
+//
+
+#include &lt;iostream&gt;
+<A NAME="1"></A>#include &quot;array.h&quot;
+
+
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match8-0.html#1',2,'match8-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>myarray::~myarray(){// big 3 destructor
+    
+    
+    if (element!=NULL){ // check if array is empty
+        
+        delete [] element;//if not empty then delet element
+        element = NULL;
+    }
+    
+    if(head!=NULL){// check if head is empty
+        
+        Node *c = new Node;// c= new node
+        
+        c = head;//c= head
+        
+        while(c !=NULL){// if c is not null code is ran
+            
+            head= c-&gt;next; //head is equal to c next
+            
+            delete c;// c is then deleted
+            
+            c = head;// c is then assiagned to head
+            
+            
+        }
+    }
+    
+    size_linkedList = 0;// linkedlist is set to 0
+    size_array = 0;// array is set to 0</B></FONT>
+<A NAME="0"></A>    
+}
+
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match8-0.html#0',2,'match8-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>myarray::myarray():capacity(50),size_array(0),head(NULL),size_linkedList(0){//deafult capacity is 50 size array is 0 head is null linkedlist is 0
+    
+    try{//try catch satement to set element
+        
+        element=new int[ capacity];// element is set to int capacity
+        
+    }
+    catch (bad_alloc &amp;e){// catch bad alloc
+        
+        cout&lt;&lt;&quot;myarray::myarray{}:&quot;&lt;&lt;e.what();
+<A NAME="2"></A>        
+    }</B></FONT>
+
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match8-0.html#2',2,'match8-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+
+
+myarray::myarray( const myarray&amp; clone){// copy constructor
+    
+    size_array = clone.size_array;// size array is cloned
+    
+    capacity = clone.capacity;// capacity is cloned
+    
+    if (capacity&gt;0){// if statment to assian element to array
+        
+        element= new int[capacity]; // element is equal to caacity
+        
+        for(int i= 0; i &lt; clone.size_array; i++){
+            
+            element[i] = clone.element[i];// element is cloned
+            
+        }
+        
+    } else{// else element is equal to null
+        
+        this-&gt;element= NULL;// else element is equal to null
+        
+    }
+    size_linkedList=clone.size_linkedList;// linked list is cloned
+    
+    if(clone.head==NULL){// check if head is null
+        head=NULL;// head is set to null
+    } else{//else code is ran
+        head = new Node;// head is set to new node
+        head-&gt;value= clone.head-&gt;value;// head value is set to clone head value</B></FONT>
+        Node *New = new Node;// new is set to node
+        New = head;// new is set to head
+        for(Node *i = clone.head-&gt;next; i !=NULL; i=i-&gt;next){// for loop to set new
+            
+            
+            New-&gt;next= new Node;// new is set to node
+            
+            New = New-&gt; next;// new is set to next
+            
+<A NAME="3"></A>            New-&gt;value= i-&gt;value;
+            
+        }
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match8-0.html#3',2,'match8-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>        New-&gt;next=NULL;// new next is set to null
+        
+    }
+    
+}
+
+myarray myarray::operator=(const myarray&amp; rhs){//overloaded =
+    
+    if(rhs.capacity ==0){// if statement to delet element
+        
+        if(element!=NULL){// check if element is null
+            
+            delete[] element;// delete element
+            
+            element=NULL;// element is set to null
+            
+        }
+        
+        size_array=0;// size array is set to 0
+        
+    }
+    else if (capacity==rhs.capacity){// check if capacity is equal to rhs. capacity
+        size_array= rhs.size_array;// sizee is to rhs. size
+        for(int i=0; i&lt;size_array; i++){// for loop that runs through size array
+             element[i]=rhs.element[i];// element is then set
+        }
+        
+    }
+    else{
+        if(element!=NULL) {// if element is null
+            delete[] element;// element is deleted
+            element = NULL;// element is set to null
+        }
+        
+        capacity=rhs.capacity;// capacity is clones
+        
+        size_array=rhs.size_array;// size array is cloned
+        
+        element= new int [capacity];
+        for(int i = 0; i&lt;size_array; i++){// for loop that runs through size array
+            
+            
+            element[i]=rhs.element[i];// element is copied
+        }
+        
+    }
+   
+    
+    if(rhs.head==NULL){// check if head is = to null
+        
+        if(head != NULL){// if head is not equal to null continue
+            
+            Node *index = head;// idex is set to head
+            
+            while(head!=NULL){// while head is not null
+                
+                head = index-&gt;next;// head is set to index
+                
+                delete index;// index is deleted
+                
+                index = head;//index is set to head
+            }
+        }
+        head=NULL;// head is set to null
+        size_linkedList=0;// size is set to 0
+    }else{
+        head = new Node;// head is set to node
+        head-&gt;value= rhs.head-&gt;value;</B></FONT>
+        Node *New = new Node;// new is set to node
+        New = head;// new is set to head
+        for(Node *i = rhs.head-&gt;next; i !=NULL; i=i-&gt;next){// for loop
+            New-&gt;next= new Node;// new nex is set ot node
+            New = New-&gt; next;// new is set to new next
+            New-&gt;value= i-&gt;value;
+            
+        }
+        New-&gt;next=NULL;
+        
+    }
+    return *this;// this is returned
+}
+<A NAME="4"></A>
+void myarray::push_back(int k){// push back function
+    
+<FONT color="#151b8d"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match8-0.html#4',2,'match8-top.html#4',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    if(size_array&gt;=capacity){// if statement to ceck if size array is = to capacity
+        
+        
+        capacity=capacity+1; // capacity is raised by one
+        
+        int *temp= new int[capacity];// temp is se to in capacity
+        
+        for(int i=0; i &lt;size_array;i++){//for loop that runs through size array
+            
+            temp[i]=element[i]; // temp is set to element
+        }
+        delete [] element;// element is deleted
+        
+        size_array++;// move one to next value
+        
+        element=temp;// element is set to temp
+        
+        int i= size_array-1; // i is set to 1 less then size array
+        
+        element[i]=k;// element is pushed back
+        
+    }else{
+        size_array++;// size array is increaded by one
+        int i = size_array-1;// i is size array minus one
+        element[i]=k;// element is pushed back
+    }</B></FONT>
+    if(head==NULL){// check if head is null
+        
+        head = new Node;// head is set to node
+        
+        head-&gt;value=k;// head value is set to k
+        
+        head-&gt;next=NULL;// head next is set to null
+<A NAME="5"></A>        
+        size_linkedList++;// size linked list is increased by one
+        
+<FONT color="#c8c2a7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match8-0.html#5',2,'match8-top.html#5',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    }else{
+        
+        Node *dNode= new Node;// dnode is set to new node
+        
+        dNode-&gt;value=k;//dnode valuse is set to k
+        
+        dNode-&gt;next=NULL;// dnode next is set to null
+        
+        Node *tep=new Node;// tep is set to node
+        
+        tep=head;// tep is set to head
+        
+        while(tep-&gt;next != NULL){// hwat tep is not null code is ran
+            
+            tep= tep-&gt;next;
+<A NAME="6"></A>        }
+        tep-&gt;next=dNode;
+        size_linkedList++;// size linked list is increaded by one</B></FONT>
+<FONT color="#50ebec"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match8-0.html#6',2,'match8-top.html#6',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    }
+}
+
+void myarray:: pop_back(){// pop back function
+    
+    Node *p =new Node;// p ist set to node
+    
+    if(head != NULL){// check is head is not set to null
+        
+        if(head-&gt;next == NULL){
+            
+            p = head;//p is set to head
+            
+            head = head-&gt;next;// head is set to head next
+            
+        }else{
+        
+        Node *tmp= new Node; //temp is set to node
+        
+        tmp= head;// tmp is set to head
+        
+        for(int i=1;i&lt;size_linkedList-1;i++){// for loop that runs through the size of linked list
+            
+            tmp=tmp-&gt;next;// temp is set to tmp next
+            
+        }
+            
+        p=tmp-&gt;next;
+        
+        tmp-&gt;next= p-&gt;next;
+        
+    }
+    p-&gt;next=NULL;
+    
+    delete p;// p is deleted
+    
+    p=NULL;// p is set to null
+    
+    int *array =new int[capacity-1];// array is set to capacity - 1
+    
+    for(int i=0;i&lt;capacity-1;i++){// for loop that runs though capacity-1
+        
+        array[i]=element[i];// array i is set to element i
+        
+    }
+    delete [] element;// element is deleted
+    
+    element=array;// element is equal arrray
+    
+    capacity--;// capacity is decreased by 1
+    
+    size_array--;// size array is decreaded by one
+    
+    size_linkedList--;// size linked list is decreased by one
+    }
+}</B></FONT>
+
+
+<A NAME="7"></A>
+
+
+<FONT color="#c58917"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match8-0.html#7',2,'match8-top.html#7',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>std::ostream&amp; operator &lt;&lt;(std::ostream &amp;out,const myarray p){// overloaded put operator
+    
+    if(p.size_linkedList !=0 &amp;&amp; p.size_linkedList !=0){
+        
+        myarray::Node *pr = new myarray::Node;
+        
+        pr = p.head;// pr is set to p.head
+        
+        out&lt;&lt;endl &lt;&lt;&quot;linked list: &quot;&lt;&lt;endl;// prints out linked list
+        
+        while(pr!= NULL){// while loop that prints out value for linked list
+            
+            int cal = pr-&gt;value;// cal is set to pr-&gt;value</B></FONT>
+            
+           out&lt;&lt;cal&lt;&lt;&quot;,&quot;;// cal is rinted
+            
+            pr=pr-&gt;next;
+        }
+        
+        out&lt;&lt;endl&lt;&lt;&quot;array: &quot;&lt;&lt;endl;// prints out array
+        
+        for(int i = 0; i&lt;p.size_array;i++){// loop that runs through size array
+            
+            out&lt;&lt;p.element[i]&lt;&lt;&quot;,&quot;;
+            
+            
+        }
+        
+    } else {
+        out &lt;&lt; &quot;Linked List and Dynamic array empty.&quot;;// if it is empty this is printed
+    }
+
+    out&lt;&lt;endl;
+out&lt;&lt;endl;
+    return out;// return out
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+<HR>
+<H3><CENTER>array.h</CENTER></H3><HR>
+<PRE>
+//
+//  array.h
+//  Hw7
+//
+//  Created by Brendan Ng on 5/5/17.
+//  Copyright © 2017 Brendan Ng. All rights reserved.
+//
+
+#ifndef array_h
+#define array_h
+#include &lt;iostream&gt;
+<A NAME="8"></A>
+using namespace std;
+
+<FONT color="#bce954"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match8-0.html#8',2,'match8-top.html#8',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>class myarray{
+    
+private:
+    
+    int *element; // dynamic array
+    
+    int size_array;// # of elements stored in dynamic array
+    
+    int capacity;// intger spaces allocated to dynamic array
+    
+    struct Node{
+        
+        int value;
+        
+        Node *next;
+        
+    };
+    
+    Node *head;
+    
+    int size_linkedList;//link list
+
+public:
+    
+    ~myarray(); //destructor
+    
+    myarray(const myarray&amp; clone);//copy constructor
+    
+    myarray operator=(const myarray&amp; rhs);// overloaded
+    
+    myarray();
+    
+    
+    void push_back(int k); //push back
+    
+    void pop_back();// pop back
+    
+    
+    friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out,const myarray p);// overloaded put operator</B></FONT>
+  
+    
+
+
+};
+
+
+
+#endif /* array_h */
+</PRE>
+</BODY>
+</HTML>

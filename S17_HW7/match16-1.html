@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Abigail Chin_556583_assignsubmission_file_CSC340HW7</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>LinkedList.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  LinkedList.cpp
+//  CSC340HW7
+//
+//  Created by Abigail Chin on 5/1/17.
+//  Copyright © 2017 Abigail Chin. All rights reserved.
+//
+
+#include &quot;LinkedList.hpp&quot;
+
+/*---Default Constructor---*/
+LinkedList::LinkedList():array(NULL),size_array(0),capacity(10),head(NULL),size_linkedList(0){
+    //    /*Linked List*/
+    //    head-&gt;next = NULL;
+    //    head-&gt;next-&gt;value = 0;
+    
+    /*dynamic array*/
+    try{
+        array = new int [capacity];
+    }
+    catch( bad_alloc&amp; e)
+    {
+        std::cout &lt;&lt; e.what();
+    }
+    for (int i = 0; i &lt; capacity; i++)
+        array[i] = 0;
+}
+
+/*---Destructor---*/
+LinkedList::~LinkedList(){
+    /*Linked List*/
+    Node *toDel = head;
+    while(head != NULL){
+        head = head-&gt;next;
+        delete head;
+        toDel = head;
+    }
+<A NAME="1"></A>    
+    /*dynamic array*/
+    array = NULL;
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match16-0.html#1',2,'match16-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+/*---Copy Constructor---*/
+LinkedList::LinkedList(const LinkedList&amp;l1){
+    /*Linked list*/
+    Node *read = l1.head;
+    Node *tail = NULL;
+    Node *toIns = NULL;
+    while(read != NULL){
+        toIns = new Node;
+        toIns-&gt;value = read-&gt;value;
+        toIns-&gt;next = NULL;
+        
+        if(tail == NULL){
+            head = toIns;
+            tail = toIns;
+        }else{
+            tail-&gt;next = toIns;
+            tail = toIns;
+        }
+        read = read-&gt;next;
+    }
+    size_linkedList = l1.size_linkedList;
+    
+    /*dynamic array*/
+    size_array = l1.size_array;
+    capacity = l1.capacity;
+    
+    if (capacity&gt;0){
+        array = new int[capacity];
+        for(int i = 0 ; i &lt; size_array; i++){
+            array[i] = l1.array[i];
+        }
+    }
+    
+}
+
+/*---Assignment---*/
+LinkedList LinkedList::operator=(const LinkedList&amp; rhs){
+    
+    /*Linked List*/
+    Node *iterator = rhs.head;
+    while(iterator){
+        push_back(iterator-&gt;value);
+        iterator = iterator-&gt;next;
+    }
+//    Node *read = head;
+//    Node *tail = NULL;
+//    Node *toIns = NULL;
+//    while(read != NULL){
+//        toIns = new Node;
+//        toIns-&gt;value = read-&gt;value;
+//        toIns-&gt;next = NULL;
+//        
+//        if(tail == NULL){
+//            head = toIns;
+//            tail = toIns;
+//        }else{
+//            tail-&gt;next = toIns;
+//            tail = toIns;
+//        }
+//        read = read-&gt;next;
+//    }
+//    size_linkedList = rhs.size_linkedList;
+    
+    
+    /*dynamic array*/
+    if (rhs.capacity == 0){  //special case
+        if (array!=NULL){
+            delete [] array;
+            array = 0;</B></FONT>
+        }
+        capacity = rhs.capacity;
+        size_array = rhs.size_array;
+    }
+    if (capacity == rhs.capacity){
+        size_array = rhs.size_array;
+        for  (int i=0; i&lt;size_array; i++)
+            array[i] = rhs.array[i];
+    }
+<A NAME="0"></A>    if(capacity != rhs.capacity){
+        capacity = rhs.capacity;
+        delete array;
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match16-0.html#0',2,'match16-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>        try{
+            array = new int [capacity];
+        }
+        catch( bad_alloc&amp; e)
+        {
+            cout &lt;&lt; e.what();
+        }
+        for(int i = 0; i &lt;size_array; i++){</B></FONT>
+            array[i] = rhs.array[i];
+        }
+    }
+    return *this;
+}
+
+/*---Push Back---*/
+void LinkedList::push_back(int val){
+    /*linked list*/
+    
+    try{
+        if(head == NULL){
+            head = new Node;
+            head-&gt;value = val;
+            head-&gt;next = NULL;
+        }else{
+            Node *iterator = head;
+            
+            while(iterator-&gt;next != NULL) {
+                    iterator = iterator-&gt;next;
+            }
+            
+            iterator-&gt;next = new Node;
+            
+            iterator = iterator-&gt;next;
+            iterator-&gt;value = val;
+            iterator-&gt;next = NULL;
+            size_linkedList++;
+        }
+    }catch(bad_alloc&amp; a){
+        cout&lt;&lt; a.what();
+    }
+    /*Dynamic Array*/
+    if ( capacity == size_array ) {
+        capacity *= 2;
+        // allocate a new array of capacity pointed to by temp
+        // loop through array and copy values into temp
+        // point array to temp
+        try{
+            int *temp = new int[capacity];
+            for(int i = 0; i &lt; size_array; i++){
+                temp[i] = array[i];
+            }
+            array = temp;
+            
+        }catch( bad_alloc&amp; e)
+        {
+            cout &lt;&lt; e.what();
+        }
+
+        
+    }
+    *(array + size_array++) = val;
+    
+}
+
+
+/*---Pop Back---*/
+void LinkedList::pop_back(){
+    /*linked list*/
+    try{
+        Node *toDel = head;
+        Node *iterator = head;
+        
+        if(head-&gt;next == NULL){
+            
+        }else{
+            iterator = head;
+            toDel = head-&gt;next;
+            while(toDel-&gt;next != NULL){
+                iterator = iterator-&gt;next;
+                toDel = toDel-&gt;next;
+            }
+            iterator-&gt;next = NULL;
+            delete toDel;
+            size_linkedList--;
+        }
+        
+    }catch(bad_alloc&amp; a){
+        cout&lt;&lt; a.what();
+    }
+<A NAME="2"></A>    
+    /*Dynamic Array*/
+
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match16-0.html#2',2,'match16-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    *(array + size_array--) = 0;
+    
+}
+
+/*---Print---*/
+ostream&amp; operator&lt;&lt;(ostream&amp; put, const LinkedList&amp; rhs){
+    LinkedList::Node *iterator = rhs.head;
+    put&lt;&lt;&quot;Linked List: {&quot;;
+    while(iterator != NULL){
+        put&lt;&lt;iterator-&gt;value&lt;&lt;&quot;,&quot;;
+        iterator = iterator-&gt;next;
+    }
+    put&lt;&lt;&quot;}&quot;&lt;&lt;endl;
+    
+    put&lt;&lt;&quot;Dynamic Array: {&quot;;
+    if(rhs.array){
+        for(int i = 0; i &lt; rhs.size_array; i++){
+            put&lt;&lt;rhs.array[i]&lt;&lt;&quot;,&quot;;
+        }
+    }
+    put&lt;&lt;&quot;}&quot;&lt;&lt;endl;
+    
+    return put;
+}</B></FONT>
+
+
+</PRE>
+<HR>
+<H3><CENTER>LinkedList.hpp</CENTER></H3><HR>
+<PRE>
+//
+//  LinkedList.hpp
+//  CSC340HW7
+//
+//  Created by Abigail Chin on 5/1/17.
+//  Copyright © 2017 Abigail Chin. All rights reserved.
+//
+
+#ifndef LinkedList_hpp
+#define LinkedList_hpp
+#include&lt;iostream&gt;
+#include &lt;stdio.h&gt;
+<A NAME="3"></A>
+using namespace std;
+
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match16-0.html#3',2,'match16-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>class LinkedList{
+private:
+    int *array;      //dynamic array
+    int size_array; //number of elements stored in the dynamic array
+    int capacity;   //the current number of integer spaces allocated to the dynamic array
+    struct Node {
+        int value;
+        Node *next;
+    };
+    
+    Node *head; //point to the first node on the linked list
+    int size_linkedList;  //number of nodes on the linked list
+public:</B></FONT>
+    
+    LinkedList();//default
+    
+    /*Big 3*/
+    ~LinkedList();//destructor
+    LinkedList(const LinkedList&amp;);//copy constructor
+    LinkedList operator=(const LinkedList&amp; rhs);//assignment
+    
+    void push_back(int val );
+    void pop_back();
+    
+    friend ostream&amp; operator&lt;&lt;(ostream&amp;, const LinkedList&amp;);
+};
+#endif /* LinkedList_hpp */
+</PRE>
+</BODY>
+</HTML>

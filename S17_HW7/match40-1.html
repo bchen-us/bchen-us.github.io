@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Regine Anne Manuel_556561_assignsubmission_file_HW7_CS340</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>HW7_ADT.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  HW7_ADT.cpp
+//  HW7_ADT
+//
+//  Created by Regine Anne Manuel on 5/2/17.
+//
+//
+
+#include &lt;stdio.h&gt;
+#include &lt;iostream&gt;
+#include &quot;HW7_header.hpp&quot;
+
+using namespace std;
+
+// default constructor
+myADT::myADT() {
+    
+    array = NULL;
+    size_array = 0;
+    capacity = 100;
+    head = NULL;
+    size_linkedList = 0;
+    
+    try {
+        array = new int [capacity];
+    }
+    catch( bad_alloc&amp; e) {
+        cout &lt;&lt; e.what();
+    }
+    for (int i=0; i&lt;capacity; i++)
+        array[i] = 0;
+}
+
+// destructor
+myADT::~myADT() {
+    
+    // array
+    if (array!=NULL)
+        delete [] array;
+    
+    // linked list
+    Node *curr = head;
+    while (curr != NULL){
+        head = curr -&gt; next;
+        delete curr;
+        curr = head;
+    }
+}
+
+// copy constructor
+myADT::myADT(const myADT &amp; clone) {
+    
+    // linked list
+    Node *read = clone.head;
+    Node *tail = NULL;
+    Node *insert = NULL;
+    
+    while (read != NULL) {
+        insert = new Node;
+        insert -&gt; value = read -&gt; value;
+        insert -&gt; next = NULL;
+        
+        if (tail == NULL) {
+            head = insert;
+            tail = insert;
+        } else {
+            tail -&gt; next = insert;
+            tail = insert;
+        }
+        read = read -&gt; next;
+    }
+    size_linkedList = clone.size_linkedList;
+    
+    // array
+    size_array = clone.size_array;
+    capacity = clone.capacity;
+    
+    if (capacity &gt; 0) {
+        array = new int[capacity];
+        for (int i = 0; i &lt; size_array; i++) {
+            array[i] = clone.array[i];
+        }
+    }
+}
+
+// overloaded assignment operator
+myADT myADT::operator = (const myADT &amp; rhs) {
+    
+    // linked list
+    Node *count = rhs.head;
+    while (count) {
+        push_back(count -&gt; value);
+        count = count -&gt; next;
+    }
+    
+    // array
+    if (rhs.capacity == 0){
+        if (array!= NULL){
+            delete [] array;
+            array = NULL;
+        }
+        capacity = 0;
+        size_array = 0;
+    }
+    else if (capacity == rhs.capacity){
+        size_array = rhs.size_array;
+        for (int i = 0; i &lt; size_array; i++)
+            array[i] = rhs.array[i];
+    }
+    else{
+        //delete the current *array
+        if (array != NULL)
+            delete [] array;
+        //allocate space according to rhs.capacity
+        capacity = rhs.capacity;
+        size_array = rhs.size_array;
+        array = new int [capacity]; //need exception handling
+        for (int i = 0; i &lt; size_array; i++)
+<A NAME="0"></A>            array[i] = rhs.array[i];
+    }
+    return *this;
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match40-0.html#0',2,'match40-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+void myADT::push_back(int val) {
+    
+    // linked list
+    if(head == NULL) {
+        head = new Node;
+        head -&gt; value = val;
+        head -&gt; next = NULL;
+        size_linkedList++;
+        array[size_array++] = val;
+    } else {
+        struct Node *temp = head;
+        struct Node *tempNode = new Node;
+        tempNode -&gt; value = val;
+        tempNode -&gt; next = NULL;
+        while (temp -&gt; next != NULL) {
+            temp = temp -&gt; next;
+        }
+        temp -&gt; next = tempNode;
+        size_linkedList++;
+        array[size_array++] = val;
+    }</B></FONT>
+
+    //array
+    if (capacity == 0) {
+        array = new int [1];
+        array [0] = val;
+        capacity++;
+        size_array++;
+    } else if (capacity &gt; size_array) {
+        array[size_array] = val;
+        size_array++;
+    } else {
+        int *temp = NULL;
+        temp = new int[capacity + 1];
+        
+        for (int x = 0; x &lt; size_array; x++) {
+            temp[x] = array[x];
+        }
+        temp[size_array] = val;
+        delete [] array;
+        capacity++;
+        size_array++;
+    }
+}
+
+void myADT::pop_back() {
+    
+    // linked list
+<A NAME="1"></A>    if (head != NULL) {
+        if (head -&gt; next == NULL) {
+            head = NULL;
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match40-0.html#1',2,'match40-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>        } else {
+            struct Node *temp = head;
+            while(temp -&gt; next -&gt; next != NULL) {
+                temp = temp -&gt; next;
+            }
+            temp -&gt; next = NULL;
+        }
+    }</B></FONT>
+    
+    // array
+    int *temp = NULL;
+    temp = new int[capacity];
+    
+    for (int x = 0; x &lt; size_array - 1; x++) {
+        temp[x] = array[x];
+    }
+    delete [] array;
+    array = temp;
+    size_array--;
+}
+
+ostream &amp; operator &lt;&lt; (ostream &amp; out, const myADT &amp; rhs) {
+    
+    // linked list
+    myADT::Node *count = rhs.head;
+    out &lt;&lt; &quot;Linked List: &quot; &lt;&lt; endl;
+    while (count != NULL) {
+        out &lt;&lt; count -&gt; value &lt;&lt; &quot; &quot;;
+        count = count -&gt; next;
+    }
+    out &lt;&lt; &quot;&quot; &lt;&lt; endl;
+    
+    // array
+    out &lt;&lt; &quot;Array: &quot; &lt;&lt; endl;
+    if (rhs.array) {
+        for (int i = 0; i &lt; rhs.size_array; i++) {
+            out &lt;&lt; rhs.array[i] &lt;&lt; &quot; &quot;;
+        }
+    }
+    out &lt;&lt; &quot;&quot; &lt;&lt; endl;
+    return out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

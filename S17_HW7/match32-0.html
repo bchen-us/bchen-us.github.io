@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Satjit Bola_556547_assignsubmission_file_Archive</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>L_List_Array.cpp</CENTER></H3><HR>
+<PRE>
+//
+//  L_List_Array.cpp
+//  homework7
+//
+//  Created by Satjit Bola on 5/9/17.
+//  Copyright © 2017 Satjit Bola. All rights reserved.
+//
+
+#include &quot;L_List_Array.hpp&quot;
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+L_List_Array::L_List_Array(int cap){
+    head = NULL;
+    
+    capacity = cap;
+    array = new int[cap];
+}
+<A NAME="0"></A>
+L_List_Array::L_List_Array(L_List_Array const &amp;someList){
+    capacity = someList.capacity;
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match32-1.html#0',3,'match32-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    array = new int[capacity];
+    
+    for (int i = 0; i &lt; capacity; i++){
+        array[i] = someList.array[i];
+    }
+    
+    Node *tempNode = someList.head;
+    head = tempNode;</B></FONT>
+    
+    while (tempNode){
+        Node *currNode = new Node;
+        currNode-&gt;value = tempNode-&gt;value;
+        currNode-&gt;next = tempNode-&gt;next;
+        
+        tempNode = tempNode-&gt;next;
+    }
+}
+
+
+L_List_Array::~L_List_Array(){
+    Node *temp;
+    
+    while (head){
+        temp = head;
+        head = head-&gt;next;
+        delete temp;
+        size_linkedList--;
+    }
+    
+    delete[] array;
+}
+
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; outS, const L_List_Array&amp; rhs)
+{
+    
+    L_List_Array::Node *currNode = rhs.head;
+    
+    outS &lt;&lt; &quot;Linked List Output: &quot; &lt;&lt; std::endl;
+    
+    while (currNode){
+        outS &lt;&lt; currNode-&gt;value &lt;&lt; &quot; &quot; ;
+        currNode = currNode-&gt;next;
+    }
+    
+    outS &lt;&lt; &quot;\n\nDynamic Array Output&quot; &lt;&lt; std::endl;
+    
+    for (int i = 0; i &lt; rhs.size_array; i++){
+        outS &lt;&lt; rhs.array[i] &lt;&lt; &quot; &quot;;
+    }
+    
+    outS &lt;&lt; &quot;\n&quot; &lt;&lt; std::endl;
+    
+    return outS;
+}
+
+void L_List_Array::push_back(int val){
+    Node *newNode = new Node;
+    Node *pointerNode;
+    
+    newNode-&gt;value = val;
+    newNode-&gt;next = NULL;
+    
+    if(!head){
+        head = newNode;
+        size_linkedList++;
+    } else {
+        pointerNode = head;
+        while (pointerNode-&gt;next){
+            pointerNode = pointerNode-&gt;next;
+        }
+        pointerNode-&gt;next = newNode;
+        size_linkedList++;
+    }
+    
+    if (size_array &lt; capacity){
+        array[size_array] = val;
+        size_array++;
+    } else if (size_array &gt;= capacity){
+        int *tempArray;
+        tempArray = new int[capacity*2];
+        for (int i = 0; i &lt; capacity; i++){
+            tempArray[i] = array[i];
+        }
+        delete[] array;
+        array = tempArray;
+        capacity *= 2;
+        array[size_array] = val;
+        size_array++;
+    }
+}
+
+void L_List_Array::pop_back(){
+    
+    if (size_array &gt; capacity/2){
+        array[size_array] = NULL;
+        size_array--;
+    } else if (size_array &lt;= capacity/2){
+        int *tempArray;
+        tempArray = new int[capacity/2];
+        for (int i = 0; i &lt; capacity/2; i++){
+            tempArray[i] = array[i];
+        }
+        delete[] array;
+        array = tempArray;
+        capacity /= 2;
+        array[size_array] = NULL;
+        size_array--;
+    }
+    
+    if (head == NULL){
+        return;
+    }
+    
+    if (head-&gt;next == NULL){
+        delete head;
+        head = NULL;
+        size_linkedList--;
+        return;
+    }
+    
+    Node *currNode = head;
+    while (currNode-&gt;next &amp;&amp; currNode-&gt;next-&gt;next != NULL){
+        currNode= currNode-&gt;next;
+    }
+    delete currNode-&gt;next;
+    currNode-&gt;next = NULL;
+    size_linkedList--;
+    
+}
+</PRE>
+<HR>
+<H3><CENTER>L_List_Array.hpp</CENTER></H3><HR>
+<PRE>
+//
+//  L_List_Array.hpp
+//  homework7
+//
+//  Created by Satjit Bola on 5/9/17.
+//  Copyright © 2017 Satjit Bola. All rights reserved.
+//
+
+#ifndef L_List_Array_hpp
+#define L_List_Array_hpp
+
+<A NAME="1"></A>#include &lt;stdio.h&gt;
+#include &lt;string&gt;
+
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match32-1.html#1',3,'match32-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>class L_List_Array{
+private:
+    int *array;
+    int size_array;
+    int capacity;
+    struct Node{
+        int value;
+        Node *next;
+    };
+    
+    Node *head;
+    int size_linkedList;
+    
+public:</B></FONT>
+    L_List_Array(int capacity);
+    L_List_Array(L_List_Array const &amp;someList);
+    ~L_List_Array();
+    
+    void push_back(int val);
+    void pop_back();
+    
+    friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp;, const L_List_Array&amp; rhs);
+};
+
+#endif /* L_List_Array_hpp */
+</PRE>
+</BODY>
+</HTML>

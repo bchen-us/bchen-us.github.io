@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Patrick Wong_556520_assignsubmission_file_CSC340 - HW7</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>LinkedList.cpp</CENTER></H3><HR>
+<PRE>
+/*
+  Name: LinkedList.cpp
+  Copyright:
+  Author: Patrick
+  Date: 5/1/17
+  Description: IDE: Code::Blocks, Compiler: GNU GCC
+*/
+#include &quot;LinkedList.h&quot;
+
+//default constructor
+LinkedList::LinkedList():size_array(0),head(NULL)
+{
+
+}
+
+<A NAME="0"></A>//destructor
+LinkedList::~LinkedList()
+{
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match39-0.html#0',2,'match39-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    Node *toDel = head;
+    while(toDel!=NULL)
+    {
+        head = toDel-&gt;next;
+        delete toDel;
+        toDel = head;
+    }
+}
+
+//copy constructor
+LinkedList::LinkedList(const LinkedList&amp; rhs)
+{</B></FONT>
+    *this=rhs;
+}
+
+//overloaded assignment operator
+LinkedList LinkedList::operator=(const LinkedList&amp; rhs)
+{
+    if(rhs.head==NULL)
+    {
+        head=NULL;
+        size_array=0;
+    }
+    else
+    {
+        Node *curr = rhs.head;
+        Node *rhsCurr = rhs.head;
+        Node *rhsHead = rhs.head;
+        while (rhs.head!=NULL)
+        {
+            head-&gt;value=rhsHead-&gt;value;
+<A NAME="1"></A>            head=curr-&gt;next;
+            rhsHead=rhsCurr-&gt;next;
+            curr=head;
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match39-0.html#1',2,'match39-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>            rhsCurr=rhsHead;
+        }
+    }
+    return *this;
+}
+
+void LinkedList::pushback(int val)
+{
+    if(head==NULL)
+    {</B></FONT>
+        Node *newNode = new Node;
+        newNode-&gt;value=val;
+        newNode-&gt;next=NULL;
+        head=newNode;
+        size_linkedList++;
+    }
+    else
+    {
+        Node *newNode = new Node;
+        newNode-&gt;value=val;
+        newNode-&gt;next=NULL;
+        Node *curr=head;
+        Node *head2=head;
+        while(curr-&gt;next!=NULL)
+        {
+            curr=head2-&gt;next;
+            head2=curr;
+        }
+        curr-&gt;next=newNode;
+        size_linkedList++;
+    }
+}
+
+void LinkedList::popback()
+{
+    if(head==NULL)
+        cout&lt;&lt;&quot;List is empty&quot;;
+    else if(head-&gt;next==NULL)
+        delete head;
+    else
+<A NAME="2"></A>    {
+        Node *curr=head;
+        Node *prev=head;
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match39-0.html#2',2,'match39-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>        while(curr-&gt;next!=NULL)
+        {
+            prev=curr;
+            curr=curr-&gt;next;
+        }
+        delete curr;
+        prev-&gt;next=NULL;
+        size_linkedList--;
+    }
+}
+ostream &amp;operator&lt;&lt;(ostream &amp;output, const LinkedList &amp;arr)
+{</B></FONT>
+    LinkedList::Node* LList=arr.head;
+    while(LList!=NULL)
+    {
+        output&lt;&lt;LList-&gt;value&lt;&lt;&quot; &quot;;
+        LList=LList-&gt;next;
+    }
+    return output;
+}
+</PRE>
+<HR>
+<H3><CENTER>LinkedList.h</CENTER></H3><HR>
+<PRE>
+/*
+  Name: LinkedList.h
+  Copyright:
+  Author: Patrick
+  Date: 5/1/17
+  Description: IDE: Code::Blocks, Compiler: GNU GCC
+*/
+#ifndef LINKEDLIST_H_INCLUDED
+#define LINKEDLIST_H_INCLUDED
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;exception&gt;
+#include &lt;stdlib.h&gt;
+<A NAME="3"></A>
+using namespace std;
+
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match39-0.html#3',2,'match39-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>class LinkedList{
+
+private:
+    int *array; //dynamic array
+    int size_array; //number of elements stored in the dynamic array
+    int capacity; //the current number of integer spaces allocated to the dynamic array
+    struct Node{
+        int value;
+        Node *next;
+    };
+    Node *head; //point to the first node on the linked list
+    int size_linkedList; //number of nodes in the linked list
+public:
+    //default constructor
+    LinkedList();
+
+    //destructor
+    ~LinkedList();
+
+    //copy constructor
+    LinkedList(const LinkedList&amp; rhs);
+
+    //overloaded assignment operator
+    LinkedList operator=(const LinkedList&amp; rhs);
+
+    void pushback(int val); //inserts val at the end of array
+
+    void popback(); //this deletes the last val at the end of array
+
+    friend ostream &amp; operator&lt;&lt;(ostream&amp; output, const LinkedList &amp; arr);
+};</B></FONT>
+
+#endif // LINKEDLIST_H_INCLUDED
+</PRE>
+</BODY>
+</HTML>

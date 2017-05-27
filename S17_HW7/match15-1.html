@@ -1,0 +1,415 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Albert Du_556514_assignsubmission_file_Homework 7</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Data.cpp</CENTER></H3><HR>
+<PRE>
+/**
+	CSC 340 Homework 7
+	Data.cpp
+	
+	Purpose: Use pointers to implement a dynamic array and a singly linked list.
+	IDE: Dev C++
+	
+	@author Albert Du
+	@date May 9, 2017
+*/
+
+#include&lt;iostream&gt;
+#include &quot;Data.h&quot;
+
+using namespace std;
+
+Data::Data():array_size(0), linkedList_size(0), head(NULL)
+{
+	capacity = 100;
+	
+	// Allocate space for the dynamic array.
+	try
+    {
+    	array = new int[capacity];
+  	}
+	
+<A NAME="0"></A>	catch (std::bad_alloc&amp; ba)
+  	{
+    	std::cerr &lt;&lt; &quot;bad_alloc caught: &quot; &lt;&lt; ba.what() &lt;&lt; '\n';
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match15-0.html#0',2,'match15-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>  	}
+  	
+  	// Initializes array elements.
+  	for(int i = 0; i &lt; capacity; i++)
+  	{
+  		array[i] = 0;    		
+	}	  		
+}
+
+Data::~Data()
+{	
+	// Delete the array.
+	if(array != NULL)
+	{
+		delete[] array;	
+	}</B></FONT>
+		
+	// Delete the linked list.
+	// Initially point to head of the list.
+	Node *currentNode = head;
+	
+	while(currentNode != NULL)
+	{
+		head = currentNode-&gt;next;		// Step 1: Point to the node after current head. It is the new head.
+		delete currentNode;				// Step 2: Delete the current head.
+		currentNode = head;				// Step 3: Point currentNode to the new head. 
+	}
+}
+
+Data::Data(const Data&amp; clone): linkedList_size(clone.linkedList_size)
+{
+	// Array.
+	this-&gt;array_size = clone.array_size;
+	capacity = clone.capacity;
+	
+	// Copy the clone array's data into a new array.
+	if(capacity &gt; 0)
+	{
+		array = new int[capacity];
+		
+		for(int i = 0; i &lt; array_size; i++)
+			array[i] = clone.array[i];
+	}
+	
+	// Linked list.
+	// Case 1: if the other list is empty.
+	if(clone.head == NULL)
+	{
+		head = NULL;
+		linkedList_size = 0;
+	}
+	
+	// Case 2: if the other list isn't empty.
+	else
+	{
+		// Step 1: Copy first node (head) and point to it.
+		head = new Node;
+		head-&gt;value = clone.head-&gt;value;
+
+		Node *newPtr = head;	// Ptr to head of new list.
+		
+		// Step 2: Copy the rest of the list.
+		// origPtr first points to the node after head in the clone (original) list. 
+		// It then points to all other nodes in the original list. 
+		for(Node *origPtr = clone.head-&gt;next; origPtr != NULL; origPtr = origPtr-&gt;next)
+		{
+			newPtr-&gt;next = new Node;			// Step 3: Creates new Node after the last Node of the new list.
+			newPtr = newPtr-&gt;next;				// Step 4: newPtr points to the newly created node.
+			newPtr-&gt;value = origPtr-&gt;value;		// Step 5: Copy the value from the original list to the new list. 
+		}
+<A NAME="2"></A>				
+		newPtr-&gt;next = NULL;
+	}
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match15-0.html#2',2,'match15-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+Data Data::operator=(const Data&amp; rhs)
+{
+	// Assign the array.
+	if(rhs.capacity == 0)
+	{
+		if(array != NULL)
+		{
+			delete[] array;</B></FONT>
+			array = 0;
+		}
+		
+		capacity = rhs.capacity;
+		array_size = rhs.array_size;
+	}
+	
+	// case 1: capacity == rhs.capacity 
+	if(capacity == rhs.capacity)
+	{
+		array_size = rhs.array_size;
+		
+		for(int i = 0; i &lt; array_size; i++)
+			array[i] = rhs.array[i];		
+	}
+	
+	// case 2: capacity != rhs.capacity
+	else
+	{
+		// Delete current elements.
+		if(array != NULL)
+			delete[] array;
+		
+		// Allocate enough space for rhs. 	
+		capacity = rhs.capacity;
+		array_size = rhs.array_size;
+		
+    	array = new int[capacity];
+		
+		for(int i = 0; i &lt; array_size; i++)
+			array[i] = rhs.array[i];
+	}
+	
+	// Assign the linked list by calling the copy constructor.
+	// Case 1: If rhs linked list is empty.
+	if(rhs.head == NULL)
+	{
+		Node *temp = head;
+		
+		// Delete all the nodes in the list to match rhs.
+		while(temp != NULL)
+		{
+			head = temp-&gt;next;	// Head points to the node after it. It will be the new head.
+			delete temp;		// Temp still points to old head. Delete it.
+			
+			// Temp points to the new head.
+			temp = head;
+		}
+		
+		head = NULL;
+		linkedList_size = rhs.linkedList_size;
+	}
+	
+	// Case 2: Rhs list isn't empty.
+	else
+	{
+		// Replace head with rhs' head.
+		head = new Node;
+		head-&gt;value = rhs.head-&gt;value;
+	
+		Node *newPtr = head;
+		linkedList_size = rhs.linkedList_size;
+		
+		for(Node *origPtr = rhs.head-&gt;next; origPtr != NULL; origPtr = origPtr-&gt;next)
+		{
+			// Creates a new node at the end of the list and points to it.
+			newPtr-&gt;next = new Node;
+			newPtr = newPtr-&gt;next;
+			newPtr-&gt;value = origPtr-&gt;value;
+		}
+		
+		newPtr-&gt;next = NULL;	
+	}
+	
+	return *this;
+}
+
+void Data::push_back(int val)
+{
+	// Dynamic array.
+	// Expand capacity of array if it reaches full capacity. 
+	if(array_size &gt;= capacity)
+	{
+		capacity = capacity * 2;
+		
+		// Array to copy to.
+		int *newArray = new int[capacity];			
+
+		// Copy original array to newArray.
+		for (int i = 0; i &lt; array_size; i++)
+		{
+			newArray[i] = array[i];
+			
+			// Add val as the last element of the new array.
+			if(i == array_size - 1)
+			{
+				newArray[i + 1] = val;
+				array_size++;				
+			}			
+		}
+	
+		// Delete original array, then point to newArray. 	
+		delete[] array;
+		array = newArray;		
+	}
+	
+	// If the array isn't full, add to the end of array.
+	else
+	{
+		array[array_size] = val;
+		array_size++;
+	}
+<A NAME="1"></A>	
+	// Linked list.
+	// Step 1: Create a new node to store val.
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match15-0.html#1',2,'match15-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	Node *temp = new Node;
+	temp-&gt;value = val;
+	temp-&gt;next = NULL;
+	
+	// Step 2: Store it at the end of the linked list.
+	// If list is empty, place val in head.
+	if(head == NULL)
+	{
+		head = temp;
+		linkedList_size = 1;
+	}
+	
+	// If the list isn't empty, find the last node and store val after it.
+	else
+	{
+<A NAME="3"></A>		Node *current = head;</B></FONT>
+		
+		// Search for the last node in the list.
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match15-0.html#3',2,'match15-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>		while(current-&gt;next != NULL)
+		{
+			current = current-&gt;next;
+		}
+		
+		// Store val as the last node in the list.
+		current-&gt;next = temp;
+		linkedList_size++;
+	}
+}
+
+void Data::pop_back()
+{
+	// Dynamic array.
+	// Array only has one element.
+	if(array_size == 1 &amp;&amp; array != NULL)
+	{</B></FONT>
+		delete[] array;
+		array_size = 0;
+	}
+	
+	// Case 2: Array has more than 1 element.
+	else
+	{
+		// Create new array.
+		int *newArray = new int[capacity];
+
+		// Copy everything except the last element.		
+		array_size--;
+
+		for(int i = 0; i &lt; array_size; i++)
+		{
+			newArray[i] = array[i];
+		}
+		
+		delete[] array;
+		array = newArray;
+	}
+	
+	// Linked List.
+	// Case 1: The list is already empty.
+	if(head == NULL)
+	{
+		cout &lt;&lt; &quot;The linked list is already empty.&quot; &lt;&lt; endl;
+	}
+	
+	// Case 2: There is only one element in the list.
+	else if(head-&gt;next == NULL)
+	{
+		Node *temp = head;
+		delete temp;
+		head = NULL;
+		linkedList_size = 0;
+	}
+	
+	// Case 3: Two or more elements in the list.
+	else
+	{
+<A NAME="4"></A>		Node *temp1 = head;
+		Node *temp2 = head-&gt;next;
+		
+<FONT color="#151b8d"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match15-0.html#4',2,'match15-top.html#4',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>		while(temp2-&gt;next != NULL)
+		{
+			temp1 = temp1-&gt;next;
+			temp2 = temp2-&gt;next;
+		}
+		
+		temp1-&gt;next = NULL;
+		delete temp2;
+		linkedList_size--;
+	}
+}</B></FONT>
+
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; outS, const Data&amp; d)
+{
+	outS &lt;&lt; &quot;Dynamic array: &quot;;
+	
+	// Prints contents of dynamic array.
+	for(int i = 0; i &lt; d.array_size; i++)
+	{
+		outS &lt;&lt; d.array[i] &lt;&lt; &quot; &quot;;
+	}
+	
+	outS &lt;&lt; &quot;\nLinked list: &quot;;
+	
+	const Data::Node *current = d.head;
+	
+	// Prints contents of linked list.
+	while(current != NULL)
+	{
+		outS &lt;&lt; current-&gt;value &lt;&lt; &quot; &quot;;
+		current = current-&gt;next;
+	}
+	
+	outS &lt;&lt; &quot;\n&quot;;
+	
+	return outS;
+}
+
+</PRE>
+<HR>
+<H3><CENTER>Data.h</CENTER></H3><HR>
+<PRE>
+/**
+	CSC 340 Homework 7
+	Data.h
+	
+	Purpose: Use pointers to implement a dynamic array and a singly linked list.
+	IDE: Dev C++
+	
+	@author Albert Du
+	@date May 9, 2017
+*/
+
+#ifndef Data_h
+#define Data_h
+<A NAME="5"></A>
+#include&lt;iostream&gt;
+
+<FONT color="#c8c2a7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match15-0.html#5',2,'match15-top.html#5',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>class Data 
+{
+	private:
+		int *array;				// Dynamic array.
+		int array_size;			// Number of elements stored in the dynamic array.
+		int capacity;			// Current number of spaces allocated to the dynamic array.
+		
+		struct Node
+		{
+			int value;
+			Node *next;
+		};
+		
+		Node *head;				// Points to first node in linked list.
+		int linkedList_size;	// Number of nodes in the linked list. 
+		
+	public:
+		Data();							// Default constructor. 
+		~Data(); 						// Destructor.
+		Data(const Data&amp; clone);		// Copy constructor.
+		Data operator=(const Data&amp; rhs);// Overloaded =.
+		
+		void push_back(int val);		// Inserts val at the end of the dynamic array and linked list.
+		void pop_back();				// Removes the last element from the dynamic array and linked list.
+		
+		friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp;, const Data&amp; d);	// Overloaded put operator. 
+};</B></FONT>
+
+#endif
+</PRE>
+</BODY>
+</HTML>

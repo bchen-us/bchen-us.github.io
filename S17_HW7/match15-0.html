@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Haiyin Huang_556551_assignsubmission_file_ArrayAndLinkedList</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>ArrayAndLinkedList.cpp</CENTER></H3><HR>
+<PRE>
+/**
+ * Haiyin Huang
+ * IDE: CLion
+ */
+
+#include &quot;ArrayAndLinkedList.h&quot;
+#include &lt;iostream&gt;
+#include &lt;new&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+//a default constructor to initialize the array and linked list correspondingly
+ArrayAndLinkedList::ArrayAndLinkedList(){
+    size_array = 0;
+    capacity = 100;
+    head = NULL;
+    size_linkedList = 0;
+    try{
+<A NAME="0"></A>        array = new int[capacity];
+    } catch (bad_alloc &amp;e){
+        cerr &lt;&lt; e.what();
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match15-1.html#0',3,'match15-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    }
+
+    for(int i = 0; i &lt; capacity; i++){
+        array[i] = 0;
+    }
+}
+
+//destructor to delete memory space
+ArrayAndLinkedList::~ArrayAndLinkedList(){
+    if(array != NULL){
+        delete[] array;
+    }</B></FONT>
+    if(head != NULL){
+        delete[] head;
+    }
+}
+
+//copy constructor
+ArrayAndLinkedList::ArrayAndLinkedList(const ArrayAndLinkedList&amp; clone){
+    //deep copy of array
+    size_array = clone.size_array;
+    capacity = clone.capacity;
+    if(capacity &gt; 0){
+        try{
+            array = new int[capacity];
+        } catch (bad_alloc &amp;e){
+            cerr &lt;&lt; e.what();
+        }
+        for (int i = 0; i &lt; size_array; i++){
+            array[i] = clone.array[i];
+        }
+    }
+
+    //deep copy of linked list
+    Node *read = clone.head;
+<A NAME="1"></A>    Node *tail = NULL;
+    Node *toInsert = NULL;
+    while (read != NULL){
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match15-1.html#1',3,'match15-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>        toInsert = new Node;
+        toInsert-&gt;value = read-&gt;value;
+        toInsert-&gt;next = NULL;
+        if(tail == NULL){ //empty array
+            head = toInsert;
+            tail = toInsert;
+        } else {
+            tail-&gt;next = toInsert;</B></FONT>
+            tail = toInsert;
+        }
+<A NAME="2"></A>        read = read-&gt;next;
+    }
+    size_linkedList = clone.size_linkedList;
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match15-1.html#2',3,'match15-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+//overloaded assignment operator
+ArrayAndLinkedList ArrayAndLinkedList::operator=(const ArrayAndLinkedList&amp; rhs){
+    //overloaded assignment operator for array
+    //delete the array if the capacity is 0
+    if (rhs.capacity == 0){
+        if (array != NULL){
+            delete[] array;</B></FONT>
+        }
+        capacity = rhs.capacity;
+        size_array = rhs.size_array;
+    }
+    //case 1: capacity == rhs.capacity
+    if (capacity == rhs.capacity){
+        size_array = rhs.size_array;
+        for (int i = 0; i &lt; size_array; i++){
+            array[i] = rhs.array[i];
+        }
+    }
+    //case 1: capacity != rhs.capacity
+    if (capacity != rhs.capacity){
+        capacity = rhs.capacity;
+        size_array = rhs.size_array;
+        delete[] array;
+        try{
+            array = new int[capacity];
+        } catch (bad_alloc&amp; e){
+            cerr &lt;&lt; e.what();
+        }
+        for (int i = 0; i &lt; size_array; i++){
+            array[i] = rhs.array[i];
+        }
+    }
+
+    //overloaded assignment operator for linked list
+    //delete the existing linked list
+    if(head != NULL){
+        delete[] head;
+    }
+    //build a new list and deep copy it from rhs
+    Node *read = rhs.head;
+    Node *tail = NULL;
+    Node *toInsert = NULL;
+    while (read != NULL){
+        toInsert = new Node;
+        toInsert-&gt;value = read-&gt;value;
+        toInsert-&gt;next = NULL;
+        if(tail == NULL){
+            head = toInsert;
+            tail = toInsert;
+        } else {
+            tail-&gt;next = toInsert;
+            tail = toInsert;
+        }
+        read = read-&gt;next;
+    }
+    size_linkedList = rhs.size_linkedList;
+}
+
+//This member function inserts the value 'val' to the end of the dynamic array and the end of the linked list.
+void ArrayAndLinkedList::push_back(int val){
+    // insert a new element into array
+    int *a_tmp = NULL;
+    int new_capacity = capacity + 100;
+    if(capacity &gt; size_array){
+        array[size_array] = val;
+        size_array++;
+    } else {
+        try{
+            //create a temporary array to increase the capacity to 200
+            a_tmp = new int[new_capacity];
+        } catch (bad_alloc&amp; e){
+            cerr &lt;&lt; e.what();
+        }
+        //move the data from the old space array to a_tmp
+        for(int i = 0; i &lt; new_capacity; i++){
+            a_tmp[i] = array[i];
+        }
+        delete[] array; //delete the old space memory
+        array = a_tmp; //pointing array to the new space
+        array[size_array] = val; //insert the new element into the back of the array
+        size_array++;
+    }
+
+    //insert a new node into linked list
+    Node *cur = new Node;
+    Node *tail = head;
+    cur-&gt;value = val;
+    cur-&gt;next = NULL;
+    //if the linked list is empty, head points to the new node
+    if(head == NULL){
+        head = cur;
+<A NAME="3"></A>        size_linkedList++;
+    } else {
+        //if the linked list is not empty, traverse to the end of the list and make the tail point to the new node
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match15-1.html#3',3,'match15-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>        while (tail-&gt;next != NULL){
+            tail = tail-&gt;next;
+        }
+        tail-&gt;next = cur; //tail points to cur
+        size_linkedList++;
+    }
+}
+
+//This member function deletes the last number from the array, and the last number from the linked list.
+void ArrayAndLinkedList::pop_back(){
+    //delete the last element in the array
+    if (array != NULL){ ;</B></FONT>
+        array[size_array - 1] = NULL;
+        size_array--;
+    }
+
+    //delete the last node in the linked list
+<A NAME="4"></A>    if (head != NULL){
+        Node *tail = head;
+        Node *prev_tail = NULL;
+<FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match15-1.html#4',3,'match15-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>        while (tail-&gt;next != NULL){
+            prev_tail = tail; //locate the node before the last node
+            tail = tail-&gt;next;
+        }
+        prev_tail-&gt;next = NULL; //make the node before the last node the last node
+        delete tail;
+        size_linkedList--;
+    }
+}</B></FONT>
+
+//an overloaded put operator (&lt;&lt;) to print out all the data items stored on the dynamic array and the linked list.
+ostream&amp; operator&lt;&lt;(ostream&amp; outS, const ArrayAndLinkedList&amp; rhs){
+    string comma;
+    // print all the elements in array
+    outS &lt;&lt; &quot;Array: &quot;;
+    for (int i = 0; i &lt; rhs.size_array; i++){
+        outS &lt;&lt; comma &lt;&lt; rhs.array[i];
+        comma = &quot;, &quot;;
+    }
+
+    //print all the values of nodes in linked list
+    string com;
+    outS &lt;&lt; endl &lt;&lt; &quot;Linked List: &quot;;
+    ArrayAndLinkedList::Node *cur = rhs.head;
+    while (cur != NULL){
+        outS &lt;&lt; com &lt;&lt; cur-&gt;value;
+        com = &quot;, &quot;;
+        cur = cur-&gt;next;
+    }
+    outS &lt;&lt; endl;
+    return outS;
+}
+</PRE>
+<HR>
+<H3><CENTER>ArrayAndLinkedList.h</CENTER></H3><HR>
+<PRE>
+/**
+ * Haiyin Huang
+ * IDE: CLion
+ */
+
+#ifndef ARRAYANDLINKEDLIST_ARRAYANDLINKEDLIST_H
+#define ARRAYANDLINKEDLIST_ARRAYANDLINKEDLIST_H
+<A NAME="5"></A>
+#include &lt;iostream&gt;
+
+<FONT color="#c8c2a7"><A HREF="javascript:ZweiFrames('match15-1.html#5',3,'match15-top.html#5',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>class ArrayAndLinkedList{
+private:
+    int *array; //dynamic array
+    int size_array; //number of elements stored in the dynamic array
+    int capacity; //the current number of integer spaces allocated to the dynamic array
+    struct Node {
+        int value;
+        Node *next;
+    };
+    Node *head; //point to the first node on the linked list
+    int size_linkedList; //number of nodes on the linked list
+public:
+    //a default constructor to initialize the array and linked list correspondingly
+    ArrayAndLinkedList();
+    //destructor to delete memory space
+    ~ArrayAndLinkedList();
+    //copy constructor
+    ArrayAndLinkedList(const ArrayAndLinkedList&amp; clone);
+    //overloaded assignment operator
+    ArrayAndLinkedList operator=(const ArrayAndLinkedList&amp; rhs);
+    //This member function inserts the value 'val' to the end of the dynamic array and the end of the linked list.
+    void push_back(int val);
+    //This member function deletes the last number from the array, and the last number from the linked list.
+    void pop_back();
+    //an overloaded put operator (&lt;&lt;) to print out all the data items stored on the dynamic array and the linked list.
+    friend std::ostream&amp;operator&lt;&lt;(std::ostream&amp; outS, const ArrayAndLinkedList&amp; rhs);
+};</B></FONT>
+
+#endif //ARRAYANDLINKEDLIST_ARRAYANDLINKEDLIST_H
+</PRE>
+</BODY>
+</HTML>

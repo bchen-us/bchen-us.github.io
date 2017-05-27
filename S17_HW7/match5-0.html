@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Jawynson Pranz Sunga_556543_assignsubmission_file_hw7</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>LinkedList.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;LinkedList.h&quot;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+LinkedList::LinkedList(int cap){ //constructor
+	capacity = cap;
+	size_linkedList = 0;
+	size_array = 0;
+	head = NULL;
+	array = new int[capacity];
+}
+
+LinkedList::~LinkedList(){ //destructor
+	//called when object ends to free up space
+	Node *curr = head;
+	
+	while(curr != NULL){
+		head = curr-&gt;next;
+		delete curr;
+		curr = head;
+	}
+}
+
+LinkedList::LinkedList(const LinkedList&amp; copy){ //copy constructor
+	//makes a copy of an existing object
+	int i = 0;
+	Node* itr = NULL, *temp = NULL, *curr = NULL;
+
+	if(copy.capacity &gt; 0 ){
+		size_array = copy.size_array;
+		capacity = copy.capacity;
+		array = new int[copy.capacity];
+		
+		while(i &lt; copy.size_array){
+			array[i] = copy.array[i];
+			i++;
+		}
+	}
+	else{
+		array = NULL;
+		size_array = 0;
+		capacity = 0;
+	}
+
+	head = NULL;
+	itr = copy.head;
+	size_linkedList = copy.size_linkedList;
+
+	while(itr != NULL){
+		temp = new Node;
+		temp-&gt;value = itr-&gt;value;
+		temp-&gt;next = NULL;
+
+		if(head == NULL){
+			head = curr = temp;
+		}
+		else{
+			curr-&gt;next = temp;
+			curr = curr-&gt;next;
+		}
+		
+		itr = itr-&gt;next;
+	}
+}
+
+LinkedList LinkedList::operator=(const LinkedList&amp; rhs){ //overloading =
+	int i = 0;
+	Node* itr = NULL, *temp = NULL, *curr = NULL;
+
+	//Delete the contents of the object's array and linked list 
+	if(array != NULL)
+	delete array;
+	
+	size_array = 0;
+	capacity = 0;
+    itr = head;
+
+	while(itr != NULL){
+        temp = itr;
+		itr = itr-&gt;next;
+		itr-&gt;next = NULL;
+		delete itr;
+   }
+          
+	size_linkedList = 0;
+	itr = temp = NULL;
+
+	if(rhs.capacity &gt; 0 ){
+		size_array = rhs.size_array;
+		capacity = rhs.capacity;
+		array = new int[rhs.capacity];
+
+		while(i &lt; rhs.size_array){
+			array[i] = rhs.array[i];
+			i++;
+		}
+	}
+	else{
+		array = NULL;
+		size_array = 0;
+		capacity = 0;
+	}
+  
+	itr = rhs.head;
+	size_linkedList = rhs.size_linkedList;
+
+	while(itr != NULL){
+		temp = new Node;
+		temp-&gt;value = itr-&gt;value;
+		temp-&gt;next = NULL;
+
+		if(head == NULL){
+			head = curr = temp;
+		}
+		else{
+			curr-&gt;next = temp;
+			curr = curr-&gt;next;
+		}
+
+		itr = itr-&gt;next;
+<A NAME="0"></A>	}
+}
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match5-1.html#0',3,'match5-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>void LinkedList::pop_back(){ //removes the last element in the list
+	if(head != NULL){
+		if(head-&gt;next == NULL)
+			head = NULL;
+		else{
+			struct Node *temp = head;
+			
+			while(temp-&gt;next-&gt;next != NULL){
+				temp = temp-&gt;next;
+			}
+			
+<A NAME="1"></A>			temp-&gt;next = NULL;
+		}	
+	}</B></FONT>
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match5-1.html#1',3,'match5-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+void LinkedList::push_back(int val){ //adds a new element at the end of the list of val
+	if(head == NULL){
+		head = new Node;
+		head-&gt;value = val;
+		head-&gt;next = NULL;
+		size_linkedList++;
+		array[size_array++] = val;
+	}
+	else{
+		struct Node *temp = head;
+		struct Node *tempNode = new Node;
+		tempNode-&gt;value = val;
+		tempNode-&gt;next = NULL;
+		
+		while(temp-&gt;next != NULL){
+			temp = temp-&gt;next;
+		}
+		
+		temp-&gt;next = tempNode;
+		size_linkedList++;
+		array[size_array++] = val;
+<A NAME="2"></A>	}
+}</B></FONT>
+
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match5-1.html#2',3,'match5-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>int LinkedList::size(){ //returns size of list
+	return size_linkedList;
+}
+
+ostream &amp;operator &lt;&lt; (ostream &amp;output, const LinkedList &amp;list){ //prints out the list
+	struct Node *tempnode = list.head;
+	int counter = 1;
+	
+	while(tempnode != NULL){
+		output &lt;&lt; counter++ &lt;&lt; &quot;.&quot; &lt;&lt; tempnode-&gt;value &lt;&lt; endl;
+		tempnode = tempnode-&gt;next;
+	}
+	
+	return output;
+}</B></FONT>
+
+</PRE>
+</BODY>
+</HTML>

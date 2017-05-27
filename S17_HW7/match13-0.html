@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Moses Martinez_556540_assignsubmission_file_CSC340_HW7</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>LinkList.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;LinkList.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+//Default constructor
+LinkList::LinkList(){
+	//Initialization for link list
+	head = NULL;
+	size_linkList = 0;
+	
+	// Initialization for array
+<A NAME="0"></A>	size_array = 0;
+	capacity = 100;
+    array = new int[ capacity];
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match13-1.html#0',3,'match13-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	for(int i = 0;i&lt;capacity;i++){
+		array[i]=0;
+	}
+}
+//Destructor
+LinkList::~LinkList(){
+	//array destruct
+<A NAME="1"></A>	if(array!=NULL)</B></FONT>
+		delete [] array;
+	//Link list destruct
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match13-1.html#1',3,'match13-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	Node *tmp = head;
+	while(tmp!=NULL){
+		head = tmp-&gt;next;
+		delete tmp;
+		tmp = head;
+	}
+		
+}
+<A NAME="2"></A>//Copy constructor 
+LinkList::LinkList(const LinkList&amp; copyList){</B></FONT>
+	// Copy for link list ADT
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match13-1.html#2',3,'match13-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	if(copyList.head == NULL){
+		head = NULL;
+		size_linkList = 0;
+	}
+	else{
+		head = new Node;
+		head-&gt;value = copyList.head-&gt;value;
+		
+		Node *newPtr = head;
+		for(Node *origPtr = copyList.head-&gt;next; origPtr !=NULL;origPtr = origPtr-&gt;next){
+			newPtr-&gt;next = new Node;
+			newPtr = newPtr-&gt;next;
+			newPtr-&gt;value = origPtr-&gt;value;
+		}
+<A NAME="3"></A>		newPtr-&gt;value = 0;</B></FONT>
+	}
+	//Copy for Dynamic array ADT
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match13-1.html#3',3,'match13-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	size_array = copyList.size_array;
+    capacity = copyList.capacity;
+    if (capacity &gt; 0){
+        array = new int [capacity];
+        for (int i=0; i&lt;size_array; i++)
+            array[i] = copyList.array[i];
+    }</B></FONT>
+    else
+        array = NULL;	
+} 
+void LinkList::push_back(int val){
+	//Adds val to the end of the link list
+	Node *tmp = new Node;
+	tmp-&gt;value = val;
+	tmp-&gt;next = NULL;
+	Node *curr = head;
+	if(head == NULL)
+		head = tmp;
+	else{
+	while(curr-&gt;next != NULL){
+		curr= curr-&gt;next;
+	}
+		curr-&gt;next = tmp;
+		size_linkList++ ; 
+	}
+	//Adds val to the end of the dynamic array
+	if(size_array==capacity){ //resizes array if needed
+		int *Arraytmp = new int [2*capacity];
+		for (int i=0; i&lt;size_array; i++)
+            Arraytmp[ i ] = array[ i];
+        capacity = 2*capacity;
+        delete [] array;
+        array = Arraytmp;
+	}
+	int *arrayCurr = new int [capacity];
+	for (int i=0; i&lt;size_array; i++)
+            arrayCurr[ i ] = array[ i];
+    delete[] array;
+    arrayCurr[size_array] = val; // assigns val to the end of array;
+	array = new int [capacity];
+	for (int i=0; i&lt;size_array; i++)
+            array[ i ] = arrayCurr[ i];
+    delete[] arrayCurr;
+    size_array++;
+} 
+
+void LinkList::pop_back(){
+	//Delete the first element of the linked list
+	Node *tmp = head;
+	if(tmp!=NULL){
+	head = head-&gt;next;
+	delete tmp;
+	size_linkList-- ; 
+	}
+	//Delete the first element of the dynamic array
+	int *arrayTmp = new int [capacity];
+	for (int i=0; i&lt;size_array; i++)
+            arrayTmp[ i ] = array[i+1]; // copies array begning at position 1 leaving the first element out
+    delete[] array;
+    array = new int [capacity];
+    for (int i=0; i&lt;size_array; i++)
+            array[ i ] = arrayTmp[i];
+	delete[] arrayTmp;
+	size_array--;
+} 
+
+ostream&amp; operator&lt;&lt;(ostream&amp; out, const LinkList&amp; aList){ 
+/*	out &lt;&lt; &quot;Linked List values: &quot;;
+	do{
+		out &lt;&lt; aList-&gt;value &lt;&lt; &quot;, &quot; &lt;&lt; endl; 
+		aList = aList-&gt;next;
+	}while(aList!= NULL);*/
+} 
+LinkList LinkList::operator=(const LinkList&amp; rhs){
+	// assignment overload for Linked List
+	if(rhs.head==NULL){
+		if(head!=NULL){
+			Node *tmp = head;
+		while(tmp!=NULL){
+		head = tmp-&gt;next;
+		delete tmp;
+		tmp = head;
+	}
+		}
+		head = NULL;
+		size_linkList = 0;
+<A NAME="4"></A>	}
+	else{
+		head = new Node;
+<FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match13-1.html#4',3,'match13-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>		head-&gt;value = rhs.head-&gt;value;
+		
+		Node *newPtr = head;
+		for(Node *origPtr = rhs.head-&gt;next; origPtr !=NULL;origPtr = origPtr-&gt;next){
+			newPtr-&gt;next = new Node;
+			newPtr = newPtr-&gt;next;
+			newPtr-&gt;value = origPtr-&gt;value;
+		}
+		newPtr-&gt;value = 0;</B></FONT>
+	}
+	
+	//assignmentoverload for dynamic array
+	if (rhs.capacity == 0){
+        if (array!=NULL){
+            delete [] array;
+            array = NULL;
+        }
+        capacity = 0;
+<A NAME="5"></A>        size_array = 0;
+        
+    }
+<FONT color="#c8c2a7"><A HREF="javascript:ZweiFrames('match13-1.html#5',3,'match13-top.html#5',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    else if (capacity==rhs.capacity){
+        size_array = rhs.size_array;
+        for (int i=0; i&lt;size_array; i++)
+            array[i] = rhs.array[i];
+    }
+    else{
+        if (array !=NULL)
+            delete [] array;
+        capacity = rhs.capacity;
+        size_array = rhs.size_array;
+        array = new int [capacity]; 
+        for (int i=0; i&lt;size_array; i++)
+            array[i] = rhs.array[i];
+    }</B></FONT>
+    return *this;
+} 
+
+</PRE>
+<HR>
+<H3><CENTER>LinkList.h</CENTER></H3><HR>
+<PRE>
+/**
+	Date: 5-5-2017
+*/
+<A NAME="6"></A>#ifndef LINKLIST_H
+#define LINKLIST_H
+
+<FONT color="#50ebec"><A HREF="javascript:ZweiFrames('match13-1.html#6',3,'match13-top.html#6',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>class LinkList{
+	private:
+	int*array;
+	int size_array;
+	int capacity;
+	struct Node{
+		int value;
+		Node *next;
+	};
+	Node *head;
+	int size_linkList;
+	public:
+		~LinkList(); //Destructor
+		LinkList(); //Default constructor
+		
+		LinkList(const LinkList&amp; copyList); // Copy constructor copes to copyList
+		LinkList operator=(const LinkList&amp; rhs); // Overload assignment operator
+		
+		void push_back(int val); // inserts val to the end of array and list
+		void pop_back(); // delets the last members of array and list
+		
+		friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const LinkList&amp; aList); // prints out all items stored in the array and list
+		
+};</B></FONT>
+#endif
+</PRE>
+</BODY>
+</HTML>

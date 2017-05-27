@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Vanita Rani_556587_assignsubmission_file_HW7</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Array.cpp</CENTER></H3><HR>
+<PRE>
+/*
+ Name: 		Vanita Rani
+ Course: 	CSC340-02
+ Date: 		May 9, 2017
+ IDE: 		Dev-C++ 5.11
+ Objective: implementing members functions of the ArrayHeader.h
+ */
+
+#include &lt;stdio.h&gt;
+#include &lt;iostream&gt;
+#include &quot;ArrayHeader.h&quot;
+
+//default constructor 
+ArrayHeader::ArrayHeader () {
+	capacity = 100;
+	array = new int [capacity];
+	head = NULL;
+	size_array = 0;
+	size_linkedList = 0; 
+}
+
+//destructor - Big 3
+ArrayHeader::~ArrayHeader () {
+<A NAME="0"></A>	if (array!=NULL) {
+        delete [] array;
+    }
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match42-0.html#0',2,'match42-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+//copy constructor - Big 3
+ArrayHeader::ArrayHeader(const ArrayHeader &amp; copy) {
+	size_array = copy.size_array;
+    capacity = copy.capacity;
+    if (capacity &gt; 0) {
+        array = new int [capacity];
+        for (int i = 0; i &lt; size_array; i++) {
+            array[i] = copy.array[i];
+        }
+<A NAME="1"></A>    }
+    else</B></FONT>
+        this-&gt; array = NULL;
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match42-0.html#1',2,'match42-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+//overloading = operator - Big 3
+ArrayHeader::operator = (const ArrayHeader &amp; rhs) {
+	if (rhs.capacity == 0){
+        if(array != NULL) {
+        	delete [] array;
+<A NAME="2"></A>            array = NULL;             //delete all values from this object and set it equal to NULL
+       	}</B></FONT>
+       	capacity = 0;
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match42-0.html#2',2,'match42-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>        size_array = 0;		//set size_array = 0
+	} else if (capacity == rhs.capacity) {
+		size_array = rhs.size_array;	//set the size_array equal to rhs.size_array
+        for (int i = 0; i &lt; size_array; i++) {	//use a loop to transfer each rhs.array value into array
+            array[i] = rhs.array[i];
+        }
+	} else {
+        if(array != NULL) {
+            delete [] array;    //delete all values from this object and set it equal to NULL
+            array = NULL;
+        }
+        capacity = rhs.capacity;		//set capacity and size_array equal to rhs's capacity and size_array
+        size_array = rhs.size_array;
+        array = new int [capacity];		//set array equal to a new int array of size capacity
+        for (int i = 0; i &lt; size_array; i++) {		//use a loop to transfer each rhs.array value into array
+            array[i] = rhs.array[i];
+        }
+	}
+	if(rhs.head == NULL){
+	    if(head != NULL) {
+		//Deletes all memory allocated to values in head &amp; the nested Node's next value as well until Linked List is NULL
+        head = head-&gt;next;</B></FONT>
+		Node *temp = new Node;
+   		temp-&gt;next = NULL;
+   		delete head;
+		}
+		//set head equal to NULL and set size_LinkedList equal to 0
+		head = 0;
+		size_linkedList = 0;
+    } else{
+    	//set head equal to a new Node
+    	Node *newNode = new Node;
+        newNode = head; 
+        //replace each Node in head with the values in rhs's Linked List
+    }
+    return *this;
+}
+
+//push-back function - insert at the end
+void ArrayHeader::push_back(int val) {
+	//find the last element/node and assign the last node to value -&gt; next = NULL
+	int lastElement = array [capacity]; 
+	Node *temp = new Node;	//create new node as temp 
+	temp -&gt; data = val; 
+	temp -&gt; next = NULL;
+	if (head == NULL) {
+		head = temp;
+	} else {
+		Node *temp2 = head;
+		while (temp2 -&gt; next != NULL) {
+			temp2 = temp -&gt; next;
+		}
+		temp2 -&gt; next = temp; 	//last node to temp
+	}
+}
+
+//pop-back function - delete last value 
+void ArrayHeader::pop_back() {
+	if(head != NULL) {
+		if(head -&gt; next == NULL) {
+			head = NULL;
+		} else {
+		struct Node *temp3 = head;
+		while(temp3 -&gt; next -&gt; next != NULL) {
+			temp3 = temp3 -&gt; next;
+		}
+		delete temp3 -&gt; next;
+		temp3 -&gt; next = NULL;
+		}
+	}
+}
+
+//overloading &lt;&lt; operator 
+ostream &amp;operator &lt;&lt; (ostream &amp; output, const LinkedList &amp; rhs )
+{
+   struct Node *temporaryNode = rhs.head;
+   int counter = 1;
+   while(temporaryNode != NULL)
+   {
+       output &lt;&lt; counter++ &lt;&lt; &quot;. &quot; &lt;&lt; temporaryNode -&gt; value &lt;&lt;endl;
+       temporaryNode = temporaryNode -&gt; next;
+   }
+   return output;
+}
+
+
+</PRE>
+</BODY>
+</HTML>

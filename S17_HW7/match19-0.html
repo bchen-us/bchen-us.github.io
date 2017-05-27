@@ -1,0 +1,397 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Gabriel Equitz_556549_assignsubmission_file_VectorInt</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>VectorInt.cpp</CENTER></H3><HR>
+<PRE>
+/* 
+ * File:   VectorAndList.cpp
+ * Author: Gabriel Equitz
+ * Homework 7
+ * sfsu id: 915254839 
+ * */
+
+#include &quot;VectorInt.h&quot;
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+// Default constructor
+VectorInt::VectorInt(){
+    
+    //vector initialization
+    capacity = 200;
+    size_array = 0;
+    try{
+     array = new int[capacity];
+    }catch(bad_alloc e){
+        cout &lt;&lt; &quot;problem in memory allocation &quot; &lt;&lt; e.what();
+        exit(EXIT_FAILURE);
+    }
+    
+    
+    // list initialization
+    size_linkedList = 0;
+    head =  NULL;
+    
+    
+}
+
+// Initiates the vector to a specified size
+VectorInt::VectorInt(int size){
+    size_array = 0;
+    capacity = size;    
+    try{
+      array = new int[capacity];
+    }catch(bad_alloc e){
+        cout &lt;&lt; &quot;problem in memory allocation &quot; &lt;&lt; e.what();
+        exit(EXIT_FAILURE);
+    }
+<A NAME="0"></A>}
+
+// copy constructor (copies a vector to another one)
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match19-1.html#0',3,'match19-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>VectorInt::VectorInt(VectorInt &amp;Vec){
+    
+    //array:
+    size_array = Vec.size_array;
+    capacity = Vec.capacity;    
+    try{
+      array = new int[capacity];
+    }catch(bad_alloc e){
+        cout &lt;&lt; &quot;problem in memory allocation &quot; &lt;&lt; e.what();
+        exit(EXIT_FAILURE);
+<A NAME="1"></A>    }  
+    for(int i = 0; i &lt; size_array; ++i){
+        array[i] = Vec.array[i];</B></FONT>
+<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match19-1.html#1',3,'match19-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    } 
+    
+    // list:
+    size_linkedList=Vec.size_linkedList;
+    if (Vec.head == NULL){
+        head = NULL;  // original list is empty
+        size_linkedList = 0;
+    }
+    else
+    {  // copy first node
+        head = new Node;
+        head-&gt;value = Vec.head-&gt;value;
+        
+        // copy rest of list
+        Node *newPtr = head;  // new list pointer, points to last node in new list        
+        // oPtr points to nodes in original list
+        for (Node *oPtr = Vec.head-&gt;next;
+             oPtr != NULL;
+             oPtr = oPtr-&gt;next)
+        {  newPtr-&gt;next = new Node;
+            newPtr = newPtr-&gt;next;
+            newPtr-&gt;value = oPtr-&gt;value;
+        }  // end for
+        
+        newPtr-&gt;next = NULL;
+    }  // end if
+}
+
+//assignment operator
+VectorInt &amp;VectorInt::operator=(const VectorInt  &amp;rhs) {
+    //vector
+    //check for self-assignment
+<A NAME="2"></A>    if (this != &amp;rhs){</B></FONT>
+        //free old object
+        delete [] array;
+<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match19-1.html#2',3,'match19-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>        size_array = rhs.size_array;
+        capacity = rhs.capacity;  
+        try{
+          array = new int[capacity];        
+        }catch(bad_alloc e){
+          cout &lt;&lt; &quot;problem in memory allocation &quot; &lt;&lt; e.what();
+          exit(EXIT_FAILURE);
+        }
+        for(int i = 0; i &lt; size_array; ++i){
+          array[i] = rhs.array[i];
+        } 
+        
+    }</B></FONT>
+     //list
+    // check if the list is empty
+    if (size_linkedList &gt; 0){
+        Node *currNode = head;
+        
+        while (currNode != NULL) {
+            head = currNode-&gt;next;
+            delete currNode;
+            currNode = head;
+        } 
+    } 
+    
+    size_linkedList = rhs.size_linkedList;
+    
+<A NAME="3"></A>    
+    if (size_linkedList &lt;= 0){
+        head = NULL;
+<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match19-1.html#3',3,'match19-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>    } 
+    
+    else {        
+        head = new Node;
+        // copy first value
+        head-&gt;value = rhs.head-&gt;value;
+        
+        // copy other values
+        Node *aPtr = head;        
+        
+        for (Node *begPtr = rhs.head-&gt;next; begPtr != NULL; begPtr = begPtr-&gt;next) {
+            aPtr-&gt;next = new Node;  
+            aPtr = aPtr-&gt;next;            
+            aPtr-&gt;value = begPtr-&gt;value;
+        }         
+        aPtr-&gt;next = NULL;
+    } // end else
+    
+    return *this;
+}</B></FONT>
+
+// Destructor
+VectorInt::~VectorInt(){
+    
+    
+    
+    size_array = 0;
+    capacity = 0;
+    delete [] array;
+    
+    //list
+    Node *curr=head;
+    while (curr!=NULL){
+        head = curr-&gt;next;
+        delete curr;
+        curr = head;
+    }
+}
+
+
+// deletes an element from the end of the array
+void VectorInt::pop_back(){
+    
+    //array:
+    if(size_array &gt; 0){  
+       
+        size_array = size_array-1;
+        if(size_array == capacity){
+          int newSize = capacity - 1;
+<A NAME="4"></A>        
+          capacity = newSize;
+          
+<FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match19-1.html#4',3,'match19-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>          int *aArray = new int[capacity];
+                    
+          for(int i = 0; i &lt; size_array; ++i){
+            aArray[i] = array[i];
+          } 
+          array = aArray;
+           
+          delete [] aArray;  
+          aArray = NULL;   </B></FONT>
+        
+       
+        } 
+              
+    } 
+    else{
+        cout &lt;&lt; &quot;All elements have been deleted.&quot;;
+    } 
+    
+    
+    //list:
+    if(head != NULL){
+        Node *end = head;
+        if(end-&gt;next != NULL){
+            Node *prev_end;
+                while(end-&gt;next != NULL){
+                    prev_end = end;
+                    end = end-&gt;next;
+                }
+                prev_end-&gt;next = NULL;
+                delete end;
+        }
+        else {
+              delete head;
+              head = NULL;
+        }
+        size_linkedList--;
+    }
+    else{
+        cout &lt;&lt; &quot;All elements have been deleted.&quot;;
+    }
+}
+
+
+// adds element a the end
+void VectorInt::push_back(int aValue){
+    
+    //array:
+    if(size_array == capacity){
+        int newSize = capacity + 1;
+        
+        capacity = newSize;       
+        int *aArray = new int[capacity];
+        for(int i = 0; i &lt; size_array; ++i){
+          aArray[i] = array[i];
+        } 
+        array = aArray;
+        
+        delete [] aArray; 
+        aArray = NULL;   
+       
+    } 
+    array[size_array++] = aValue;
+    
+    //list:
+    if (size_linkedList &lt;= 0){ // adding first value if the size is zero
+        Node* n = new Node;
+        n-&gt;next = head;
+        n-&gt;value = aValue;
+        head = n;     
+    }
+    else{
+       Node* n = new Node; //create new node
+       n-&gt;value = aValue;  //input data
+       n-&gt;next = NULL;     //set node to point to NULL
+
+       Node* pCurrent = head;
+       if( pCurrent != NULL ){        
+        while (pCurrent-&gt;next != NULL)  //find tail
+        pCurrent = pCurrent-&gt;next;
+
+        // add new node at end of tail
+        pCurrent-&gt;next = n;
+    
+        } else {
+          pCurrent = n;
+        }
+    }
+    size_linkedList++;
+}
+
+
+
+ostream &amp;operator &lt;&lt;(ostream&amp; outV, VectorInt Vec ){
+    
+    cout &lt;&lt; &quot;vector: &quot;;
+    // loop through the vector
+    for(int i = 0; i &lt; Vec.size_array; ++i){
+        outV &lt;&lt; Vec.array[i] &lt;&lt; &quot; &quot;;
+    } 
+    
+    //list:
+    cout &lt;&lt; endl ;
+    cout &lt;&lt; &quot;list: &quot;;
+    //loop through the list
+    VectorInt::Node *p;
+        for(p = Vec.head; p != 0; p = p -&gt; next)
+              
+              outV &lt;&lt; p -&gt; value  &lt;&lt; &quot; &quot;;
+     
+     
+    cout &lt;&lt; endl;
+    return outV;
+}
+
+
+
+
+</PRE>
+<HR>
+<H3><CENTER>VectorInt.h</CENTER></H3><HR>
+<PRE>
+
+
+/* 
+ * File:   VectorInt.h
+ * Author: Gabriel Equitz
+ * Homework 7
+ * Created on May 1, 2017, 11:21 PM
+ */
+
+
+
+#ifndef VECTORANDLIST_H
+#define VECTORANDLIST_H
+
+#include &lt;iostream&gt;
+<A NAME="5"></A>
+using namespace std;
+
+<FONT color="#c8c2a7"><A HREF="javascript:ZweiFrames('match19-1.html#5',3,'match19-top.html#5',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>class VectorInt{
+private:
+    // Pointer  vector 
+    int *array;
+    
+    // number of elements of the array
+    int size_array;
+        
+    // Vector size
+    int capacity;
+    
+        // node on the list
+    struct Node
+    {
+        int value; // data value        
+        Node    *next;  //pointer to the next node
+    }; // end Node
+    
+    
+    int  size_linkedList; // size of the list    
+    Node *head;    //pointer to linked list
+ 
+public:</B></FONT>
+        
+    // Default constructor that initializes the array to  200 elements
+    VectorInt();
+    
+    // Constructor that initializes array to a given size
+    VectorInt(int size);
+    
+    // Constructor that copies another vector
+    VectorInt(VectorInt &amp;vector);
+    
+    VectorInt &amp;operator=(const VectorInt&amp;  rhs);
+    
+    
+    
+    // Destructor of VectorInt class
+    ~VectorInt();
+    
+    
+    
+    // deletes an element at the end of the vector
+    
+    void pop_back();
+    
+    // adds an element at the end of the vector
+    void push_back(int value);
+    
+    
+    
+    friend ostream &amp;operator &lt;&lt;(ostream &amp;out, VectorInt V);
+};
+
+
+#endif /* VECTORANDLIST_H */
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

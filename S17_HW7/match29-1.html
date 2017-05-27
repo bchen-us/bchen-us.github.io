@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Albert Shevchuk_556581_assignsubmission_file_HW7 - SHEVCHUK</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>linklist.cpp</CENTER></H3><HR>
+<PRE>
+/*
+		Albert Shevchuk 
+		CSC340 T/Th @ s2:10pm 
+		5/09/17
+		Dev-C++
+*/
+
+#include &lt;iostream&gt;
+#include &lt;new&gt;
+#include &quot;linklist.h&quot;
+
+<A NAME="0"></A>using namespace std; 
+
+linklist::linklist():array(NULL),size_array(0),head(NULL),size_linkedList(0)
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match29-0.html#0',2,'match29-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>{ 
+ capacity = 15;
+    try{
+        array = new int [capacity];
+    }
+    catch( bad_alloc&amp; e)																		//initilize objexts and the array
+    {
+        std::cout &lt;&lt; e.what();
+    }
+    for (int i=0; i&lt;capacity; i++)
+        array[i] = 0;        
+}
+
+linklist::~linklist()</B></FONT>
+{
+    if (array!=NULL)
+        delete [] array;
+			
+	Node *ptr; 
+																							//delete both array and every emement of linked list
+	while(head != NULL)
+	{
+		ptr = head;
+		head = head-&gt;next;
+		delete ptr;			
+	}	
+}
+
+void linklist::push_back(int val)
+{
+	Node *tmp = head;
+		
+	if(!head)
+	{
+		head = new Node;
+		head-&gt;value = val;																	//if head is not created
+		head-&gt;next = NULL;
+	}
+	else																					
+	{	
+		while(tmp-&gt;next != NULL)
+		{
+			tmp = tmp-&gt;next; 
+		}
+																							//or add to the end
+		Node* newNode = new Node();
+		newNode-&gt;value = val;
+		newNode-&gt;next = NULL;
+		tmp-&gt;next = newNode;
+	}
+	
+	array[size_array] = val;
+	size_array++;																			//incrument/set variables 
+	size_linkedList++;	
+}
+
+void linklist::pop_back()
+{
+	Node *tmp = head;
+	Node *prev;
+
+	if(head)
+	{	
+		if(head-&gt;next == NULL)
+		{
+			delete tmp;																		//if head is lonsome 
+			head = NULL;
+		}
+		else
+		{	
+			while(tmp-&gt;next != NULL)
+			{	prev = tmp;	
+				tmp = tmp-&gt;next; 															//thraverce and delete 
+			}
+			
+			delete tmp;
+			prev-&gt;next = NULL;
+		}
+	}
+	
+	array[size_array] = 0;
+	size_array--;
+}
+
+ostream &amp; operator&lt;&lt;(ostream &amp; os, const linklist &amp; q)
+{
+	os&lt;&lt;endl&lt;&lt;&quot;Linked List&quot;&lt;&lt;endl;
+    for(linklist::Node* n = q.head; n != NULL; n = n-&gt;next)									// print linked list
+    {
+       os &lt;&lt; n-&gt;value&lt;&lt;&quot; &quot;;
+    }
+    
+    os &lt;&lt;endl&lt;&lt; &quot;Dynamic Array&quot;&lt;&lt;endl;
+    
+    for(int i = 0; i &lt;= q.capacity; i++)													// print array
+    {
+       os &lt;&lt; q.array[i]&lt;&lt;&quot; &quot;;
+    }
+    	
+    return os;
+}
+
+linklist::linklist(const linklist&amp; clone)
+{	
+  Node* curr;
+  Node* tr;
+  
+  head = new Node;
+  head-&gt;value = clone.head-&gt;value;															//create the first node	and copy elements
+  
+  curr = head;
+  tr = clone.head-&gt;next;
+  
+  while(tr != NULL)
+  {
+		curr-&gt;next = new Node;
+		curr = curr-&gt;next;																		
+		curr-&gt;value = tr-&gt;value;															// create more elements if needed and copy elements
+		tr = tr-&gt;next;  	
+  }	
+<A NAME="1"></A>  
+  curr-&gt;next = NULL;
+  
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match29-0.html#1',2,'match29-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>  this-&gt;size_array = clone.size_array;
+      capacity = clone.capacity;
+																						// copy elements and create new dynameic array    
+    if (capacity &gt;0)														
+	{
+        array = new int[capacity]; 
+        for (int i=0; i&lt;size_array; i++)
+        array[i] = clone.array[i];
+    }
+}
+
+linklist&amp; linklist::operator=(const linklist&amp; rhs)
+{</B></FONT>
+	Node* curr;
+  	Node* tr;
+  
+  head = new Node;
+  head-&gt;value = rhs.head-&gt;value;
+  
+  curr = head;
+  tr = rhs.head-&gt;next;																	//traverce and identify the items that needed to be copied.
+  
+  while(tr != NULL)
+  {
+		curr-&gt;next = new Node;
+		curr = curr-&gt;next;
+		curr-&gt;value = tr-&gt;value;
+		tr = tr-&gt;next;  	
+  }	
+<A NAME="2"></A>  
+  curr-&gt;next = NULL;
+
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match29-0.html#2',2,'match29-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>  if (rhs.capacity == 0)
+  { 
+      if (array!=NULL)
+	  {
+         delete [] array;
+         array = 0;
+      }
+        capacity = rhs.capacity;
+        size_array = rhs.size_array;
+  }
+        
+    if (capacity == rhs.capacity)
+	{
+        size_array = rhs.size_array;
+        for  (int i=0; i&lt;size_array; i++)
+            array[i] = rhs.array[i];
+    }																					//traverce and identify the items that need to be copied for dynamic array</B></FONT>
+   
+    if (capacity != rhs.capacity)
+    {	
+		capacity = rhs.capacity;
+		size_array = rhs.size_array;
+		for  (int i=0; i&lt;size_array; i++)
+            array[i] = rhs.array[i];			
+	}
+    
+    return *this; 
+  
+}
+</PRE>
+</BODY>
+</HTML>

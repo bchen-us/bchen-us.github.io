@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>Riza Shrestha_556537_assignsubmission_file_linkedlist</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>linkedlist.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;linkedlist.h&quot;
+<A NAME="1"></A>#include &lt;iostream&gt;
+using namespace std;
+
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match6-0.html#1',2,'match6-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>linkedlist::linkedlist()
+{
+    capacity=SIZE; //the current number of integer spaces of the dynamic array
+    array=new int[capacity]; //dynamic array
+    size_array=0; //number of elements stored in the dynamic array  
+      
+    head=NULL; //point to the first node on the linked list
+    size_linkedList=0; //number of nodes on the linked list
+}
+
+//Copy Constructor
+
+	linkedlist ::linkedlist(const linkedlist &amp;obj)</B></FONT>
+
+	{
+
+		array = obj.array;
+
+		head = obj.head;
+
+	}
+    
+//destructor
+linkedlist::~linkedlist()
+{
+    delete(array);
+    delete(head);
+}
+
+linkedlist linkedlist:: operator=(const linkedlist&amp; rhs) {
+    if(size_linkedList &gt; 0) {
+        Node *currentNode = head;
+        while(currentNode!=NULL) {
+            head = currentNode-&gt;next;
+            delete currentNode;
+            currentNode = head;
+        }
+        if (rhs.head == NULL){
+            head = NULL;  // original list is empty
+            size_linkedList = 0;
+        }
+        else
+        {  // copy first node
+            head = new Node;
+            head-&gt;value = rhs.head-&gt;value;
+            
+            // copy rest of list
+            Node *newPtr = head;  // new list pointer
+            // newPtr points to last node in new list
+            // origPtr points to nodes in original list
+            for (Node *origPtr = rhs.head-&gt;next;
+                 origPtr != NULL;
+                 origPtr = origPtr-&gt;next)
+            {  newPtr-&gt;next = new Node;
+                newPtr = newPtr-&gt;next;
+                newPtr-&gt;value = origPtr-&gt;value;
+            }  // end for
+            
+            newPtr-&gt;value = NULL;
+            
+<A NAME="2"></A>        }
+    }
+    return *this;
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match6-0.html#2',2,'match6-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+
+
+
+
+
+void linkedlist::push_back(int val )
+{
+   if(size_array==capacity)
+   {
+       //increase array capacity 
+       int *temp=new int[capacity+SIZE];
+       for(int i=0;i&lt;size_array;i++)
+       {
+           temp[i]=array[i];
+       }
+       //assign new array to old array
+       array=new int[capacity+SIZE];
+       for(int i=0;i&lt;size_array;i++)
+       {
+           array[i]=temp[i];
+       }
+       capacity+=SIZE;
+       delete[](temp);//delete new array
+   }
+   array[size_array++]=val;
+  
+   //insert value in linked list
+   if(head==NULL)
+   {
+       head=new Node();
+       head-&gt;value=val;
+       head-&gt;next=NULL;
+   }
+   else
+   {
+       Node *temp=head;
+       //FIND LAST NODE
+       while(temp-&gt;next!=NULL)
+           temp=temp-&gt;next;
+       temp-&gt;next=new Node();
+       temp-&gt;next-&gt;value=val;
+       temp-&gt;next-&gt;next=NULL;
+   }
+   size_linkedList++;
+  
+}
+void linkedlist::pop_back()
+{
+   size_array--;
+   Node *temp=head;
+   for(int i=0;i&lt;size_linkedList-1;i++)//FIND LAST NODE
+       temp=temp-&gt;next;
+   delete(temp-&gt;next);
+   temp-&gt;next=NULL;//delete node
+   size_linkedList--;  
+}
+//Overload print that prints out the elements in the li
+ostream&amp; operator &lt;&lt;(ostream&amp; out,const linkedlist &amp;obj )
+{
+   out&lt;&lt;&quot;Array:&quot;;
+   for(int i=0;i&lt;obj.size_array;i++)
+   out&lt;&lt;obj.array[i]&lt;&lt; &quot; &quot;;//print array
+   out&lt;&lt;endl&lt;&lt;&quot;Linked list: &quot;;
+   Node *temp=obj.head;
+   for(int i=0;i&lt;obj.size_linkedList;i++)
+   {
+       out&lt;&lt;temp-&gt;value&lt;&lt;&quot; &quot;;//print linked list
+       temp=temp-&gt;next;//get next pointer
+   }
+   out&lt;&lt;endl;
+   return out;//return ostream
+}</B></FONT>
+
+</PRE>
+<HR>
+<H3><CENTER>linkedlist.h</CENTER></H3><HR>
+<PRE>
+#ifndef LINKEDLIST_H
+#define LINKEDLIST_H
+#include&lt;iostream&gt;
+
+<A NAME="0"></A>using namespace std;
+#define SIZE 150
+
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match6-0.html#0',2,'match6-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>struct Node 
+{
+
+    int value;
+
+    Node *next;
+
+};
+
+
+class linkedlist
+{
+private:
+    
+       int *array; //dynamic array
+       int size_array; //number of elements stored in the dynamic array
+       int capacity; //the current number of integer spaces allocated to the dynamic array
+      
+         
+       Node *head; //point to the first node on the linked list
+       int size_linkedList; //number of nodes on the linked list
+       
+public:</B></FONT>
+        linkedlist();
+        //copy constructor
+        linkedlist(const linkedlist &amp;obj);
+        //overload the assignment operator
+        linkedlist operator=(const linkedlist&amp;  rhs);
+       ~linkedlist();
+       void push_back(int val );
+       void pop_back();
+       
+       friend ostream&amp; operator &lt;&lt;(ostream&amp; out,const linkedlist &amp;obj );
+};
+
+#endif // LINKEDLIST_H
+</PRE>
+</BODY>
+</HTML>
